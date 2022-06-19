@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 import { Base64Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol";
 
-contract UNCHAIN_PASSPORT is Initializable, AccessControlUpgradeable, ERC721URIStorageUpgradeable {
+contract UNCHAIN_PASSPORT_TEST is Initializable, AccessControlUpgradeable, ERC721URIStorageUpgradeable {
 
     // test valuable
     uint256 private value;
@@ -181,9 +181,5 @@ contract UNCHAIN_PASSPORT is Initializable, AccessControlUpgradeable, ERC721URIS
         return value;
     }
 
-    // Increments the stored value by 1
-    function increment() public {
-        value = value + 1;
-        emit ValueChanged(value);
-    }
+
 }
