@@ -1,11 +1,10 @@
 // Load dependencies
-const { expect } = require('chai');
-const { ethers, upgrades } = require("hardhat");
-import { UNCHAINPASSPORTTEST} from "../typechain";
-import { UNCHAINPASSPORT} from "../typechain";
+import { expect } from 'chai';
+import { ethers, upgrades } from "hardhat";
+import { Contract, ContractFactory } from "ethers"
 
-let unchainTest: UNCHAINPASSPORTTEST;
-let unchain: UNCHAINPASSPORT;
+let v1Contract: Contract;
+let v2Contract: Contract;
 
  
 // Start test block
@@ -13,21 +12,21 @@ describe('Unchain (proxy)', function () {
     
 
   beforeEach(async function () {
-    const UnchainTest = await ethers.getContractFactory("UNCHAIN_PASSPORT_TEST");
-    const Unchain = await ethers.getContractFactory("UNCHAIN_PASSPORT");
+    const v1Factory:ContractFactory = await ethers.getContractFactory("UNCHAIN_PASSPORT_v01");
+    const v2Factory:ContractFactory = await ethers.getContractFactory("UNCHAIN_PASSPORT_v02");
 
-    unchainTest = await upgrades.deployProxy(UnchainTest, [42], {initializer: 'store'});
-    unchain = await upgrades.upgradeProxy(unchainTest.address, Unchain);
-    await unchain.deployed();
+    v1Contract = await upgrades.deployProxy(v1Factory, [42], {initializer: 'store'});
+    v2Contract = await upgrades.upgradeProxy(v1Contract.address, v2Factory);
+    await v2Contract.deployed();
   });
  
   // Test case
   it('retrieve returns a value previously incremented', async function () {
     // Store a value
-    await unchain.increment();
+    await v2Contract.increment();
  
     // Test if the returned value is the same one
     // Note that we need to use strings to compare the 256 bit integers
-    expect((await unchain.retrieve()).toString()).to.equal('43');
+    expect((await v2Contract.retrieve()).toString()).to.equal('43');
   });
 });

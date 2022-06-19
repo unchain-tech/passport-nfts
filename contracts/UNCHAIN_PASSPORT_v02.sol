@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 import { Base64Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol";
 
-contract UNCHAIN_PASSPORT is Initializable, AccessControlUpgradeable, ERC721URIStorageUpgradeable {
+contract UNCHAIN_PASSPORT_v02 is Initializable, AccessControlUpgradeable, ERC721URIStorageUpgradeable {
 
     // test valuable
     uint256 private value;
@@ -27,7 +27,7 @@ contract UNCHAIN_PASSPORT is Initializable, AccessControlUpgradeable, ERC721URIS
      // keep track of tokens
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private _tokenIds;
-    mapping(bytes32 => uint8) _hashes;
+    mapping(bytes32 => uint8) private _hashes;
 
     //NFTs token name and it's symbol.
     function initialize() public initializer {
@@ -104,7 +104,7 @@ contract UNCHAIN_PASSPORT is Initializable, AccessControlUpgradeable, ERC721URIS
         return _to;
     }
 
-    event newTokenMinted(address sender, address recipient, uint256 tokenId);
+    event NewTokenMinted(address sender, address recipient, uint256 tokenId);
 
     function mintNFT(
         address _recipient,
@@ -116,7 +116,7 @@ contract UNCHAIN_PASSPORT is Initializable, AccessControlUpgradeable, ERC721URIS
         bytes32 _hash = keccak256(abi.encodePacked(_recipient, _projectName));
 
         //check if the hash is already used
-        require(_hashes[_hash] != 1);
+        require(_hashes[_hash] != 1, "NFT already minted to wallet");
 
         //mark the hash as used
         _hashes[_hash] = 1;
@@ -162,7 +162,7 @@ contract UNCHAIN_PASSPORT is Initializable, AccessControlUpgradeable, ERC721URIS
         //Increment the counter for next mint.
         _tokenIds.increment();
 
-        emit newTokenMinted(msg.sender, _recipient, newItemId);
+        emit NewTokenMinted(msg.sender, _recipient, newItemId);
 
         return newItemId;
     }
