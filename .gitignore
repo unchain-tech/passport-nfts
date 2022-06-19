@@ -7,7 +7,6 @@ package-lock.json
 .DS_Store
 .openzeppelin
 .solhint.json
-hardhat.config.ts
 
 #Hardhat files
 cache
