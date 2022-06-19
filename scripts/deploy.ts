@@ -1,25 +1,18 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
-import { ethers } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
+  // If this script is run directly using `node` instead of `npx hardhat run` you may want to call compile manually to make sure everything is compiled
   // await hre.run('compile');
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const v1Factory = await ethers.getContractFactory("UNCHAIN_PASSPORT_v01");
+  const v2Factory = await ethers.getContractFactory("UNCHAIN_PASSPORT_v02");
 
-  await greeter.deployed();
+  const v1Contract = await upgrades.deployProxy(v1Factory, [42], {initializer: 'store'});
+  console.log("v1 deployed to:", v1Contract.address);
 
-  console.log("Greeter deployed to:", greeter.address);
+  const v2Contract = await upgrades.upgradeProxy(v1Contract.address, v2Factory);
+  await v2Contract.deployed();
+  console.log("contract upgraded to:", v2Contract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

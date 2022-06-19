@@ -2,8 +2,16 @@ node_modules
 .env
 coverage
 coverage.json
-typechain
+package-lock.json
+.vscode
+.DS_Store
+.openzeppelin
+.solhint.json
+hardhat.config.ts
 
 #Hardhat files
 cache
 artifacts
+
+#typechain
+typechain-types
