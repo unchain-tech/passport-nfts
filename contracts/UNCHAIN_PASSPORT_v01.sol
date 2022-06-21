@@ -12,7 +12,7 @@ import { Base64Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/Bas
 
 contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721URIStorageUpgradeable {
 
-    // test valuable
+    // Valuable for testing upgradeable
     uint256 private value;
 
     // token info
@@ -30,7 +30,10 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
     mapping(bytes32 => uint8) private _hashes;
 
     //NFTs token name and it's symbol.
-    function initialize() public initializer {
+    function initialize(uint256 newValue) public initializer {
+
+        //test upgrading
+        value = newValue;
 
         ////////// TOKEN SETUP /////////
 
@@ -167,13 +170,13 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         return newItemId;
     }
 
+    ////////Test Upgradeable////
     // Emitted when the stored value changes
     event ValueChanged(uint256 newValue);
 
     // Stores a new value in the contract
-    function store(uint256 newValue) public {
-        value = newValue;
-        emit ValueChanged(newValue);
+    function store() public {
+        emit ValueChanged(value);
     }
 
     // Reads the last stored value
@@ -181,5 +184,8 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         return value;
     }
 
-
+    ////////Test Access Control////
+    function checkAdmin(address account) public virtual view returns(bool){
+        return hasRole(ADMIN_ROLE, account);
+    }
 }
