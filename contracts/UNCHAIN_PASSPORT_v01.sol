@@ -183,9 +183,4 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
     function retrieve() public view returns (uint256) {
         return value;
     }
-
-    ////////Test Access Control////
-    function checkAdmin(address account) public virtual view returns(bool){
-        return hasRole(ADMIN_ROLE, account);
-    }
 }
