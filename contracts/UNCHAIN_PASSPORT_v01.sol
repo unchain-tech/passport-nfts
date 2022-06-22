@@ -12,8 +12,14 @@ import { Base64Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/Bas
 
 contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721URIStorageUpgradeable {
 
-    // test valuable
+    // Valuable for testing upgradeable
     uint256 private value;
+
+    // userInfo
+    struct UserInfo{
+        address recipient;
+        uint256 newItemId;
+    }
 
     // token info
     string public tokenName;
@@ -30,7 +36,10 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
     mapping(bytes32 => uint8) private _hashes;
 
     //NFTs token name and it's symbol.
-    function initialize() public initializer {
+    function initialize(uint256 newValue) public initializer {
+
+        //test upgrading
+        value = newValue;
 
         ////////// TOKEN SETUP /////////
 
@@ -167,19 +176,65 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         return newItemId;
     }
 
+    // suggestion1: minter can choose project name and address for each
+    function mintMultipleNFTs_1(
+        address[] memory _recipients,
+        string[] memory _projectNames,
+        string[] memory _passportHashes
+    ) public onlyRole(MINTER_ROLE) returns (UserInfo[] memory){
+        // storage newItemId
+        UserInfo[] memory userInfo;
+        for(uint256 i = 0; i < _recipients.length; i++){
+            // create hash from recipient and projectname
+            bytes32 _hash = keccak256(abi.encodePacked(_recipients[i], _projectNames[i]));
+
+            // check if the hash is already used
+            if(_hashes[_hash] == 1){
+                console.log("NFT has been already minted to %s", _recipients[i]);
+            } else {
+                userInfo[i].newItemId = mintNFT(_recipients[i], _projectNames[i], _passportHashes[i]);
+                userInfo[i].recipient = _recipients[i];
+            }
+        }
+
+        return userInfo;
+    }
+
+    // suggestion2: minter can address for each but project name is constant
+    function mintMultipleNFTs_2(
+        address[] memory _recipients,
+        string memory _projectName,
+        string memory _passportHash
+    ) public onlyRole(MINTER_ROLE) returns (UserInfo[] memory){
+        // storage newItemId
+        UserInfo[] memory userInfo;
+        for(uint256 i = 0; i < _recipients.length; i++){
+            // create hash from recipient and projectname
+            bytes32 _hash = keccak256(abi.encodePacked(_recipients[i], _projectName));
+
+            // check if the hash is already used
+            if(_hashes[_hash] == 1){
+                console.log("NFT has been already minted to %s", _recipients[i]);
+            } else {
+                userInfo[i].newItemId = mintNFT(_recipients[i], _projectName, _passportHash);
+                userInfo[i].recipient = _recipients[i];
+            }
+        }
+
+        return userInfo;
+    }
+
+    ////////Test Upgradeable////
     // Emitted when the stored value changes
     event ValueChanged(uint256 newValue);
 
     // Stores a new value in the contract
-    function store(uint256 newValue) public {
-        value = newValue;
-        emit ValueChanged(newValue);
+    function store() public {
+        emit ValueChanged(value);
     }
 
     // Reads the last stored value
     function retrieve() public view returns (uint256) {
         return value;
     }
-
-
 }
