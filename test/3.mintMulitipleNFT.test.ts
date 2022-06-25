@@ -1,6 +1,8 @@
 import { expect } from "chai";
 import {ethers, upgrades} from "hardhat";
 import {Contract, ContractFactory} from "ethers";
+import "web3";
+import { TransactionDescription } from "ethers/lib/utils";
 
 let v1Contract: Contract;
 
@@ -10,6 +12,7 @@ describe("Mint multiple NFT", function(){
         const v1Factory: ContractFactory = await ethers.getContractFactory("UNCHAIN_PASSPORT_v01");
         v1Contract = await upgrades.deployProxy(v1Factory, [42], {initializer: 'initialize'});
         await v1Contract.deployed();
+
         console.log(`contract address: ${v1Contract.address}`)
     });
 
@@ -25,10 +28,7 @@ describe("Mint multiple NFT", function(){
         }
         
         // Mint NFT
-        const userInfo = await v1Contract.mintMultipleNFTs_1(_recipients, _projectNames, _passportHashes);
-        console.log(userInfo.newItemId);
-
-        
-        
+        const tx = await v1Contract.mintMultipleNFTs_1(_recipients, _projectNames, _passportHashes);
+        console.log(await tx.wait());
     });
 });

@@ -15,7 +15,7 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
     // Valuable for testing upgradeable
     uint256 private value;
 
-    // userInfo
+    // userInfoList
     struct UserInfo{
         address recipient;
         uint256 newItemId;
@@ -173,14 +173,16 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         return newItemId;
     }
 
+    event NewMultiNFTMinted(UserInfo[] userInfoList);
+
     // suggestion1: minter can choose project name and address for each
     function mintMultipleNFTs_1(
         address[] memory _recipients,
         string[] memory _projectNames,
         string[] memory _passportHashes
-    ) public onlyRole(MINTER_ROLE) returns (UserInfo[] memory){
+    ) public onlyRole(MINTER_ROLE){
         // storage newItemId and recipient address
-        UserInfo[] memory userInfo = new UserInfo[](_recipients.length);
+        UserInfo[] memory userInfoList = new UserInfo[](_recipients.length);
 
         // check if parameters length is the same
         require(_recipients.length == _projectNames.length, "Length of data array must be the same.");
@@ -193,15 +195,15 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
             // check if the hash is already used
             if(_hashes[_hash] == 1){
                 console.log("NFT has been already minted to %s", _recipients[i]);
-                userInfo[i].newItemId = 0;
-                userInfo[i].recipient = _recipients[i];
+                userInfoList[i].newItemId = 0;
+                userInfoList[i].recipient = _recipients[i];
             } else {
-                userInfo[i].newItemId = mintNFT(_recipients[i], _projectNames[i], _passportHashes[i]);
-                userInfo[i].recipient = _recipients[i];
+                userInfoList[i].newItemId = mintNFT(_recipients[i], _projectNames[i], _passportHashes[i]);
+                userInfoList[i].recipient = _recipients[i];
             }
         }
 
-        return userInfo;
+        emit NewMultiNFTMinted(userInfoList);
     }
 
     ////////Test Upgradeable////
