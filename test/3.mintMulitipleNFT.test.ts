@@ -18,10 +18,10 @@ describe("Mint multiple NFT", function(){
 
     // Test case
     it("Succeeded to mint multiple NFT!", async function(){
-        const [user1, user2, user3] = await ethers.getSigners();
-        const _recipients = [user2.address, user3.address];
-        const _projectNames = ["sapientia", "constantia"];
-        const _passportHashes = ["QmSAm1pzAfXxSmjH9bSJbf1WfaDbgsxnstPtj4cbXZathX", "Qmcj4qnFwmTwe63LTw8kkaucqjT3BShwK1yCboq5mdUufe"];
+        const [user1, user2, user3, user4] = await ethers.getSigners();
+        const _recipients = [user2.address, user3.address, user4.address];
+        const _projectNames = ["sapientia", "constantia", "utilitas"];
+        const _passportHashes = ["QmSAm1pzAfXxSmjH9bSJbf1WfaDbgsxnstPtj4cbXZathX", "Qmcj4qnFwmTwe63LTw8kkaucqjT3BShwK1yCboq5mdUufe", "QmcJmVow43ESMimrpub9NsWHBvBtbRwyF8L1qKQjzwed5Y"];
 
         for(var i = 0; i<_recipients.length; i++){
             console.log(`user${i+2}'s address: ${_recipients[i]}`);
@@ -29,6 +29,17 @@ describe("Mint multiple NFT", function(){
         
         // Mint NFT
         const tx = await v1Contract.mintMultipleNFTs_1(_recipients, _projectNames, _passportHashes);
-        console.log(await tx.wait());
+
+        // select which event to get
+        const abi = [
+            "event NewMultiNFTMinted((address,uint256)[])"
+        ]
+        let iface = new ethers.utils.Interface(abi);
+        const txData = await tx.wait();
+        const lastEventsIndex = txData.events.length-1;
+        const lastEventData = txData.events[lastEventsIndex]
+
+        // decode the event's output and display
+        console.log(iface.parseLog(lastEventData).args);
     });
 });
