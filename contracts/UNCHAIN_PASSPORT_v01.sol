@@ -15,7 +15,7 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
     // Valuable for testing upgradeable
     uint256 private value;
 
-    // userInfo
+    // userInfoList
     struct UserInfo{
         address recipient;
         uint256 newItemId;
@@ -124,9 +124,6 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         //create hash from recipient and projectname
         bytes32 _hash = keccak256(abi.encodePacked(_recipient, _projectName));
 
-        //check if the hash is already used
-        require(_hashes[_hash] != 1, "NFT already minted to wallet");
-
         //mark the hash as used
         _hashes[_hash] = 1;
 
@@ -176,14 +173,21 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         return newItemId;
     }
 
+    event NewMultiNFTMinted(UserInfo[] userInfoList);
+
     // suggestion1: minter can choose project name and address for each
     function mintMultipleNFTs_1(
         address[] memory _recipients,
         string[] memory _projectNames,
         string[] memory _passportHashes
-    ) public onlyRole(MINTER_ROLE) returns (UserInfo[] memory){
-        // storage newItemId
-        UserInfo[] memory userInfo;
+    ) public onlyRole(MINTER_ROLE){
+        // storage newItemId and recipient address
+        UserInfo[] memory userInfoList = new UserInfo[](_recipients.length);
+
+        // check if parameters length is the same
+        require(_recipients.length == _projectNames.length, "Length of data array must be the same.");
+        require(_recipients.length == _passportHashes.length, "Length of data array must be the same.");
+
         for(uint256 i = 0; i < _recipients.length; i++){
             // create hash from recipient and projectname
             bytes32 _hash = keccak256(abi.encodePacked(_recipients[i], _projectNames[i]));
@@ -191,37 +195,15 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
             // check if the hash is already used
             if(_hashes[_hash] == 1){
                 console.log("NFT has been already minted to %s", _recipients[i]);
+                userInfoList[i].newItemId = 0;
+                userInfoList[i].recipient = _recipients[i];
             } else {
-                userInfo[i].newItemId = mintNFT(_recipients[i], _projectNames[i], _passportHashes[i]);
-                userInfo[i].recipient = _recipients[i];
+                userInfoList[i].newItemId = mintNFT(_recipients[i], _projectNames[i], _passportHashes[i]);
+                userInfoList[i].recipient = _recipients[i];
             }
         }
 
-        return userInfo;
-    }
-
-    // suggestion2: minter can address for each but project name is constant
-    function mintMultipleNFTs_2(
-        address[] memory _recipients,
-        string memory _projectName,
-        string memory _passportHash
-    ) public onlyRole(MINTER_ROLE) returns (UserInfo[] memory){
-        // storage newItemId
-        UserInfo[] memory userInfo;
-        for(uint256 i = 0; i < _recipients.length; i++){
-            // create hash from recipient and projectname
-            bytes32 _hash = keccak256(abi.encodePacked(_recipients[i], _projectName));
-
-            // check if the hash is already used
-            if(_hashes[_hash] == 1){
-                console.log("NFT has been already minted to %s", _recipients[i]);
-            } else {
-                userInfo[i].newItemId = mintNFT(_recipients[i], _projectName, _passportHash);
-                userInfo[i].recipient = _recipients[i];
-            }
-        }
-
-        return userInfo;
+        emit NewMultiNFTMinted(userInfoList);
     }
 
     ////////Test Upgradeable////
