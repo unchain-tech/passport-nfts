@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
@@ -8,15 +8,18 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-import { Base64Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol";
+import {Base64Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol";
 
-contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721URIStorageUpgradeable {
-
+contract UNCHAIN_PASSPORT_v01 is
+    Initializable,
+    AccessControlUpgradeable,
+    ERC721URIStorageUpgradeable
+{
     // Valuable for testing upgradeable
-    uint256 private value;
+    uint256 private _value;
 
     // userInfoList
-    struct UserInfo{
+    struct UserInfo {
         address recipient;
         uint256 newItemId;
     }
@@ -30,16 +33,15 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-     // keep track of tokens
+    // keep track of tokens
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private _tokenIds;
     mapping(bytes32 => uint8) private _hashes;
 
     //NFTs token name and it's symbol.
     function initialize(uint256 newValue) public initializer {
-
         //test upgrading
-        value = newValue;
+        _value = newValue;
 
         ////////// TOKEN SETUP /////////
 
@@ -49,9 +51,9 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         __ERC721_init(tokenName, tokenSymbol);
         __AccessControl_init();
 
-         ////////// TOKEN SETUP END //////////
+        ////////// TOKEN SETUP END //////////
 
-          // give default_admin_role to contract creator; this is the starting admin for all roles
+        // give default_admin_role to contract creator; this is the starting admin for all roles
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
         // give admin_role to contract creator; this role allows to add minters
@@ -67,28 +69,41 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
     }
 
     function contractURI() public pure returns (string memory) {
-       string memory contractInfo = string(abi.encodePacked(
-            "data:application/json;base64,",
-            Base64Upgradeable.encode(
-                bytes(
-                    abi.encodePacked(
-                        '{"name": "UNCHAIN Passport: ",',
-                        '"description": "Each of the passports in the collection certifies ', "its owner's completion of a specific UNCHAIN web3 development project. It provides its holders immutable and permanent proof of their blockchain engineering capabilities.",
-                        '", "image": "', 'https://ipfs.io/ipfs/Qmeo5w5UWMTiEVwGfGGsuF1m3XYHQJshpjK7PT86zzsqQB',
-                        '"}'
+        string memory contractInfo = string(
+            abi.encodePacked(
+                "data:application/json;base64,",
+                Base64Upgradeable.encode(
+                    bytes(
+                        abi.encodePacked(
+                            '{"name": "UNCHAIN Passport: ",',
+                            '"description": "Each of the passports in the collection certifies ',
+                            "its owner's completion of a specific UNCHAIN web3 development project. It provides its holders immutable and permanent proof of their blockchain engineering capabilities.",
+                            '", "image": "',
+                            "https://ipfs.io/ipfs/Qmeo5w5UWMTiEVwGfGGsuF1m3XYHQJshpjK7PT86zzsqQB",
+                            '"}'
+                        )
                     )
                 )
             )
-        ));
+        );
         return contractInfo;
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Upgradeable, AccessControlUpgradeable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721Upgradeable, AccessControlUpgradeable)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 
-    function grantAdminRole(address _to) public onlyRole(DEFAULT_ADMIN_ROLE) returns (address){
-
+    function grantAdminRole(address _to)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        returns (address)
+    {
         // grant admin role to _to
         grantRole(ADMIN_ROLE, _to);
 
@@ -100,8 +115,11 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         return _to;
     }
 
-    function grantMinterRole(address _to) public onlyRole(ADMIN_ROLE) returns (address) {
-
+    function grantMinterRole(address _to)
+        public
+        onlyRole(ADMIN_ROLE)
+        returns (address)
+    {
         // grant minter role to _to
         grantRole(MINTER_ROLE, _to);
 
@@ -119,8 +137,7 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         address _recipient,
         string memory _projectName,
         string memory _passportHash
-    ) public onlyRole(MINTER_ROLE) returns (uint256){
-
+    ) public onlyRole(MINTER_ROLE) returns (uint256) {
         //create hash from recipient and projectname
         bytes32 _hash = keccak256(abi.encodePacked(_recipient, _projectName));
 
@@ -143,10 +160,17 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "', 'Unchain Passport: ', _projectName,
-                        '", "description": "', 'Immutable and permenent proof of your UNCHAIN project completion.',
-                        '", "image": "', 'https://ipfs.io/ipfs/', _passportHash,
-                        '",', string(_attributes), '}'
+                        '{"name": "',
+                        "Unchain Passport: ",
+                        _projectName,
+                        '", "description": "',
+                        "Immutable and permenent proof of your UNCHAIN project completion.",
+                        '", "image": "',
+                        "https://ipfs.io/ipfs/",
+                        _passportHash,
+                        '",',
+                        string(_attributes),
+                        "}"
                     )
                 )
             )
@@ -163,7 +187,12 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         //Set the NFTs data.
         _setTokenURI(newItemId, finalTokenUri);
 
-        console.log("ID %s has been minted to %s (initiated by %s)", newItemId, _recipient, msg.sender);
+        console.log(
+            "ID %s has been minted to %s (initiated by %s)",
+            newItemId,
+            _recipient,
+            msg.sender
+        );
 
         //Increment the counter for next mint.
         _tokenIds.increment();
@@ -180,25 +209,40 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
         address[] memory _recipients,
         string[] memory _projectNames,
         string[] memory _passportHashes
-    ) public onlyRole(MINTER_ROLE){
+    ) public onlyRole(MINTER_ROLE) {
         // storage newItemId and recipient address
         UserInfo[] memory userInfoList = new UserInfo[](_recipients.length);
 
         // check if parameters length is the same
-        require(_recipients.length == _projectNames.length, "Length of data array must be the same.");
-        require(_recipients.length == _passportHashes.length, "Length of data array must be the same.");
+        require(
+            _recipients.length == _projectNames.length,
+            "Length of data array must be the same."
+        );
+        require(
+            _recipients.length == _passportHashes.length,
+            "Length of data array must be the same."
+        );
 
-        for(uint256 i = 0; i < _recipients.length; i++){
+        for (uint256 i = 0; i < _recipients.length; i++) {
             // create hash from recipient and projectname
-            bytes32 _hash = keccak256(abi.encodePacked(_recipients[i], _projectNames[i]));
+            bytes32 _hash = keccak256(
+                abi.encodePacked(_recipients[i], _projectNames[i])
+            );
 
             // check if the hash is already used
-            if(_hashes[_hash] == 1){
-                console.log("NFT has been already minted to %s", _recipients[i]);
+            if (_hashes[_hash] == 1) {
+                console.log(
+                    "NFT has been already minted to %s",
+                    _recipients[i]
+                );
                 userInfoList[i].newItemId = 0;
                 userInfoList[i].recipient = _recipients[i];
             } else {
-                userInfoList[i].newItemId = mintNFT(_recipients[i], _projectNames[i], _passportHashes[i]);
+                userInfoList[i].newItemId = mintNFT(
+                    _recipients[i],
+                    _projectNames[i],
+                    _passportHashes[i]
+                );
                 userInfoList[i].recipient = _recipients[i];
             }
         }
@@ -212,11 +256,11 @@ contract UNCHAIN_PASSPORT_v01 is Initializable, AccessControlUpgradeable, ERC721
 
     // Stores a new value in the contract
     function store() public {
-        emit ValueChanged(value);
+        emit ValueChanged(_value);
     }
 
     // Reads the last stored value
     function retrieve() public view returns (uint256) {
-        return value;
+        return _value;
     }
 }
