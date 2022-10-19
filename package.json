@@ -1,7 +1,7 @@
 {
     "name": "unchain_passport_v2",
     "version": "1.0.0",
-    "description": "reviewing UNCHAIN star tests",
+    "description": "UNCAIN passport NFT contract",
     "main": "contracts/UNCHAIN_PASSPORT_v02.sol",
     "repository": {
         "type": "git",
