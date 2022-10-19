@@ -1,0 +1,11 @@
+name: hardhat test
+
+on: [pull_request]
+
+jobs:
+    unit:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: integration_test
+              run: yarn && yarn test

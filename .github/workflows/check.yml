@@ -1,0 +1,11 @@
+name: analyze test
+
+on: [pull_request]
+
+jobs:
+    unit:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: pre_scan
+              run: yarn && yarn lint && yarn solhint:check && yarn prettier:check
