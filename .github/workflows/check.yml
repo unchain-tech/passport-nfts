@@ -1,6 +1,6 @@
 name: analyze test
 
-on: [pull_request]
+on: [push]
 
 jobs:
     unit:
