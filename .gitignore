@@ -6,7 +6,6 @@ package-lock.json
 .vscode
 .DS_Store
 .openzeppelin
-.solhint.json
 
 
 #Hardhat files
