@@ -11,6 +11,7 @@ package-lock.json
 #Hardhat files
 cache
 artifacts
+dist
 
 #typechain
 typechain
