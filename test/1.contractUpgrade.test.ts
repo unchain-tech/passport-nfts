@@ -15,7 +15,6 @@ describe("Unchain (proxy)", function () {
         const v2Factory: ContractFactory = await ethers.getContractFactory(
             "UNCHAIN_PASSPORT_v02",
         )
-
         v1Contract = await upgrades.deployProxy(v1Factory, [42], {
             initializer: "initialize",
         })
