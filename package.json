@@ -1,7 +1,7 @@
 {
     "name": "unchain_passport_v2",
     "version": "1.0.0",
-    "description": "UNCAIN passport NFT contract",
+    "description": "UNCHAIN passport NFT contract",
     "main": "contracts/UNCHAIN_PASSPORT_v02.sol",
     "repository": {
         "type": "git",
@@ -56,9 +56,10 @@
     },
     "scripts": {
         "lint": "eslint --fix test/** scripts/**",
-        "prettier:check": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .gitignore --check .",
-        "prettier:format": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .gitignore --write .",
-        "solhint:check": "solhint --fix --max-error 0 \"contracts/**/*.sol\"",
+        "prettier:check": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --check .",
+        "prettier:format": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --write .",
+        "solhint:check": "solhint --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
+        "solhint:fix": "solhint --fix --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
         "precommit": "yarn lint && yarn prettier:check && yarn solhint:check",
         "test": "npx hardhat test test/0.integrated.test.ts"
     }
