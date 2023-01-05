@@ -53,22 +53,22 @@ describe("Control Contract", function () {
         const textAddressList =
             await controlContract.showTextContractAddressList()
 
-        // // make mint status to UNAVAILABLE
+        // // change mint status to UNAVAILABLE
         // await controlContract
         //     .connect(userB)
         //     .changeStatusUnavailable(textContract1.address)
 
-        // // make mint status to AVAILABLE
+        // // change mint status to AVAILABLE
         // await controlContract
         //     .connect(userB)
         //     .changeStatusAvailable(textContract1.address)
 
-        // make mint status to DONE(text contract 1)
+        // change mint status to DONE(text contract 1)
         await controlContract
-            .connect(userB)
+            .connect(userA)
             .changeStatusDone(textContract1.address)
 
-        // make mint status to DONE(text contract 2)
+        // change mint status to DONE(text contract 2)
         await controlContract
             .connect(userB)
             .changeStatusAvailable(textContract2.address)
