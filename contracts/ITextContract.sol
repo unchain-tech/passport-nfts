@@ -8,7 +8,7 @@ interface ITextContract {
         Done
     }
 
-    function getStatus(address user) external view returns (MintStatus status);
-
-    function mint(address user) external returns (MintStatus status);
+    function getStatus() external view returns (MintStatus status);
+    function changeStatusAvailable() external;
+    function mint() external returns (MintStatus status);
 }
