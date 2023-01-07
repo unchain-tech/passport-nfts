@@ -19,13 +19,13 @@ contract TextContract is
     string private _tokenName;
     string private _tokenSymbol;
     string private _imageUrl;
-    string private _projectName;
-    string private _passportHash;
+    // string private _projectName;
+    // string private _passportHash;
 
-    //Setup admin and minter role
-    //admin can modify and add minters
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    // //Setup admin and minter role
+    // //admin can modify and add minters
+    // bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    // bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private _tokenIds;
@@ -40,32 +40,32 @@ contract TextContract is
         _tokenSymbol = "CHAIPASS";
         // TODO 後で変更
         _imageUrl  = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSutRv6L5RQqJdXp7Zc1JNAADwmgX3m0KMH52WympELsarGJcsKzwAp-ve1EcPOWa-iAl6XFcJX4yB6fwOkrkUPLCjetYZqzvL6GyJus2W4AkTy8-bKfVkD-48JXzLU31IivMXiYDJbJ0lDGn5-O4NV9AY7uP8OfHR18nuRmNIWrqIJ-B0fZc9TjFV8A/s867/eto_usagi_fukubukuro.png";
-        // TODO 後で変更
-        _projectName = "Test";
-        // TODO 後で変更
-        _passportHash = "test";
+        // // TODO 後で変更
+        // _projectName = "Test";
+        // // TODO 後で変更
+        // _passportHash = "test";
 
         __ERC721_init(_tokenName, "CHAIPASS");
         __AccessControl_init();
 
          ////////// TOKEN SETUP END //////////
 
-        // give default_admin_role to contract creator; this is the starting admin for all roles
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        // // give default_admin_role to contract creator; this is the starting admin for all roles
+        // _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
-        // give admin_role to contract creator; this role allows to add minters
-        _setupRole(ADMIN_ROLE, msg.sender);
+        // // give admin_role to contract creator; this role allows to add minters
+        // _setupRole(ADMIN_ROLE, msg.sender);
 
-        // give minter_role to contract creator; this role allows to mint tokens
-        _setupRole(MINTER_ROLE, msg.sender);
+        // // give minter_role to contract creator; this role allows to mint tokens
+        // _setupRole(MINTER_ROLE, msg.sender);
 
-        // set admin_role as the admin for minter_role; only default_admin_role can add admins
-        _setRoleAdmin(MINTER_ROLE, ADMIN_ROLE);
+        // // set admin_role as the admin for minter_role; only default_admin_role can add admins
+        // _setRoleAdmin(MINTER_ROLE, ADMIN_ROLE);
 
         console.log("Token created! Contract admin: ", msg.sender);
     }
 
-    // NFTのミント状況を返す関数
+    // Return the user's mint status
     function getStatus(address user)
         public
         view
@@ -76,10 +76,11 @@ contract TextContract is
             console.log("getStatus msg.sender: ", msg.sender);
             console.log("getStatus param:", user);
 
-            // ユーザーのデータがない場合は、デフォルト値(enum: 0 == UNAVAILABLE)が返る
+            // If there is no user data, the default value(INAVAILABLE == 0) is returned
             return _userToMintStatus[user];
     }
 
+    // Return text status
     function getTextStatus(address user)
         public
         view
@@ -94,7 +95,7 @@ contract TextContract is
             return textStatus;
     }
 
-    // change mint status to UNAVAILABLE
+    // Change mint status to UNAVAILABLE
     function changeStatusUnavailable(address user)
         public
         virtual
@@ -105,7 +106,7 @@ contract TextContract is
         _userToMintStatus[user] = ITextContract.MintStatus.UNAVAILABLE;
     }
 
-    // change mint status to AVAILABLE
+    // Change mint status to AVAILABLE
     function changeStatusAvailable(address user)
         public
         virtual
@@ -116,7 +117,7 @@ contract TextContract is
         _userToMintStatus[user] = ITextContract.MintStatus.AVAILABLE;
     }
 
-    // change mint status to DONE
+    // Change mint status to DONE
     function changeStatusDone(address user)
         public
         virtual
@@ -127,8 +128,7 @@ contract TextContract is
          _userToMintStatus[user] = ITextContract.MintStatus.DONE;
     }
 
-    // NFTをミントする関数
-    // TODO safeMintに変えても良いかも（_safeMintの使用を明らかにするため）
+    // Mint NFT
     function mint(address user)
         public
         virtual
@@ -138,14 +138,14 @@ contract TextContract is
 
             uint256 newItemId = _tokenIds.current();
 
-            // ミントを実行
+            // execute mint
             _safeMint(user, newItemId);
 
             // TODO 第二引数の値をJSONデータに変更する
-            // JSONデータをセット
+            // set JSON data
             _setTokenURI(newItemId, "TEST");
 
-            // mint成功時、ユーザーのステータス変更
+            // user status change when mint succeed
             _userToMintStatus[user] = ITextContract.MintStatus.DONE;
             return _userToMintStatus[user];
     }
