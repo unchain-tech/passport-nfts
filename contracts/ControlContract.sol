@@ -20,14 +20,12 @@ interface ITextContract {
 
     // struct for text status
     struct TextUserStatus {
-        uint256 textId;
         string imageUrl;
-        address user;
         MintStatus mintStatus;
     }
 
     // // get text status of calling user
-    function getTextStatus() external returns (TextUserStatus memory);
+    function getTextStatus(address user) external returns (TextUserStatus memory);
 
     // change status to DONE
     function changeStatusDone(address user) external;
@@ -65,9 +63,7 @@ contract ControlContract is
 
     // struct for text status
     struct TextUserStatus {
-        uint256 textId;
         string imageUrl;
-        address user;
         MintStatus mintStatus;
     }
 
@@ -142,11 +138,9 @@ contract ControlContract is
         for (uint8 i; i < textAddressList.length; i++) {
             ITextContract.TextUserStatus memory userStatus = ITextContract(
                 textAddressList[i]
-            ).getTextStatus();
+            ).getTextStatus(msg.sender);
             TextUserStatus memory textUserStatus = TextUserStatus(
-                userStatus.textId,
                 userStatus.imageUrl,
-                userStatus.user,
                 (MintStatus)(uint8(userStatus.mintStatus))
             );
             textStatusList[i] = textUserStatus;

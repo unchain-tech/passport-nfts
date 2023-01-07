@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
 import "hardhat/console.sol";
@@ -15,8 +16,9 @@ contract TextContract is
     ERC721URIStorageUpgradeable
 {
     // Token info
-    string public tokenName;
-    string public tokenSymbol;
+    string private _tokenName;
+    string private _tokenSymbol;
+    string private _imageUrl;
 
     //Setup admin and minter role
     //admin can modify and add minters
@@ -32,10 +34,11 @@ contract TextContract is
     function initialize() public initializer {
         // トークン名とシンボルをセット
         ////////// TOKEN SETUP /////////
-        tokenName = "UNCHAIN Passport";
-        tokenSymbol = "CHAIPASS";
+        _tokenName = "UNCHAIN Passport";
+        _tokenSymbol = "CHAIPASS";
+        _imageUrl  = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSutRv6L5RQqJdXp7Zc1JNAADwmgX3m0KMH52WympELsarGJcsKzwAp-ve1EcPOWa-iAl6XFcJX4yB6fwOkrkUPLCjetYZqzvL6GyJus2W4AkTy8-bKfVkD-48JXzLU31IivMXiYDJbJ0lDGn5-O4NV9AY7uP8OfHR18nuRmNIWrqIJ-B0fZc9TjFV8A/s867/eto_usagi_fukubukuro.png";
 
-        __ERC721_init(tokenName, "CHAIPASS");
+        __ERC721_init(_tokenName, "CHAIPASS");
         __AccessControl_init();
 
          ////////// TOKEN SETUP END //////////
@@ -68,6 +71,20 @@ contract TextContract is
 
             // ユーザーのデータがない場合は、デフォルト値(enum: 0 == UNAVAILABLE)が返る
             return _userToMintStatus[user];
+    }
+
+    function getTextStatus(address user)
+        public
+        view
+        virtual
+        override
+        returns (TextUserStatus memory) {
+            TextUserStatus memory textStatus = TextUserStatus ({
+                imageUrl: _imageUrl,
+                mintStatus: getStatus(user)
+            });
+
+            return textStatus;
     }
 
     // change mint status to UNAVAILABLE

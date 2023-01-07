@@ -4,8 +4,8 @@ import { ethers, upgrades } from "hardhat"
 import { Contract, ContractFactory } from "ethers"
 
 let controlContract: Contract
-let textContract1: Contract
-let textContract2: Contract
+// let textContract1: Contract
+// let textContract2: Contract
 let textContractTest: Contract
 
 describe("Control Contract", function () {
@@ -14,12 +14,12 @@ describe("Control Contract", function () {
         const controlFactory: ContractFactory = await ethers.getContractFactory(
             "ControlContract",
         )
-        const textFactory1: ContractFactory = await ethers.getContractFactory(
-            "TextContractTest_1",
-        )
-        const textFactory2: ContractFactory = await ethers.getContractFactory(
-            "TextContractTest_2",
-        )
+        // const textFactory1: ContractFactory = await ethers.getContractFactory(
+        //     "TextContractTest_1",
+        // )
+        // const textFactory2: ContractFactory = await ethers.getContractFactory(
+        //     "TextContractTest_2",
+        // )
         const textFactoryTest: ContractFactory = await ethers.getContractFactory(
             "TextContract",
         )
@@ -30,20 +30,20 @@ describe("Control Contract", function () {
 
         await controlContract.deployed()
 
-        textContract1 = await upgrades.deployProxy(
-            textFactory1,
-            [controlContract.address],
-            {
-                initializer: "initialize",
-            },
-        )
-        textContract2 = await upgrades.deployProxy(
-            textFactory2,
-            [controlContract.address],
-            {
-                initializer: "initialize",
-            },
-        )
+        // textContract1 = await upgrades.deployProxy(
+        //     textFactory1,
+        //     [controlContract.address],
+        //     {
+        //         initializer: "initialize",
+        //     },
+        // )
+        // textContract2 = await upgrades.deployProxy(
+        //     textFactory2,
+        //     [controlContract.address],
+        //     {
+        //         initializer: "initialize",
+        //     },
+        // )
         textContractTest = await upgrades.deployProxy(
             textFactoryTest,
             [],
@@ -52,8 +52,8 @@ describe("Control Contract", function () {
             },
         )
 
-        await textContract1.deployed()
-        await textContract2.deployed()
+        // await textContract1.deployed()
+        // await textContract2.deployed()
         await textContractTest.deployed()
     })
 
@@ -93,12 +93,50 @@ describe("Control Contract", function () {
     })
 
     // test
+    it("Get text contract information", async function () {
+        const [userA] = await ethers.getSigners()
+        await controlContract.addTextContractAddress(textContractTest.address)
+        const textAddressList =
+            await controlContract.showTextContractAddressList()
+
+        // change mint status to DONE
+        await controlContract
+            .connect(userA)
+            .changeStatusDone(textContractTest.address);
+
+        // get user status
+        const txForGetUserStatus = await controlContract
+            .connect(userA)
+            .getTexts(textAddressList)
+
+        // select which event to get
+        const abi = ["event getUserStatus((string, uint8)[])"]
+        const iface = new ethers.utils.Interface(abi)
+        const txData = await txForGetUserStatus.wait()
+
+        // decode the all event's output and display
+        for (let i = 0; i < txData.events.length; i++) {
+            console.log(iface.parseLog(txData.events[i]).args)
+        }
+    })
+
+    // // test
     // it("get text contract information", async function () {
     //     const [userA, userB] = await ethers.getSigners()
     //     await controlContract.addTextContractAddress(textContract1.address)
     //     await controlContract.addTextContractAddress(textContract2.address)
     //     const textAddressList =
     //         await controlContract.showTextContractAddressList()
+
+    //     // // change mint status to UNAVAILABLE
+    //     // await controlContract
+    //     //     .connect(userB)
+    //     //     .changeStatusUnavailable(textContract1.address)
+
+    //     // // change mint status to AVAILABLE
+    //     // await controlContract
+    //     //     .connect(userB)
+    //     //     .changeStatusAvailable(textContract1.address)
 
     //     // change mint status to DONE(text contract 1)
     //     await controlContract
