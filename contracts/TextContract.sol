@@ -56,44 +56,70 @@ contract TextContract is
     }
 
     // NFTのミント状況を返す関数
-    function getStatus()
+    function getStatus(address user)
         public
         view
         virtual
         override
         returns (ITextContract.MintStatus) {
-            // TODO 既存のデータ（v2までで既に配布済み）はどうやって扱うか
+            // TODO delete
+            console.log("getStatus msg.sender: ", msg.sender);
+            console.log("getStatus param:", user);
 
-            // ユーザーのデータがない場合は、デフォルト値(enum: 0 == Unavailable)が返る
-            return _userToMintStatus[msg.sender];
+            // ユーザーのデータがない場合は、デフォルト値(enum: 0 == UNAVAILABLE)が返る
+            return _userToMintStatus[user];
     }
 
-    // ユーザーのミントステータスを`Available`に更新する関数
-    function changeStautsAvailable()
+    // change mint status to UNAVAILABLE
+    function changeStatusUnavailable(address user)
         public
         virtual
         override
     {
-        _userToMintStatus[msg.sender] = ITextContract.MintStatus.Available;
+        console.log("changeStatusUnavailable param:", user);
+
+        _userToMintStatus[user] = ITextContract.MintStatus.UNAVAILABLE;
     }
 
-    // NFTをミントする関数
-    // TODO safeMintに変えても良いかも（_safeMintの使用を明らかにするため）
-    function mint(string memory tokenURI)
+    // change mint status to AVAILABLE
+    function changeStatusAvailable(address user)
         public
         virtual
         override
-        returns (ITextContract.MintStatus) {
-            _tokenIds.increment();
-
-            uint256 newItemId = _tokenIds.current();
-            _safeMint(msg.sender, newItemId);
-            _setTokenURI(newItemId, tokenURI);
-
-            // mint成功時、ユーザーのステータス変更
-            _userToMintStatus[msg.sender] = ITextContract.MintStatus.Done;
-            return _userToMintStatus[msg.sender];
+    {
+        console.log("changeStatusAvailable param:", user);
+        
+        _userToMintStatus[user] = ITextContract.MintStatus.AVAILABLE;
     }
+
+    // change mint status to DONE
+    function changeStatusDone(address user)
+        public
+        virtual
+        override
+    {
+        console.log("changeStatusDone param:", user);
+
+         _userToMintStatus[user] = ITextContract.MintStatus.DONE;
+    }
+
+    // // NFTをミントする関数
+    // // TODO safeMintに変えても良いかも（_safeMintの使用を明らかにするため）
+    // function mint(string memory tokenURI)
+    //     public
+    //     virtual
+    //     override
+    //     returns (ITextContract.MintStatus) {
+    //         _tokenIds.increment();
+
+    //         uint256 newItemId = _tokenIds.current();
+    //         _safeMint(msg.sender, newItemId);
+    //         _setTokenURI(newItemId, tokenURI);
+
+    //         // mint成功時、ユーザーのステータス変更
+    //         _userToMintStatus[msg.sender] = ITextContract.MintStatus.Done;
+    //         return _userToMintStatus[msg.sender];
+    // }
 
     function supportsInterface(bytes4 interfaceId)
         public

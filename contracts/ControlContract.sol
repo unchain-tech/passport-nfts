@@ -9,7 +9,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 import {Base64Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol";
-
 // this is for cross contract call
 interface ITextContract {
     // enum for checking mint status
@@ -27,23 +26,25 @@ interface ITextContract {
         MintStatus mintStatus;
     }
 
-    // get text status of calling user
+    // // get text status of calling user
     function getTextStatus() external returns (TextUserStatus memory);
 
     // change status to DONE
-    function changeStatusDone() external;
+    function changeStatusDone(address user) external;
 
     // change status to AVAILABLE
-    function changeStatusAvailable() external;
+    function changeStatusAvailable(address user) external;
 
     // change status to UNAVAILABLE
-    function changeStatusUnavailable() external;
+    function changeStatusUnavailable(address user) external;
 
-    // mint
-    function mint() external view returns (MintStatus);
+    // // mint
+    // function mint() external view returns (MintStatus);
 
-    // give mint right
-    function giveMintRight() external view returns (MintStatus);
+    // // give mint right
+    // function giveMintRight() external view returns (MintStatus);
+
+    function getStatus(address user) external view returns (MintStatus);
 }
 
 // contract for controling text contract
@@ -155,18 +156,26 @@ contract ControlContract is
         return textStatusList;
     }
 
-    // change mint status to DONE
-    function changeStatusDone(address contractAddress) public {
-        ITextContract(contractAddress).changeStatusDone();
+    // change mint status to UNAVAILABLE
+    function changeStatusUnavailable(address contractAddress) public {
+        ITextContract(contractAddress).changeStatusUnavailable(msg.sender);
     }
 
     // change mint status to AVAILABLE
     function changeStatusAvailable(address contractAddress) public {
-        ITextContract(contractAddress).changeStatusAvailable();
+        ITextContract(contractAddress).changeStatusAvailable(msg.sender);
     }
 
-    // change mint status to UNAVAILABLE
-    function changeStatusUnavailable(address contractAddress) public {
-        ITextContract(contractAddress).changeStatusUnavailable();
+    // change mint status to DONE
+    function changeStatusDone(address contractAddress) public {
+        ITextContract(contractAddress).changeStatusDone(msg.sender);
+    }
+
+    function getStatus(address contractAddress)
+        public
+        view
+        returns (ITextContract.MintStatus)
+    {
+        return (ITextContract(contractAddress).getStatus(msg.sender));
     }
 }
