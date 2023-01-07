@@ -36,8 +36,8 @@ interface ITextContract {
     // change status to UNAVAILABLE
     function changeStatusUnavailable(address user) external;
 
-    // // mint
-    // function mint() external view returns (MintStatus);
+    // mint
+    function mint(address user) external returns (MintStatus);
 
     // // give mint right
     // function giveMintRight() external view returns (MintStatus);
@@ -163,6 +163,12 @@ contract ControlContract is
     // change mint status to DONE
     function changeStatusDone(address contractAddress) public {
         ITextContract(contractAddress).changeStatusDone(msg.sender);
+    }
+
+    function mint(address contractAddress)
+        public
+        returns (ITextContract.MintStatus) {
+            return (ITextContract(contractAddress).mint(msg.sender));
     }
 
     function getStatus(address contractAddress)

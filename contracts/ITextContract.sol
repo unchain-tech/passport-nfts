@@ -20,5 +20,5 @@ interface ITextContract {
     function changeStatusUnavailable(address user) external;
     function changeStatusAvailable(address user) external;
     function changeStatusDone(address user) external;
-    // function mint(string memory tokenURI) external returns (MintStatus status);
+    function mint(address user) external returns (MintStatus status);
 }

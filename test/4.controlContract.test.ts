@@ -57,7 +57,7 @@ describe("Control Contract", function () {
         await textContractTest.deployed()
     })
 
-    // ADD test
+    // test
     it("Check user mint status", async function () {
         const [userA] = await ethers.getSigners()
 
@@ -102,7 +102,37 @@ describe("Control Contract", function () {
         // change mint status to DONE
         await controlContract
             .connect(userA)
-            .changeStatusDone(textContractTest.address);
+            .changeStatusAvailable(textContractTest.address);
+
+        // get user status
+        const txForGetUserStatus = await controlContract
+            .connect(userA)
+            .getTexts(textAddressList)
+
+        // select which event to get
+        const abi = ["event getUserStatus((string, uint8)[])"]
+        const iface = new ethers.utils.Interface(abi)
+        const txData = await txForGetUserStatus.wait()
+
+        // decode the all event's output and display
+        for (let i = 0; i < txData.events.length; i++) {
+            console.log(iface.parseLog(txData.events[i]).args)
+        }
+    })
+
+    // test
+    it("Mint NFT", async function () {
+        const [userA] = await ethers.getSigners()
+        await controlContract.addTextContractAddress(textContractTest.address)
+        const textAddressList =
+            await controlContract.showTextContractAddressList()
+
+        // mint
+        const tx = await controlContract
+            .connect(userA)
+            .mint(textContractTest.address)
+        tx.wait()
+        console.log(`mint result: ${tx}`)
 
         // get user status
         const txForGetUserStatus = await controlContract
