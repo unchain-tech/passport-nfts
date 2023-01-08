@@ -62,7 +62,7 @@ contract TextContract is
         // // set admin_role as the admin for minter_role; only default_admin_role can add admins
         // _setRoleAdmin(MINTER_ROLE, ADMIN_ROLE);
 
-        console.log("Token created! Contract admin: ", msg.sender);
+        // console.log("Token created! Contract admin: ", msg.sender);
     }
 
     // Return the user's mint status
@@ -128,6 +128,8 @@ contract TextContract is
          _userToMintStatus[user] = ITextContract.MintStatus.DONE;
     }
 
+    event NewTokenMinted(address sender, address recipient, uint256 tokenId);
+
     // Mint NFT
     function mint(address user)
         public
@@ -147,6 +149,10 @@ contract TextContract is
 
             // user status change when mint succeed
             _userToMintStatus[user] = ITextContract.MintStatus.DONE;
+
+            // send event
+            emit NewTokenMinted(user, user, newItemId);
+
             return _userToMintStatus[user];
     }
 
