@@ -9,6 +9,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 import {Base64Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol";
+
 // this is for cross contract call
 interface ITextContract {
     // enum for checking mint status
@@ -25,7 +26,9 @@ interface ITextContract {
     }
 
     // // get text status of calling user
-    function getTextStatus(address user) external returns (TextUserStatus memory);
+    function getTextStatus(address user)
+        external
+        returns (TextUserStatus memory);
 
     // change status to DONE
     function changeStatusDone(address user) external;
@@ -51,9 +54,6 @@ contract ControlContract is
     AccessControlUpgradeable,
     ERC721URIStorageUpgradeable
 {
-    // test valuable
-    uint256 private _value;
-
     // enum for checking mint status
     enum MintStatus {
         UNAVAILABLE,
@@ -167,8 +167,9 @@ contract ControlContract is
 
     function mint(address contractAddress)
         public
-        returns (ITextContract.MintStatus) {
-            return (ITextContract(contractAddress).mint(msg.sender));
+        returns (ITextContract.MintStatus)
+    {
+        return (ITextContract(contractAddress).mint(msg.sender));
     }
 
     function getStatus(address contractAddress)
