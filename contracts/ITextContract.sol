@@ -16,9 +16,17 @@ interface ITextContract {
     }
 
     function getStatus(address user) external view returns (MintStatus status);
-    function getTextStatus(address user) external view returns (TextUserStatus memory);
+
+    function getTextStatus(address user)
+        external
+        view
+        returns (TextUserStatus memory);
+
     function changeStatusUnavailable(address user) external;
+
     function changeStatusAvailable(address user) external;
+
     function changeStatusDone(address user) external;
+
     function mint(address user) external returns (MintStatus status);
 }

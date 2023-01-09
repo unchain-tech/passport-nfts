@@ -23,22 +23,16 @@ describe("Text Contract", function () {
         // default status is UNAVAILABLE
         const [userA] = await ethers.getSigners()
 
-        await expect(textContract.connect(userA).mint(userA.address))
-            .to
-            .be
-            .revertedWith(
-                "you're mint status is not AVAILABLE!"
-            )
+        await expect(
+            textContract.connect(userA).mint(userA.address),
+        ).to.be.revertedWith("you're mint status is not AVAILABLE!")
 
         // change mint status DONE
         await textContract.connect(userA).changeStatusDone(userA.address)
 
-        await expect(textContract.connect(userA).mint(userA.address))
-            .to
-            .be
-            .revertedWith(
-                "you're mint status is not AVAILABLE!"
-            )
+        await expect(
+            textContract.connect(userA).mint(userA.address),
+        ).to.be.revertedWith("you're mint status is not AVAILABLE!")
     })
 
     // test
