@@ -68,7 +68,7 @@ contract ControlContract is
     }
 
     // address list of text contract address
-    address[] addressList;
+    address[] private _addressList;
 
     //setup admin and minter role
     //admin can modify and add minters
@@ -114,7 +114,7 @@ contract ControlContract is
     // this function is done in frontend manually
     // TODO talk with ysaito if this function is needed
     function addTextContractAddress(address contractAddress) public {
-        addressList.push(contractAddress);
+        _addressList.push(contractAddress);
     }
 
     // for testing to check this contract can get text contract address
@@ -124,7 +124,7 @@ contract ControlContract is
         view
         returns (address[] memory)
     {
-        return addressList;
+        return _addressList;
     }
 
     // get text status list from each text contract

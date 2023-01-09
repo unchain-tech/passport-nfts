@@ -43,7 +43,7 @@ contract TextContractTest_2 is
     }
 
     // user text status list
-    mapping(address => MintStatus) userStatusMap;
+    mapping(address => MintStatus) private _userStatusMap;
 
     // constructor
     function initialize(address controlContractAddress) public initializer {
@@ -74,7 +74,7 @@ contract TextContractTest_2 is
             textId: _textId,
             imageUrl: _imgUrl,
             user: msg.sender,
-            mintStatus: userStatusMap[msg.sender]
+            mintStatus: _userStatusMap[msg.sender]
         });
 
         return myTextStatus;
@@ -83,18 +83,18 @@ contract TextContractTest_2 is
     // change mint status to DONE
     // TODO add modifier to check if sender has already minted
     function changeStatusDone() external {
-        userStatusMap[msg.sender] = MintStatus.DONE;
+        _userStatusMap[msg.sender] = MintStatus.DONE;
     }
 
     // change mint status to AVAILABLE
     // TODO add modifier to check if sender has not already minted but has mint right
     function changeStatusAvailable() external {
-        userStatusMap[msg.sender] = MintStatus.AVAILABLE;
+        _userStatusMap[msg.sender] = MintStatus.AVAILABLE;
     }
 
     // change mint status to UNAVAILABLE
     // TODO add modifier to check if sender doesn't hava mint right
     function changeStatusUnavailable() external {
-        userStatusMap[msg.sender] = MintStatus.UNAVAILABLE;
+        _userStatusMap[msg.sender] = MintStatus.UNAVAILABLE;
     }
 }
