@@ -33,13 +33,25 @@ contract TextContract is
     // ユーザーとNFTミント状況をマッピング
     mapping(address => ITextContract.MintStatus) private _userToMintStatus;
 
+    // mint status meets
+    modifier onlyAvailable(address _user) {
+        ITextContract.TextUserStatus memory textUserStatus = getTextStatus(
+            _user
+        );
+        require(
+            textUserStatus.mintStatus == ITextContract.MintStatus.AVAILABLE,
+            "you're mint status is not AVAILABLE!"
+        );
+        _;
+    }
+
     function initialize() public initializer {
         // トークン名とシンボルをセット
         ////////// TOKEN SETUP /////////
         _tokenName = "UNCHAIN Passport";
         _tokenSymbol = "CHAIPASS";
         // TODO 後で変更
-        _imageUrl  = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSutRv6L5RQqJdXp7Zc1JNAADwmgX3m0KMH52WympELsarGJcsKzwAp-ve1EcPOWa-iAl6XFcJX4yB6fwOkrkUPLCjetYZqzvL6GyJus2W4AkTy8-bKfVkD-48JXzLU31IivMXiYDJbJ0lDGn5-O4NV9AY7uP8OfHR18nuRmNIWrqIJ-B0fZc9TjFV8A/s867/eto_usagi_fukubukuro.png";
+        _imageUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSutRv6L5RQqJdXp7Zc1JNAADwmgX3m0KMH52WympELsarGJcsKzwAp-ve1EcPOWa-iAl6XFcJX4yB6fwOkrkUPLCjetYZqzvL6GyJus2W4AkTy8-bKfVkD-48JXzLU31IivMXiYDJbJ0lDGn5-O4NV9AY7uP8OfHR18nuRmNIWrqIJ-B0fZc9TjFV8A/s867/eto_usagi_fukubukuro.png";
         // // TODO 後で変更
         // _projectName = "Test";
         // // TODO 後で変更
@@ -48,7 +60,7 @@ contract TextContract is
         __ERC721_init(_tokenName, "CHAIPASS");
         __AccessControl_init();
 
-         ////////// TOKEN SETUP END //////////
+        ////////// TOKEN SETUP END //////////
 
         // // give default_admin_role to contract creator; this is the starting admin for all roles
         // _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -71,13 +83,14 @@ contract TextContract is
         view
         virtual
         override
-        returns (ITextContract.MintStatus) {
-            // TODO delete
-            console.log("getStatus msg.sender: ", msg.sender);
-            console.log("getStatus param:", user);
+        returns (ITextContract.MintStatus)
+    {
+        // TODO delete
+        console.log("getStatus msg.sender: ", msg.sender);
+        console.log("getStatus param:", user);
 
-            // If there is no user data, the default value(INAVAILABLE == 0) is returned
-            return _userToMintStatus[user];
+        // If there is no user data, the default value(INAVAILABLE == 0) is returned
+        return _userToMintStatus[user];
     }
 
     // Return text status
@@ -86,46 +99,35 @@ contract TextContract is
         view
         virtual
         override
-        returns (TextUserStatus memory) {
-            TextUserStatus memory textStatus = TextUserStatus ({
-                imageUrl: _imageUrl,
-                mintStatus: getStatus(user)
-            });
+        returns (TextUserStatus memory)
+    {
+        TextUserStatus memory textStatus = TextUserStatus({
+            imageUrl: _imageUrl,
+            mintStatus: getStatus(user)
+        });
 
-            return textStatus;
+        return textStatus;
     }
 
     // Change mint status to UNAVAILABLE
-    function changeStatusUnavailable(address user)
-        public
-        virtual
-        override
-    {
+    function changeStatusUnavailable(address user) public virtual override {
         console.log("changeStatusUnavailable param:", user);
 
         _userToMintStatus[user] = ITextContract.MintStatus.UNAVAILABLE;
     }
 
     // Change mint status to AVAILABLE
-    function changeStatusAvailable(address user)
-        public
-        virtual
-        override
-    {
+    function changeStatusAvailable(address user) public virtual override {
         console.log("changeStatusAvailable param:", user);
-        
+
         _userToMintStatus[user] = ITextContract.MintStatus.AVAILABLE;
     }
 
     // Change mint status to DONE
-    function changeStatusDone(address user)
-        public
-        virtual
-        override
-    {
+    function changeStatusDone(address user) public virtual override {
         console.log("changeStatusDone param:", user);
 
-         _userToMintStatus[user] = ITextContract.MintStatus.DONE;
+        _userToMintStatus[user] = ITextContract.MintStatus.DONE;
     }
 
     event NewTokenMinted(address sender, address recipient, uint256 tokenId);
@@ -135,25 +137,27 @@ contract TextContract is
         public
         virtual
         override
-        returns (ITextContract.MintStatus) {
-            _tokenIds.increment();
+        onlyAvailable(user)
+        returns (ITextContract.MintStatus)
+    {
+        _tokenIds.increment();
 
-            uint256 newItemId = _tokenIds.current();
+        uint256 newItemId = _tokenIds.current();
 
-            // execute mint
-            _safeMint(user, newItemId);
+        // execute mint
+        _safeMint(user, newItemId);
 
-            // TODO 第二引数の値をJSONデータに変更する
-            // set JSON data
-            _setTokenURI(newItemId, "TEST");
+        // TODO 第二引数の値をJSONデータに変更する
+        // set JSON data
+        _setTokenURI(newItemId, "TEST");
 
-            // user status change when mint succeed
-            _userToMintStatus[user] = ITextContract.MintStatus.DONE;
+        // user status change when mint succeed
+        _userToMintStatus[user] = ITextContract.MintStatus.DONE;
 
-            // send event
-            emit NewTokenMinted(user, user, newItemId);
+        // send event
+        emit NewTokenMinted(user, user, newItemId);
 
-            return _userToMintStatus[user];
+        return _userToMintStatus[user];
     }
 
     function supportsInterface(bytes4 interfaceId)

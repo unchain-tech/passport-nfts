@@ -20,9 +20,8 @@ describe("Control Contract", function () {
         // const textFactory2: ContractFactory = await ethers.getContractFactory(
         //     "TextContractTest_2",
         // )
-        const textFactoryTest: ContractFactory = await ethers.getContractFactory(
-            "TextContract",
-        )
+        const textFactoryTest: ContractFactory =
+            await ethers.getContractFactory("TextContract")
 
         controlContract = await upgrades.deployProxy(controlFactory, {
             initializer: "initialize",
@@ -44,13 +43,9 @@ describe("Control Contract", function () {
         //         initializer: "initialize",
         //     },
         // )
-        textContractTest = await upgrades.deployProxy(
-            textFactoryTest,
-            [],
-            {
-                initializer: "initialize",
-            },
-        )
+        textContractTest = await upgrades.deployProxy(textFactoryTest, [], {
+            initializer: "initialize",
+        })
 
         // await textContract1.deployed()
         // await textContract2.deployed()
@@ -61,13 +56,13 @@ describe("Control Contract", function () {
     it("Check user mint status", async function () {
         const [userA] = await ethers.getSigners()
 
-        console.log(`===== Check address =====`);
+        console.log(`===== Check address =====`)
         console.log(`userA: ${userA.address}`)
         console.log(`ControlContract: ${controlContract.address}`)
 
         await controlContract.addTextContractAddress(textContractTest.address)
 
-        console.log(`===== Check changeStatus =====`);
+        console.log(`===== Check changeStatus =====`)
         const defaultStatus = await controlContract
             .connect(userA)
             .getStatus(textContractTest.address)
@@ -102,7 +97,7 @@ describe("Control Contract", function () {
         // change mint status to DONE
         await controlContract
             .connect(userA)
-            .changeStatusAvailable(textContractTest.address);
+            .changeStatusAvailable(textContractTest.address)
 
         // get user status
         const txForGetUserStatus = await controlContract
@@ -126,6 +121,11 @@ describe("Control Contract", function () {
         await controlContract.addTextContractAddress(textContractTest.address)
         const textAddressList =
             await controlContract.showTextContractAddressList()
+
+        // change mint status AVAILABLE
+        await controlContract
+            .connect(userA)
+            .changeStatusAvailable(textContractTest.address)
 
         // mint
         const tx = await controlContract
