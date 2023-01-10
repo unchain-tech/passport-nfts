@@ -1,5 +1,5 @@
 // Load dependencies
-// import { expect } from "chai"
+import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
 import { Contract, ContractFactory } from "ethers"
 
@@ -117,14 +117,32 @@ describe("Control Contract", function () {
 
     // test
     it("Mint NFT", async function () {
-        const [userA] = await ethers.getSigners()
+        const [userA, userB] = await ethers.getSigners()
         await controlContract.addTextContractAddress(textContractTest.address)
+        await expect(
+            controlContract.addTextContractAddress(textContractTest.address),
+        ).to.be.revertedWith("the address is already added!")
         const textAddressList =
             await controlContract.showTextContractAddressList()
 
         // change mint status AVAILABLE
         await controlContract
             .connect(userA)
+            .changeStatusAvailable(textContractTest.address)
+
+        // check when user without mint role manipulate control contract, reverted
+        await expect(
+            controlContract
+                .connect(userB)
+                .changeStatusAvailable(textContractTest.address),
+        ).to.be.reverted
+
+        // grant controller role to userB
+        await controlContract.connect(userA).grantControllerRole(userB.address)
+
+        // check if userB can manipulate control contract
+        await controlContract
+            .connect(userB)
             .changeStatusAvailable(textContractTest.address)
 
         // mint

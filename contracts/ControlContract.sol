@@ -70,10 +70,10 @@ contract ControlContract is
     // address list of text contract address
     address[] addressList;
 
-    //setup admin and minter role
-    //admin can modify and add minters
+    //setup admin and controller role
+    //admin can modify and add controllers
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
 
     mapping(bytes32 => uint8) private _hashes;
 
@@ -100,11 +100,16 @@ contract ControlContract is
     function initialize() public initializer {
         __AccessControl_init();
 
-        // give admin_role to contract creator; this role allows to add minters
+        // give admin_role to contract creator; this role allows to add controllers
         _setupRole(ADMIN_ROLE, msg.sender);
 
-        // give minter_role to contract creator; this role allows to mint tokens
-        _setupRole(MINTER_ROLE, msg.sender);
+        // give controller_role to contract creator; this role allows to mint tokens
+        _setupRole(CONTROLLER_ROLE, msg.sender);
+
+        // set admin_role as the admin for controller_role; only default_admin_role can add admins
+        _setRoleAdmin(CONTROLLER_ROLE, ADMIN_ROLE);
+
+        console.log("Admin role is grant to: ", msg.sender);
     }
 
     // this is essential function for upgrade util
@@ -118,10 +123,26 @@ contract ControlContract is
         return super.supportsInterface(interfaceId);
     }
 
+    function grantControllerRole(address _to)
+        public
+        onlyRole(ADMIN_ROLE)
+        returns (address)
+    {
+        // grant controller role to _to
+        grantRole(CONTROLLER_ROLE, _to);
+
+        // chek if controller role was granted
+        _checkRole(CONTROLLER_ROLE, _to);
+
+        console.log("Contorol role granted to: ", _to);
+
+        return _to;
+    }
+
     function addTextContractAddress(address contractAddress)
         public
         onlyNewAddress(contractAddress)
-        onlyRole(ADMIN_ROLE)
+        onlyRole(CONTROLLER_ROLE)
     {
         addressList.push(contractAddress);
     }
@@ -131,7 +152,7 @@ contract ControlContract is
     function showTextContractAddressList()
         public
         view
-        onlyRole(ADMIN_ROLE)
+        onlyRole(CONTROLLER_ROLE)
         returns (address[] memory)
     {
         return addressList;
@@ -140,7 +161,7 @@ contract ControlContract is
     // get text status list from each text contract
     function getTexts(address[] memory textAddressList)
         public
-        onlyRole(ADMIN_ROLE)
+        onlyRole(CONTROLLER_ROLE)
         returns (TextUserStatus[] memory)
     {
         TextUserStatus[] memory textStatusList = new TextUserStatus[](
@@ -164,7 +185,7 @@ contract ControlContract is
     // change mint status to UNAVAILABLE
     function changeStatusUnavailable(address contractAddress)
         public
-        onlyRole(ADMIN_ROLE)
+        onlyRole(CONTROLLER_ROLE)
     {
         ITextContract(contractAddress).changeStatusUnavailable(msg.sender);
     }
@@ -172,7 +193,7 @@ contract ControlContract is
     // change mint status to AVAILABLE
     function changeStatusAvailable(address contractAddress)
         public
-        onlyRole(ADMIN_ROLE)
+        onlyRole(CONTROLLER_ROLE)
     {
         ITextContract(contractAddress).changeStatusAvailable(msg.sender);
     }
@@ -180,7 +201,7 @@ contract ControlContract is
     // change mint status to DONE
     function changeStatusDone(address contractAddress)
         public
-        onlyRole(ADMIN_ROLE)
+        onlyRole(CONTROLLER_ROLE)
     {
         ITextContract(contractAddress).changeStatusDone(msg.sender);
     }
@@ -196,7 +217,7 @@ contract ControlContract is
     function getStatus(address contractAddress)
         public
         view
-        onlyRole(ADMIN_ROLE)
+        onlyRole(CONTROLLER_ROLE)
         returns (ITextContract.MintStatus)
     {
         return (ITextContract(contractAddress).getStatus(msg.sender));
