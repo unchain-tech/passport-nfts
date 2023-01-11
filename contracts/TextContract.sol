@@ -85,10 +85,6 @@ contract TextContract is
         override
         returns (ITextContract.MintStatus)
     {
-        // TODO delete
-        console.log("getStatus msg.sender: ", msg.sender);
-        console.log("getStatus param:", user);
-
         // If there is no user data, the default value(INAVAILABLE == 0) is returned
         return _userToMintStatus[user];
     }
@@ -111,22 +107,16 @@ contract TextContract is
 
     // Change mint status to UNAVAILABLE
     function changeStatusUnavailable(address user) public virtual override {
-        console.log("changeStatusUnavailable param:", user);
-
         _userToMintStatus[user] = ITextContract.MintStatus.UNAVAILABLE;
     }
 
     // Change mint status to AVAILABLE
     function changeStatusAvailable(address user) public virtual override {
-        console.log("changeStatusAvailable param:", user);
-
         _userToMintStatus[user] = ITextContract.MintStatus.AVAILABLE;
     }
 
     // Change mint status to DONE
     function changeStatusDone(address user) public virtual override {
-        console.log("changeStatusDone param:", user);
-
         _userToMintStatus[user] = ITextContract.MintStatus.DONE;
     }
 
