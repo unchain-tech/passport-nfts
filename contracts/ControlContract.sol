@@ -25,7 +25,7 @@ interface ITextContract {
         MintStatus mintStatus;
     }
 
-    // // get text status of calling user
+    // get text status of calling user
     function getTextStatus(address user)
         external
         returns (TextUserStatus memory);
@@ -70,22 +70,46 @@ contract ControlContract is
     // address list of text contract address
     address[] private _addressList;
 
-    //setup admin and minter role
-    //admin can modify and add minters
+    //setup admin and controller role
+    //admin can modify and add controllers
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
 
-    // textId for new text
-    using CountersUpgradeable for CountersUpgradeable.Counter;
-    CountersUpgradeable.Counter private _textId;
     mapping(bytes32 => uint8) private _hashes;
 
     // event
     event getUserStatus(TextUserStatus[] statusList);
 
+    // mofifier to check if there is no the same address in address list
+    modifier onlyNewAddress(address contractAddress) {
+        bool doesListContainElement = false;
+        for (uint256 i = 0; i < _addressList.length; i++) {
+            if (contractAddress == _addressList[i]) {
+                doesListContainElement = true;
+                break;
+            }
+        }
+        require(
+            doesListContainElement == false,
+            "the address is already added!"
+        );
+        _;
+    }
+
     //NFTs token name and it's symbol
     function initialize() public initializer {
-        _textId.increment();
+        __AccessControl_init();
+
+        // give admin_role to contract creator; this role allows to add controllers
+        _setupRole(ADMIN_ROLE, msg.sender);
+
+        // give controller_role to contract creator; this role allows to mint tokens
+        _setupRole(CONTROLLER_ROLE, msg.sender);
+
+        // set admin_role as the admin for controller_role; only default_admin_role can add admins
+        _setRoleAdmin(CONTROLLER_ROLE, ADMIN_ROLE);
+
+        console.log("Admin role is grant to: ", msg.sender);
     }
 
     // this is essential function for upgrade util
@@ -99,21 +123,27 @@ contract ControlContract is
         return super.supportsInterface(interfaceId);
     }
 
-    // TODO: add modifier to check that the same text contract doesn't run this function
-    // get text ID
-    function getTextId() external view returns (uint256 textId) {
-        return _textId.current();
+    function grantControllerRole(address _to)
+        public
+        onlyRole(ADMIN_ROLE)
+        returns (address)
+    {
+        // grant controller role to _to
+        grantRole(CONTROLLER_ROLE, _to);
+
+        // chek if controller role was granted
+        _checkRole(CONTROLLER_ROLE, _to);
+
+        console.log("Contorol role granted to: ", _to);
+
+        return _to;
     }
 
-    // TODO: add modifier to check that the same text contract doesn't run this function
-    // increment textId
-    function incrementTextId() external {
-        _textId.increment();
-    }
-
-    // this function is done in frontend manually
-    // TODO talk with ysaito if this function is needed
-    function addTextContractAddress(address contractAddress) public {
+    function addTextContractAddress(address contractAddress)
+        public
+        onlyNewAddress(contractAddress)
+        onlyRole(CONTROLLER_ROLE)
+    {
         _addressList.push(contractAddress);
     }
 
@@ -122,6 +152,7 @@ contract ControlContract is
     function showTextContractAddressList()
         public
         view
+        onlyRole(CONTROLLER_ROLE)
         returns (address[] memory)
     {
         return _addressList;
@@ -130,6 +161,7 @@ contract ControlContract is
     // get text status list from each text contract
     function getTexts(address[] memory textAddressList)
         public
+        onlyRole(CONTROLLER_ROLE)
         returns (TextUserStatus[] memory)
     {
         TextUserStatus[] memory textStatusList = new TextUserStatus[](
@@ -151,22 +183,32 @@ contract ControlContract is
     }
 
     // change mint status to UNAVAILABLE
-    function changeStatusUnavailable(address contractAddress) public {
+    function changeStatusUnavailable(address contractAddress)
+        public
+        onlyRole(CONTROLLER_ROLE)
+    {
         ITextContract(contractAddress).changeStatusUnavailable(msg.sender);
     }
 
     // change mint status to AVAILABLE
-    function changeStatusAvailable(address contractAddress) public {
+    function changeStatusAvailable(address contractAddress)
+        public
+        onlyRole(CONTROLLER_ROLE)
+    {
         ITextContract(contractAddress).changeStatusAvailable(msg.sender);
     }
 
     // change mint status to DONE
-    function changeStatusDone(address contractAddress) public {
+    function changeStatusDone(address contractAddress)
+        public
+        onlyRole(CONTROLLER_ROLE)
+    {
         ITextContract(contractAddress).changeStatusDone(msg.sender);
     }
 
     function mint(address contractAddress)
         public
+        onlyRole(ADMIN_ROLE)
         returns (ITextContract.MintStatus)
     {
         return (ITextContract(contractAddress).mint(msg.sender));
@@ -175,6 +217,7 @@ contract ControlContract is
     function getStatus(address contractAddress)
         public
         view
+        onlyRole(CONTROLLER_ROLE)
         returns (ITextContract.MintStatus)
     {
         return (ITextContract(contractAddress).getStatus(msg.sender));
