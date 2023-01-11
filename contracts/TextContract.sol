@@ -85,7 +85,7 @@ contract TextContract is
         override
         returns (ITextContract.MintStatus)
     {
-        // If there is no user data, the default value(INAVAILABLE == 0) is returned
+        // If there is no user data, the default value(UNAVAILABLE == 0) is returned
         return _userToMintStatus[user];
     }
 
