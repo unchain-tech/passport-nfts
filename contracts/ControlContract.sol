@@ -68,7 +68,7 @@ contract ControlContract is
     }
 
     // address list of text contract address
-    address[] addressList;
+    address[] private _addressList;
 
     //setup admin and controller role
     //admin can modify and add controllers
@@ -83,8 +83,8 @@ contract ControlContract is
     // mofifier to check if there is no the same address in address list
     modifier onlyNewAddress(address contractAddress) {
         bool doesListContainElement = false;
-        for (uint256 i = 0; i < addressList.length; i++) {
-            if (contractAddress == addressList[i]) {
+        for (uint256 i = 0; i < _addressList.length; i++) {
+            if (contractAddress == _addressList[i]) {
                 doesListContainElement = true;
                 break;
             }
@@ -144,7 +144,7 @@ contract ControlContract is
         onlyNewAddress(contractAddress)
         onlyRole(CONTROLLER_ROLE)
     {
-        addressList.push(contractAddress);
+        _addressList.push(contractAddress);
     }
 
     // for testing to check this contract can get text contract address
@@ -155,7 +155,7 @@ contract ControlContract is
         onlyRole(CONTROLLER_ROLE)
         returns (address[] memory)
     {
-        return addressList;
+        return _addressList;
     }
 
     // get text status list from each text contract
