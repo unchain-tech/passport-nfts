@@ -9,10 +9,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 import "./ITextContract.sol";
 
-contract TextContract is
-    ITextContract,
-    ERC721URIStorageUpgradeable
-{
+contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     // Token info
     string private _tokenName;
     string private _tokenSymbol;
