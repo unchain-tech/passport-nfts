@@ -208,7 +208,6 @@ contract ControlContract is
 
     function mint(address contractAddress)
         public
-        onlyRole(ADMIN_ROLE)
         returns (ITextContract.MintStatus)
     {
         return (ITextContract(contractAddress).mint(msg.sender));
