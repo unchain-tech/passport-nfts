@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 interface ITextContract {
-    // ユーザーのミント状況を管理するステータス
+    // Status to manage user's mint status
     enum MintStatus {
         UNAVAILABLE,
         AVAILABLE,

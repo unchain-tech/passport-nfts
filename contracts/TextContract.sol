@@ -23,7 +23,7 @@ contract TextContract is
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter private _tokenIds;
 
-    // ユーザーとNFTミント状況をマッピング
+    // Mapping content learners and NFT mint status
     mapping(address => ITextContract.MintStatus) private _userToMintStatus;
 
     // mint status meets

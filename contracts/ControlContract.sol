@@ -39,11 +39,8 @@ interface ITextContract {
     // change status to UNAVAILABLE
     function changeStatusUnavailable(address user) external;
 
-    // mint
+    // mint NFT
     function mint(address user) external returns (MintStatus);
-
-    // // give mint right
-    // function giveMintRight() external view returns (MintStatus);
 
     function getStatus(address user) external view returns (MintStatus);
 }
@@ -206,6 +203,8 @@ contract ControlContract is
         ITextContract(contractAddress).changeStatusDone(user);
     }
 
+    // Mint NFT
+    // this function is called by the content learner.
     function mint(address contractAddress)
         public
         returns (ITextContract.MintStatus)
