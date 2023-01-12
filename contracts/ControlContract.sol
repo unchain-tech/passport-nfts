@@ -159,7 +159,7 @@ contract ControlContract is
     }
 
     // get text status list from each text contract
-    function getTexts(address[] memory textAddressList)
+    function getTexts(address[] memory textAddressList, address user)
         public
         onlyRole(CONTROLLER_ROLE)
         returns (TextUserStatus[] memory)
@@ -170,7 +170,7 @@ contract ControlContract is
         for (uint8 i; i < textAddressList.length; i++) {
             ITextContract.TextUserStatus memory userStatus = ITextContract(
                 textAddressList[i]
-            ).getTextStatus(msg.sender);
+            ).getTextStatus(user);
             TextUserStatus memory textUserStatus = TextUserStatus(
                 userStatus.imageUrl,
                 (MintStatus)(uint8(userStatus.mintStatus))
@@ -183,27 +183,27 @@ contract ControlContract is
     }
 
     // change mint status to UNAVAILABLE
-    function changeStatusUnavailable(address contractAddress)
+    function changeStatusUnavailable(address contractAddress, address user)
         public
         onlyRole(CONTROLLER_ROLE)
     {
-        ITextContract(contractAddress).changeStatusUnavailable(msg.sender);
+        ITextContract(contractAddress).changeStatusUnavailable(user);
     }
 
     // change mint status to AVAILABLE
-    function changeStatusAvailable(address contractAddress)
+    function changeStatusAvailable(address contractAddress, address user)
         public
         onlyRole(CONTROLLER_ROLE)
     {
-        ITextContract(contractAddress).changeStatusAvailable(msg.sender);
+        ITextContract(contractAddress).changeStatusAvailable(user);
     }
 
     // change mint status to DONE
-    function changeStatusDone(address contractAddress)
+    function changeStatusDone(address contractAddress, address user)
         public
         onlyRole(CONTROLLER_ROLE)
     {
-        ITextContract(contractAddress).changeStatusDone(msg.sender);
+        ITextContract(contractAddress).changeStatusDone(user);
     }
 
     function mint(address contractAddress)
@@ -213,12 +213,12 @@ contract ControlContract is
         return (ITextContract(contractAddress).mint(msg.sender));
     }
 
-    function getStatus(address contractAddress)
+    function getStatus(address contractAddress, address user)
         public
         view
         onlyRole(CONTROLLER_ROLE)
         returns (ITextContract.MintStatus)
     {
-        return (ITextContract(contractAddress).getStatus(msg.sender));
+        return (ITextContract(contractAddress).getStatus(user));
     }
 }

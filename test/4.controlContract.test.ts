@@ -30,55 +30,55 @@ describe("Control Contract", function () {
 
     // test
     it("Check user mint status", async function () {
-        const [userA] = await ethers.getSigners()
+        const [owner, userA] = await ethers.getSigners()
 
         console.log(`===== Check address =====`)
-        console.log(`userA: ${userA.address}`)
+        console.log(`userA: ${owner.address}`)
         console.log(`ControlContract: ${controlContract.address}`)
 
         await controlContract.addTextContractAddress(textContractTest.address)
 
         console.log(`===== Check changeStatus =====`)
         const defaultStatus = await controlContract
-            .connect(userA)
-            .getStatus(textContractTest.address)
+            .connect(owner)
+            .getStatus(textContractTest.address, userA.address)
         console.log(`Default Mint Status Unavailable: ${defaultStatus}`)
 
         await controlContract
-            .connect(userA)
-            .changeStatusAvailable(textContractTest.address)
+            .connect(owner)
+            .changeStatusAvailable(textContractTest.address, userA.address)
 
         const toAvailable = await controlContract
-            .connect(userA)
-            .getStatus(textContractTest.address)
+            .connect(owner)
+            .getStatus(textContractTest.address, userA.address)
         console.log(`Changed Mint Status Available: ${toAvailable}`)
 
         await controlContract
-            .connect(userA)
-            .changeStatusDone(textContractTest.address)
+            .connect(owner)
+            .changeStatusDone(textContractTest.address, userA.address)
 
         const toDone = await controlContract
-            .connect(userA)
-            .getStatus(textContractTest.address)
+            .connect(owner)
+            .getStatus(textContractTest.address, userA.address)
         console.log(`Changed Mint Status Done: ${toDone}`)
     })
 
     // test
     it("Get text contract information", async function () {
-        const [userA] = await ethers.getSigners()
+        const [owner, userA] = await ethers.getSigners()
         await controlContract.addTextContractAddress(textContractTest.address)
         const textAddressList =
             await controlContract.showTextContractAddressList()
 
         // change mint status to DONE
         await controlContract
-            .connect(userA)
-            .changeStatusAvailable(textContractTest.address)
+            .connect(owner)
+            .changeStatusAvailable(textContractTest.address, userA.address)
 
         // get user status
         const txForGetUserStatus = await controlContract
-            .connect(userA)
-            .getTexts(textAddressList)
+            .connect(owner)
+            .getTexts(textAddressList, userA.address)
 
         // select which event to get
         const abi = ["event getUserStatus((string, uint8)[])"]
@@ -93,7 +93,11 @@ describe("Control Contract", function () {
 
     // test
     it("Mint NFT", async function () {
-        const [userA, userB] = await ethers.getSigners()
+        // admin: Contract's owner
+        // controller: Person in shiftbase
+        // userA, userB: Content learners
+        const [admin, controller, userA, userB] = await ethers.getSigners()
+
         await controlContract.addTextContractAddress(textContractTest.address)
         await expect(
             controlContract.addTextContractAddress(textContractTest.address),
@@ -101,25 +105,22 @@ describe("Control Contract", function () {
         const textAddressList =
             await controlContract.showTextContractAddressList()
 
+        // grant CONTROLLER_ROLE to controller
+        await controlContract
+            .connect(admin)
+            .grantControllerRole(controller.address)
+
         // change mint status AVAILABLE
         await controlContract
-            .connect(userA)
-            .changeStatusAvailable(textContractTest.address)
+            .connect(controller)
+            .changeStatusAvailable(textContractTest.address, userA.address)
 
-        // check when user without mint role manipulate control contract, reverted
+        // check when user without controller role manipulate control contract, reverted
         await expect(
             controlContract
                 .connect(userB)
-                .changeStatusAvailable(textContractTest.address),
+                .changeStatusAvailable(textContractTest.address, userA.address),
         ).to.be.reverted
-
-        // grant controller role to userB
-        await controlContract.connect(userA).grantControllerRole(userB.address)
-
-        // check if userB can manipulate control contract
-        await controlContract
-            .connect(userB)
-            .changeStatusAvailable(textContractTest.address)
 
         // mint
         const tx = await controlContract
@@ -130,8 +131,8 @@ describe("Control Contract", function () {
 
         // get user status
         const txForGetUserStatus = await controlContract
-            .connect(userA)
-            .getTexts(textAddressList)
+            .connect(controller)
+            .getTexts(textAddressList, userA.address)
 
         // select which event to get
         const abi = ["event getUserStatus((string, uint8)[])"]
