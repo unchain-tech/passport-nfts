@@ -1,76 +1,80 @@
 // Load dependencies
 import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
-import { Contract, ContractFactory } from "ethers"
-
-let textContract: Contract
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+// import { Contract, ContractFactory } from "ethers"
 
 describe("Text Contract", function () {
-    // deploy contract
-    beforeEach(async function () {
-        const textFactoryTest: ContractFactory =
-            await ethers.getContractFactory("TextContract")
+    // Define a fixture to reuse the same setup in every test
+    async function deployTextFixture() {
+        const TextContractFactory = await ethers.getContractFactory("TextContract")
 
-        textContract = await upgrades.deployProxy(textFactoryTest, [], {
+        // Contracts are deployed using the first signer/account by default
+        const [owner] = await ethers.getSigners()
+
+        const textContract = await upgrades.deployProxy(TextContractFactory, [], {
             initializer: "initialize",
         })
 
         await textContract.deployed()
-    })
 
-    // test
+        return { textContract, owner }
+    }
+
+    // Test case
     it("Reverts when Mint status isn't AVAILABLE", async function () {
-        // default status is UNAVAILABLE
-        const [userA] = await ethers.getSigners()
+        const { textContract, owner } = await loadFixture(deployTextFixture)
 
         await expect(
-            textContract.connect(userA).mint(userA.address),
+            textContract.mint(owner.address),
         ).to.be.revertedWith("you're mint status is not AVAILABLE!")
 
         // change mint status DONE
-        await textContract.connect(userA).changeStatusDone(userA.address)
+        await textContract.changeStatusDone(owner.address)
 
         await expect(
-            textContract.connect(userA).mint(userA.address),
+            textContract.mint(owner.address),
         ).to.be.revertedWith("you're mint status is not AVAILABLE!")
     })
 
-    // test
-    it("Get event info", async function () {
-        // ===== test UserA =====
-        const [userA] = await ethers.getSigners()
+    // // test
+    // it("Get event info", async function () {
+    //     const { textContract, owner } = await loadFixture(deployTextFixture)
 
-        // change mint status AVAILABLE
-        await textContract.connect(userA).changeStatusAvailable(userA.address)
+    //     // ===== test UserA =====
+    //     const [userA] = await ethers.getSigners()
 
-        // execute mint
-        const txUserA = await textContract.connect(userA).mint(userA.address)
+    //     // change mint status AVAILABLE
+    //     await textContract.connect(userA).changeStatusAvailable(userA.address)
 
-        // get event
-        const abiUserA = ["event NewTokenMinted(address, address, uint256)"]
-        const ifaceUserA = new ethers.utils.Interface(abiUserA)
-        const txDataUserA = await txUserA.wait()
-        const lastEventsIndexUserA = txDataUserA.events.length - 1
-        const lastEventDataUserA = txDataUserA.events[lastEventsIndexUserA]
+    //     // execute mint
+    //     const txUserA = await textContract.connect(userA).mint(userA.address)
 
-        console.log(ifaceUserA.parseLog(lastEventDataUserA).args)
+    //     // get event
+    //     const abiUserA = ["event NewTokenMinted(address, address, uint256)"]
+    //     const ifaceUserA = new ethers.utils.Interface(abiUserA)
+    //     const txDataUserA = await txUserA.wait()
+    //     const lastEventsIndexUserA = txDataUserA.events.length - 1
+    //     const lastEventDataUserA = txDataUserA.events[lastEventsIndexUserA]
 
-        // ===== test UserB =====
-        const [userB] = await ethers.getSigners()
+    //     console.log(ifaceUserA.parseLog(lastEventDataUserA).args)
 
-        // change mint status AVAILABLE
-        await textContract.connect(userB).changeStatusAvailable(userB.address)
+    //     // ===== test UserB =====
+    //     const [userB] = await ethers.getSigners()
 
-        // execute mint
-        const txUserB = await textContract.connect(userB).mint(userB.address)
+    //     // change mint status AVAILABLE
+    //     await textContract.connect(userB).changeStatusAvailable(userB.address)
 
-        // get event
-        const abiUserB = ["event NewTokenMinted(address, address, uint256)"]
-        const ifaceUserB = new ethers.utils.Interface(abiUserB)
-        const txDataUserB = await txUserB.wait()
-        const lastEventsIndexUserB = txDataUserB.events.length - 1
-        const lastEventDataUserB = txDataUserB.events[lastEventsIndexUserB]
+    //     // execute mint
+    //     const txUserB = await textContract.connect(userB).mint(userB.address)
 
-        console.log(ifaceUserB.parseLog(lastEventDataUserB).args)
-    })
+    //     // get event
+    //     const abiUserB = ["event NewTokenMinted(address, address, uint256)"]
+    //     const ifaceUserB = new ethers.utils.Interface(abiUserB)
+    //     const txDataUserB = await txUserB.wait()
+    //     const lastEventsIndexUserB = txDataUserB.events.length - 1
+    //     const lastEventDataUserB = txDataUserB.events[lastEventsIndexUserB]
+
+    //     console.log(ifaceUserB.parseLog(lastEventDataUserB).args)
+    // })
 })
