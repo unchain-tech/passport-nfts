@@ -1,80 +1,107 @@
 // Load dependencies
 import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-// import { Contract, ContractFactory } from "ethers"
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 
 describe("Text Contract", function () {
+    // Status to manage user's mint status
+    enum MintStatus {
+        UNAVAILABLE,
+        AVAILABLE,
+        DONE,
+    }
+
     // Define a fixture to reuse the same setup in every test
     async function deployTextFixture() {
-        const TextContractFactory = await ethers.getContractFactory("TextContract")
+        const TextContractFactory = await ethers.getContractFactory(
+            "TextContract",
+        )
 
         // Contracts are deployed using the first signer/account by default
-        const [owner] = await ethers.getSigners()
+        const [owner, learner] = await ethers.getSigners()
 
-        const textContract = await upgrades.deployProxy(TextContractFactory, [], {
-            initializer: "initialize",
-        })
+        const textContract = await upgrades.deployProxy(
+            TextContractFactory,
+            [],
+            {
+                initializer: "initialize",
+            },
+        )
 
         await textContract.deployed()
 
-        return { textContract, owner }
+        return { textContract, owner, learner }
     }
 
     // Test case
-    it("Reverts when Mint status isn't AVAILABLE", async function () {
-        const { textContract, owner } = await loadFixture(deployTextFixture)
+    it("Should get default status 'UNAVAILABLE' of the learner", async function () {
+        const { textContract, learner } = await loadFixture(deployTextFixture)
 
-        await expect(
-            textContract.mint(owner.address),
-        ).to.be.revertedWith("you're mint status is not AVAILABLE!")
-
-        // change mint status DONE
-        await textContract.changeStatusDone(owner.address)
-
-        await expect(
-            textContract.mint(owner.address),
-        ).to.be.revertedWith("you're mint status is not AVAILABLE!")
+        expect(await textContract.getStatus(learner.address)).to.equal(
+            MintStatus.UNAVAILABLE,
+        )
     })
 
-    // // test
-    // it("Get event info", async function () {
-    //     const { textContract, owner } = await loadFixture(deployTextFixture)
+    it("Should get image-URL and mint status of learner", async function () {
+        const { textContract, learner } = await loadFixture(deployTextFixture)
 
-    //     // ===== test UserA =====
-    //     const [userA] = await ethers.getSigners()
+        const textStatus = await textContract.getTextStatus(learner.address)
 
-    //     // change mint status AVAILABLE
-    //     await textContract.connect(userA).changeStatusAvailable(userA.address)
+        expect(textStatus.imageUrl).to.equal("TEST_URL")
+        expect(textStatus.mintStatus).to.equal(MintStatus.UNAVAILABLE)
+    })
 
-    //     // execute mint
-    //     const txUserA = await textContract.connect(userA).mint(userA.address)
+    it("Should change of learner's mint status to UNAVAILABLE", async function () {
+        const { textContract, learner } = await loadFixture(deployTextFixture)
 
-    //     // get event
-    //     const abiUserA = ["event NewTokenMinted(address, address, uint256)"]
-    //     const ifaceUserA = new ethers.utils.Interface(abiUserA)
-    //     const txDataUserA = await txUserA.wait()
-    //     const lastEventsIndexUserA = txDataUserA.events.length - 1
-    //     const lastEventDataUserA = txDataUserA.events[lastEventsIndexUserA]
+        await textContract.changeStatusUnavailable(learner.address)
+        expect(await textContract.getStatus(learner.address)).to.equal(
+            MintStatus.UNAVAILABLE,
+        )
+    })
 
-    //     console.log(ifaceUserA.parseLog(lastEventDataUserA).args)
+    it("Should change of learner's mint status to AVAILABLE", async function () {
+        const { textContract, learner } = await loadFixture(deployTextFixture)
 
-    //     // ===== test UserB =====
-    //     const [userB] = await ethers.getSigners()
+        await textContract.changeStatusAvailable(learner.address)
+        expect(await textContract.getStatus(learner.address)).to.equal(
+            MintStatus.AVAILABLE,
+        )
+    })
 
-    //     // change mint status AVAILABLE
-    //     await textContract.connect(userB).changeStatusAvailable(userB.address)
+    it("Should change of learner's mint status to DONE", async function () {
+        const { textContract, learner } = await loadFixture(deployTextFixture)
 
-    //     // execute mint
-    //     const txUserB = await textContract.connect(userB).mint(userB.address)
+        await textContract.changeStatusDone(learner.address)
+        expect(await textContract.getStatus(learner.address)).to.equal(
+            MintStatus.DONE,
+        )
+    })
 
-    //     // get event
-    //     const abiUserB = ["event NewTokenMinted(address, address, uint256)"]
-    //     const ifaceUserB = new ethers.utils.Interface(abiUserB)
-    //     const txDataUserB = await txUserB.wait()
-    //     const lastEventsIndexUserB = txDataUserB.events.length - 1
-    //     const lastEventDataUserB = txDataUserB.events[lastEventsIndexUserB]
+    it("Should emit NewTokenMinted events", async function () {
+        const { textContract, learner } = await loadFixture(deployTextFixture)
 
-    //     console.log(ifaceUserB.parseLog(lastEventDataUserB).args)
-    // })
+        // NOTE: In practice, the mint status is changed by a user
+        // with the Controller-Role calling from ControlContract.
+        await textContract.changeStatusAvailable(learner.address)
+
+        await expect(textContract.mint(learner.address))
+            .to.emit(textContract, "NewTokenMinted")
+            .withArgs(learner.address, learner.address, 1)
+    })
+
+    it("Should fail if learner's mint status isn't AVAILABLE", async function () {
+        const { textContract, learner } = await loadFixture(deployTextFixture)
+
+        // check status UNAVAILABLE
+        await expect(textContract.mint(learner.address)).to.be.revertedWith(
+            "you're mint status is not AVAILABLE!",
+        )
+
+        // check status DONE
+        await textContract.changeStatusDone(learner.address)
+        await expect(textContract.mint(learner.address)).to.be.revertedWith(
+            "you're mint status is not AVAILABLE!",
+        )
+    })
 })
