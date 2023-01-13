@@ -1,5 +1,5 @@
 // Load dependencies
-// import { expect } from "chai"
+import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
 import { Contract, ContractFactory } from "ethers"
 
@@ -16,6 +16,23 @@ describe("Text Contract", function () {
         })
 
         await textContract.deployed()
+    })
+
+    // test
+    it("Reverts when Mint status isn't AVAILABLE", async function () {
+        // default status is UNAVAILABLE
+        const [userA] = await ethers.getSigners()
+
+        await expect(
+            textContract.connect(userA).mint(userA.address),
+        ).to.be.revertedWith("you're mint status is not AVAILABLE!")
+
+        // change mint status DONE
+        await textContract.connect(userA).changeStatusDone(userA.address)
+
+        await expect(
+            textContract.connect(userA).mint(userA.address),
+        ).to.be.revertedWith("you're mint status is not AVAILABLE!")
     })
 
     // test
