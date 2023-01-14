@@ -109,106 +109,153 @@ describe("Control Contract AccessControl", function () {
     })
 
     context("Users without CONTROLLER_ROLE", function () {
-        it("addTextContractAddress: Should fail if user does not have CONTROLLER_ROLE", async function () {
-            // learner hasn't CONTROLLER_ROLE
-            const { controlContract, textContract, learner, CONTROLLER_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("addTextContractAddress", function () {
+            it("Should fail if user does not have CONTROLLER_ROLE", async function () {
+                // learner hasn't CONTROLLER_ROLE
+                const {
+                    controlContract,
+                    textContract,
+                    learner,
+                    CONTROLLER_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract
-                    .connect(learner)
-                    .addTextContractAddress(textContract.address),
-            ).to.be.revertedWith(
-                `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(learner)
+                        .addTextContractAddress(textContract.address),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
+                )
+            })
         })
 
-        it("showTextContractAddressList: Should fail if user does not have CONTROLLER_ROLE", async function () {
-            // learner hasn't CONTROLLER_ROLE
-            const { controlContract, textContract, learner, CONTROLLER_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("showTextContractAddressList", function () {
+            it("Should fail if user does not have CONTROLLER_ROLE", async function () {
+                // learner hasn't CONTROLLER_ROLE
+                const {
+                    controlContract,
+                    textContract,
+                    learner,
+                    CONTROLLER_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract.connect(learner).showTextContractAddressList(),
-            ).to.be.revertedWith(
-                `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(learner)
+                        .showTextContractAddressList(),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
+                )
+            })
         })
 
-        it("getTexts: Should fail if user does not have CONTROLLER_ROLE", async function () {
-            // learner hasn't CONTROLLER_ROLE
-            const { controlContract, textContract, learner, CONTROLLER_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("getTexts", function () {
+            it("Should fail if user does not have CONTROLLER_ROLE", async function () {
+                // learner hasn't CONTROLLER_ROLE
+                const {
+                    controlContract,
+                    textContract,
+                    learner,
+                    CONTROLLER_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract
-                    .connect(learner)
-                    .getTexts([textContract.address], learner.address),
-            ).to.be.revertedWith(
-                `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(learner)
+                        .getTexts([textContract.address], learner.address),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
+                )
+            })
         })
 
-        it("getStatus: Should fail if user does not have CONTROLLER_ROLE", async function () {
-            // learner hasn't CONTROLLER_ROLE
-            const { controlContract, textContract, learner, CONTROLLER_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("getStatus", function () {
+            it("Should fail if user does not have CONTROLLER_ROLE", async function () {
+                // learner hasn't CONTROLLER_ROLE
+                const {
+                    controlContract,
+                    textContract,
+                    learner,
+                    CONTROLLER_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract
-                    .connect(learner)
-                    .getStatus(textContract.address, learner.address),
-            ).to.be.revertedWith(
-                `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(learner)
+                        .getStatus(textContract.address, learner.address),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
+                )
+            })
         })
 
-        it("changeStatusUnavailable: Should fail if user does not have CONTROLLER_ROLE", async function () {
-            // learner hasn't CONTROLLER_ROLE
-            const { controlContract, textContract, learner, CONTROLLER_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("changeStatusUnavailable", function () {
+            it("Should fail if user does not have CONTROLLER_ROLE", async function () {
+                // learner hasn't CONTROLLER_ROLE
+                const {
+                    controlContract,
+                    textContract,
+                    learner,
+                    CONTROLLER_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract
-                    .connect(learner)
-                    .changeStatusUnavailable(
-                        textContract.address,
-                        learner.address,
-                    ),
-            ).to.be.revertedWith(
-                `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(learner)
+                        .changeStatusUnavailable(
+                            textContract.address,
+                            learner.address,
+                        ),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
+                )
+            })
         })
 
-        it("changeStatusAvailable: Should fail if user does not have CONTROLLER_ROLE", async function () {
-            // learner hasn't CONTROLLER_ROLE
-            const { controlContract, textContract, learner, CONTROLLER_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("changeStatusAvailable", function () {
+            it("Should fail if user does not have CONTROLLER_ROLE", async function () {
+                // learner hasn't CONTROLLER_ROLE
+                const {
+                    controlContract,
+                    textContract,
+                    learner,
+                    CONTROLLER_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract
-                    .connect(learner)
-                    .changeStatusAvailable(
-                        textContract.address,
-                        learner.address,
-                    ),
-            ).to.be.revertedWith(
-                `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(learner)
+                        .changeStatusAvailable(
+                            textContract.address,
+                            learner.address,
+                        ),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
+                )
+            })
         })
 
-        it("changeStatusDone: Should fail if user does not have CONTROLLER_ROLE", async function () {
-            // learner hasn't CONTROLLER_ROLE
-            const { controlContract, textContract, learner, CONTROLLER_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("changeStatusDone", function () {
+            it("Should fail if user does not have CONTROLLER_ROLE", async function () {
+                // learner hasn't CONTROLLER_ROLE
+                const {
+                    controlContract,
+                    textContract,
+                    learner,
+                    CONTROLLER_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract
-                    .connect(learner)
-                    .changeStatusDone(textContract.address, learner.address),
-            ).to.be.revertedWith(
-                `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(learner)
+                        .changeStatusDone(
+                            textContract.address,
+                            learner.address,
+                        ),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
+                )
+            })
         })
     })
 })
