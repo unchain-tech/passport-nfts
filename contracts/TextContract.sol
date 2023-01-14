@@ -123,5 +123,4 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
         return _userToMintStatus[user];
     }
-
 }
