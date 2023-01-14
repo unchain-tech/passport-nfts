@@ -29,74 +29,112 @@ describe("Text Contract", function () {
     }
 
     // Test case
-    it("Should get default status 'UNAVAILABLE' of the learner", async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture)
+    describe("getStatus", function () {
+        it("return default status 'UNAVAILABLE' of the learner", async function () {
+            const { textContract, learner } = await loadFixture(
+                deployTextFixture,
+            )
 
-        expect(await textContract.getStatus(learner.address)).to.equal(
-            MintStatus.UNAVAILABLE,
-        )
+            expect(await textContract.getStatus(learner.address)).to.equal(
+                MintStatus.UNAVAILABLE,
+            )
+        })
     })
 
-    it("Should get image-URL and mint status of learner", async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture)
+    describe("getTextStatus", function () {
+        it("return NFT's image-URL and mint status of learner", async function () {
+            const { textContract, learner } = await loadFixture(
+                deployTextFixture,
+            )
 
-        const textStatus = await textContract.getTextStatus(learner.address)
+            const textStatus = await textContract.getTextStatus(learner.address)
 
-        expect(textStatus.imageUrl).to.equal("TEST_URL")
-        expect(textStatus.mintStatus).to.equal(MintStatus.UNAVAILABLE)
+            expect(textStatus.imageUrl).to.equal("TEST_URL")
+            expect(textStatus.mintStatus).to.equal(MintStatus.UNAVAILABLE)
+        })
     })
 
-    it("Should change of learner's mint status to UNAVAILABLE", async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture)
+    describe("changeStatusUnavailable", function () {
+        it("change learner's mint status to UNAVAILABLE", async function () {
+            const { textContract, learner } = await loadFixture(
+                deployTextFixture,
+            )
 
-        await textContract.changeStatusUnavailable(learner.address)
-        expect(await textContract.getStatus(learner.address)).to.equal(
-            MintStatus.UNAVAILABLE,
-        )
+            await textContract.changeStatusUnavailable(learner.address)
+            expect(await textContract.getStatus(learner.address)).to.equal(
+                MintStatus.UNAVAILABLE,
+            )
+        })
     })
 
-    it("Should change of learner's mint status to AVAILABLE", async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture)
+    describe("changeStatusAvailable", function () {
+        it("change learner's mint status to AVAILABLE", async function () {
+            const { textContract, learner } = await loadFixture(
+                deployTextFixture,
+            )
 
-        await textContract.changeStatusAvailable(learner.address)
-        expect(await textContract.getStatus(learner.address)).to.equal(
-            MintStatus.AVAILABLE,
-        )
+            await textContract.changeStatusAvailable(learner.address)
+            expect(await textContract.getStatus(learner.address)).to.equal(
+                MintStatus.AVAILABLE,
+            )
+        })
     })
 
-    it("Should change of learner's mint status to DONE", async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture)
+    describe("changeStatusDone", function () {
+        it("change learner's mint status to DONE", async function () {
+            const { textContract, learner } = await loadFixture(
+                deployTextFixture,
+            )
 
-        await textContract.changeStatusDone(learner.address)
-        expect(await textContract.getStatus(learner.address)).to.equal(
-            MintStatus.DONE,
-        )
+            await textContract.changeStatusDone(learner.address)
+            expect(await textContract.getStatus(learner.address)).to.equal(
+                MintStatus.DONE,
+            )
+        })
     })
 
-    it("Should emit NewTokenMinted events", async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture)
+    describe("mint", function () {
+        context("when learner's mint status is AVAILABLE", function () {
+            it("emit a NewTokenMinted event", async function () {
+                const { textContract, learner } = await loadFixture(
+                    deployTextFixture,
+                )
 
-        // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
-        await textContract.changeStatusAvailable(learner.address)
+                // NOTE: In practice, the mint status is changed by a user
+                // with the Controller-Role calling from ControlContract.
+                await textContract.changeStatusAvailable(learner.address)
 
-        await expect(textContract.mint(learner.address))
-            .to.emit(textContract, "NewTokenMinted")
-            .withArgs(learner.address, learner.address, 1)
-    })
+                await expect(textContract.mint(learner.address))
+                    .to.emit(textContract, "NewTokenMinted")
+                    .withArgs(learner.address, learner.address, 1)
+            })
+        })
 
-    it("Should fail if learner's mint status isn't AVAILABLE", async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture)
+        context("when learner's mint status is UNAVAILABLE", function () {
+            it("reverts", async function () {
+                const { textContract, learner } = await loadFixture(
+                    deployTextFixture,
+                )
 
-        // check status UNAVAILABLE
-        await expect(textContract.mint(learner.address)).to.be.revertedWith(
-            "you're mint status is not AVAILABLE!",
-        )
+                // check status UNAVAILABLE
+                await expect(
+                    textContract.mint(learner.address),
+                ).to.be.revertedWith("you're mint status is not AVAILABLE!")
+            })
+        })
 
-        // check status DONE
-        await textContract.changeStatusDone(learner.address)
-        await expect(textContract.mint(learner.address)).to.be.revertedWith(
-            "you're mint status is not AVAILABLE!",
-        )
+        context("when learner's mint status is DONE", function () {
+            it("reverts", async function () {
+                const { textContract, learner } = await loadFixture(
+                    deployTextFixture,
+                )
+
+                // check status DONE
+                await textContract.changeStatusDone(learner.address)
+                await expect(
+                    textContract.mint(learner.address),
+                ).to.be.revertedWith("you're mint status is not AVAILABLE!")
+            })
+        })
     })
 })
