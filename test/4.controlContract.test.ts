@@ -1,147 +1,178 @@
 // Load dependencies
 import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
-import { Contract, ContractFactory } from "ethers"
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 
-let controlContract: Contract
-let textContractTest: Contract
+import { MintStatus } from "./utils/enum"
 
 describe("Control Contract", function () {
-    // deploy contract
-    beforeEach(async function () {
-        const controlFactory: ContractFactory = await ethers.getContractFactory(
+    // Define a fixture to reuse the same setup in every test
+    async function deployTextFixture() {
+        const ControlContractFactory = await ethers.getContractFactory(
             "ControlContract",
         )
-        const textFactoryTest: ContractFactory =
-            await ethers.getContractFactory("TextContract")
+        const TextContractFactory = await ethers.getContractFactory(
+            "TextContract",
+        )
 
-        controlContract = await upgrades.deployProxy(controlFactory, {
-            initializer: "initialize",
-        })
+        // Contracts are deployed using the first signer/account by default
+        const [owner, controller, learner] = await ethers.getSigners()
+
+        const controlContract = await upgrades.deployProxy(
+            ControlContractFactory,
+            [],
+            {
+                initializer: "initialize",
+            },
+        )
+        const textContract = await upgrades.deployProxy(
+            TextContractFactory,
+            [],
+            {
+                initializer: "initialize",
+            },
+        )
 
         await controlContract.deployed()
+        await textContract.deployed()
 
-        textContractTest = await upgrades.deployProxy(textFactoryTest, [], {
-            initializer: "initialize",
+        return { controlContract, textContract, owner, controller, learner }
+    }
+
+    // Test case
+    describe("adding a TextContract address", function () {
+        context("when adding a new TextContract address", function () {
+            it("should keep a list of TextContract addresses", async function () {
+                const { controlContract, textContract } = await loadFixture(
+                    deployTextFixture,
+                )
+
+                await controlContract.addTextContractAddress(
+                    textContract.address,
+                )
+                const textContractAddressList =
+                    await controlContract.showTextContractAddressList()
+
+                expect(textContractAddressList[0]).to.equal(
+                    textContract.address,
+                )
+            })
         })
 
-        await textContractTest.deployed()
+        context("when adding a duplicate TextContract address", function () {
+            it("should keep a list of TextContract addresses", async function () {
+                const { controlContract, textContract } = await loadFixture(
+                    deployTextFixture,
+                )
+
+                await controlContract.addTextContractAddress(
+                    textContract.address,
+                )
+                const textContractAddressList =
+                    await controlContract.showTextContractAddressList()
+
+                // add duplicate address
+                await expect(
+                    controlContract.addTextContractAddress(
+                        textContract.address,
+                    ),
+                ).to.be.revertedWith("the address is already added!")
+            })
+        })
     })
 
-    // test
-    it("Check user mint status", async function () {
-        const [owner, userA] = await ethers.getSigners()
+    describe("getTexts", function () {
+        // TODO: getTextsの戻り値を直接確認するテスト方法にする
+        it("return user mint statuses", async function () {
+            const { controlContract, textContract, learner } =
+                await loadFixture(deployTextFixture)
 
-        console.log(`===== Check address =====`)
-        console.log(`userA: ${owner.address}`)
-        console.log(`ControlContract: ${controlContract.address}`)
+            const textContractList = [textContract.address]
+            const txForGetUserStatus = await controlContract.getTexts(
+                textContractList,
+                learner.address,
+            )
 
-        await controlContract.addTextContractAddress(textContractTest.address)
+            // select which event to get
+            const abi = ["event getUserStatus((string, uint8)[])"]
+            const iface = new ethers.utils.Interface(abi)
+            const txData = await txForGetUserStatus.wait()
 
-        console.log(`===== Check changeStatus =====`)
-        const defaultStatus = await controlContract
-            .connect(owner)
-            .getStatus(textContractTest.address, userA.address)
-        console.log(`Default Mint Status Unavailable: ${defaultStatus}`)
-
-        await controlContract
-            .connect(owner)
-            .changeStatusAvailable(textContractTest.address, userA.address)
-
-        const toAvailable = await controlContract
-            .connect(owner)
-            .getStatus(textContractTest.address, userA.address)
-        console.log(`Changed Mint Status Available: ${toAvailable}`)
-
-        await controlContract
-            .connect(owner)
-            .changeStatusDone(textContractTest.address, userA.address)
-
-        const toDone = await controlContract
-            .connect(owner)
-            .getStatus(textContractTest.address, userA.address)
-        console.log(`Changed Mint Status Done: ${toDone}`)
+            // decode the all event's output and display
+            for (let i = 0; i < txData.events.length; i++) {
+                console.log(iface.parseLog(txData.events[i]).args)
+            }
+        })
     })
 
-    // test
-    it("Get text contract information", async function () {
-        const [owner, userA] = await ethers.getSigners()
-        await controlContract.addTextContractAddress(textContractTest.address)
-        const textAddressList =
-            await controlContract.showTextContractAddressList()
-
-        // change mint status to DONE
-        await controlContract
-            .connect(owner)
-            .changeStatusAvailable(textContractTest.address, userA.address)
-
-        // get user status
-        const txForGetUserStatus = await controlContract
-            .connect(owner)
-            .getTexts(textAddressList, userA.address)
-
-        // select which event to get
-        const abi = ["event getUserStatus((string, uint8)[])"]
-        const iface = new ethers.utils.Interface(abi)
-        const txData = await txForGetUserStatus.wait()
-
-        // decode the all event's output and display
-        for (let i = 0; i < txData.events.length; i++) {
-            console.log(iface.parseLog(txData.events[i]).args)
-        }
+    describe("getStatus", function () {
+        it("return UNAVAILABLE", async function () {
+            const { controlContract, textContract, learner } =
+                await loadFixture(deployTextFixture)
+            expect(
+                await controlContract.getStatus(
+                    textContract.address,
+                    learner.address,
+                ),
+            ).to.equal(MintStatus.UNAVAILABLE)
+        })
     })
 
-    // test
-    it("Mint NFT", async function () {
-        // admin: Contract's owner
-        // controller: Person in shiftbase
-        // userA, userB: Content learners
-        const [admin, controller, userA, userB] = await ethers.getSigners()
+    describe("changeStatusUnavailable", function () {
+        it("change mint status to UNAVAILABLE", async function () {
+            const { controlContract, textContract, learner } =
+                await loadFixture(deployTextFixture)
 
-        await controlContract.addTextContractAddress(textContractTest.address)
-        await expect(
-            controlContract.addTextContractAddress(textContractTest.address),
-        ).to.be.revertedWith("the address is already added!")
-        const textAddressList =
-            await controlContract.showTextContractAddressList()
+            await controlContract.changeStatusUnavailable(
+                textContract.address,
+                learner.address,
+            )
+            expect(
+                await controlContract.getStatus(
+                    textContract.address,
+                    learner.address,
+                ),
+            ).to.equal(MintStatus.UNAVAILABLE)
+        })
+    })
 
-        // grant CONTROLLER_ROLE to controller
-        await controlContract
-            .connect(admin)
-            .grantControllerRole(controller.address)
+    describe("changeStatusAvailable", function () {
+        it("change mint status to AVAILABLE", async function () {
+            const { controlContract, textContract, learner } =
+                await loadFixture(deployTextFixture)
 
-        // change mint status AVAILABLE
-        await controlContract
-            .connect(controller)
-            .changeStatusAvailable(textContractTest.address, userA.address)
+            await controlContract.changeStatusAvailable(
+                textContract.address,
+                learner.address,
+            )
+            expect(
+                await controlContract.getStatus(
+                    textContract.address,
+                    learner.address,
+                ),
+            ).to.equal(MintStatus.AVAILABLE)
+        })
+    })
 
-        // check when user without controller role manipulate control contract, reverted
-        await expect(
-            controlContract
-                .connect(userB)
-                .changeStatusAvailable(textContractTest.address, userA.address),
-        ).to.be.reverted
+    describe("changeStatusDone", function () {
+        it("change mint status to DONE", async function () {
+            const { controlContract, textContract, learner } =
+                await loadFixture(deployTextFixture)
 
-        // mint
-        const tx = await controlContract
-            .connect(userA)
-            .mint(textContractTest.address)
-        tx.wait()
-        console.log(`mint result: ${tx}`)
+            await controlContract.changeStatusDone(
+                textContract.address,
+                learner.address,
+            )
+            expect(
+                await controlContract.getStatus(
+                    textContract.address,
+                    learner.address,
+                ),
+            ).to.equal(MintStatus.DONE)
+        })
+    })
 
-        // get user status
-        const txForGetUserStatus = await controlContract
-            .connect(controller)
-            .getTexts(textAddressList, userA.address)
-
-        // select which event to get
-        const abi = ["event getUserStatus((string, uint8)[])"]
-        const iface = new ethers.utils.Interface(abi)
-        const txData = await txForGetUserStatus.wait()
-
-        // decode the all event's output and display
-        for (let i = 0; i < txData.events.length; i++) {
-            console.log(iface.parseLog(txData.events[i]).args)
-        }
+    describe("mint", function () {
+        //   TODO add test
     })
 })
