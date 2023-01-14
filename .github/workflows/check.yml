@@ -8,7 +8,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: setup
-              run: yarn
+              run: yarn install --immutable
             - name: lint
               run: yarn lint
             - name: solhint
