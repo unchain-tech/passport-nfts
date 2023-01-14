@@ -51,6 +51,8 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
         console.log("Token created!");
     }
 
+    event NewTokenMinted(address sender, address recipient, uint256 tokenId);
+
     // Return the user's mint status
     function getStatus(address user)
         public
@@ -94,8 +96,6 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
         _userToMintStatus[user] = ITextContract.MintStatus.DONE;
     }
 
-    event NewTokenMinted(address sender, address recipient, uint256 tokenId);
-
     // Mint NFT
     function mint(address user)
         public
@@ -123,4 +123,5 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
         return _userToMintStatus[user];
     }
+
 }
