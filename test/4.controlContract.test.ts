@@ -82,7 +82,7 @@ describe("Control Contract", function () {
     })
 
     describe("getTexts", function () {
-        // TODO: getTextsの戻り値を直接確認するテスト方法にする
+        // TODO: getTextsの戻り値をassertionで確認するテスト方法にする
         it("return user mint statuses", async function () {
             const { controlContract, textContract, learner } =
                 await loadFixture(deployTextFixture)
