@@ -3,14 +3,9 @@ import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 
-describe("Text Contract", function () {
-    // Status to manage user's mint status
-    enum MintStatus {
-        UNAVAILABLE,
-        AVAILABLE,
-        DONE,
-    }
+import { MintStatus } from "./utils/enum"
 
+describe("Text Contract", function () {
     // Define a fixture to reuse the same setup in every test
     async function deployTextFixture() {
         const TextContractFactory = await ethers.getContractFactory(
