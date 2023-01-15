@@ -74,11 +74,7 @@ contract ControlContract is
         return super.supportsInterface(interfaceId);
     }
 
-    function grantControllerRole(address _to)
-        public
-        onlyRole(ADMIN_ROLE)
-        returns (address)
-    {
+    function grantControllerRole(address _to) public onlyRole(ADMIN_ROLE) {
         // grant controller role to _to
         grantRole(CONTROLLER_ROLE, _to);
 
@@ -86,8 +82,6 @@ contract ControlContract is
         _checkRole(CONTROLLER_ROLE, _to);
 
         console.log("Contorol role granted to: ", _to);
-
-        return _to;
     }
 
     function addTextContractAddress(address contractAddress)
