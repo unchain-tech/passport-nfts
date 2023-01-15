@@ -3,8 +3,6 @@ import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 
-import { MintStatus } from "./enum"
-
 describe("Control Contract", function () {
     // Define a fixture to reuse the same setup in every test
     async function deployTextFixture() {
@@ -112,7 +110,7 @@ describe("Control Contract", function () {
                     textContract.address,
                     learner.address,
                 ),
-            ).to.equal(MintStatus.UNAVAILABLE)
+            ).to.equal(0) // MintStatus.UNAVAILABLE
         })
     })
 
@@ -130,7 +128,7 @@ describe("Control Contract", function () {
                     textContract.address,
                     learner.address,
                 ),
-            ).to.equal(MintStatus.UNAVAILABLE)
+            ).to.equal(0) // MintStatus.UNAVAILABLE
         })
     })
 
@@ -148,7 +146,7 @@ describe("Control Contract", function () {
                     textContract.address,
                     learner.address,
                 ),
-            ).to.equal(MintStatus.AVAILABLE)
+            ).to.equal(1) // MintStatus.AVAILABLE
         })
     })
 
@@ -166,7 +164,7 @@ describe("Control Contract", function () {
                     textContract.address,
                     learner.address,
                 ),
-            ).to.equal(MintStatus.DONE)
+            ).to.equal(2) // MintStatus.DONE
         })
     })
 

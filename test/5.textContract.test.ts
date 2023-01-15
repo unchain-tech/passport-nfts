@@ -3,8 +3,6 @@ import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 
-import { MintStatus } from "./utils/enum"
-
 describe("Text Contract", function () {
     // Define a fixture to reuse the same setup in every test
     async function deployTextFixture() {
@@ -36,7 +34,7 @@ describe("Text Contract", function () {
             )
 
             expect(await textContract.getStatus(learner.address)).to.equal(
-                MintStatus.UNAVAILABLE,
+                0, // MintStatus.UNAVAILABLE
             )
         })
     })
@@ -50,7 +48,7 @@ describe("Text Contract", function () {
             const textStatus = await textContract.getTextStatus(learner.address)
 
             expect(textStatus.imageUrl).to.equal("TEST_URL")
-            expect(textStatus.mintStatus).to.equal(MintStatus.UNAVAILABLE)
+            expect(textStatus.mintStatus).to.equal(0) // MintStatus.UNAVAILABLE
         })
     })
 
@@ -62,7 +60,7 @@ describe("Text Contract", function () {
 
             await textContract.changeStatusUnavailable(learner.address)
             expect(await textContract.getStatus(learner.address)).to.equal(
-                MintStatus.UNAVAILABLE,
+                0, // MintStatus.UNAVAILABLE
             )
         })
     })
@@ -75,7 +73,7 @@ describe("Text Contract", function () {
 
             await textContract.changeStatusAvailable(learner.address)
             expect(await textContract.getStatus(learner.address)).to.equal(
-                MintStatus.AVAILABLE,
+                1, // MintStatus.AVAILABLE
             )
         })
     })
@@ -88,7 +86,7 @@ describe("Text Contract", function () {
 
             await textContract.changeStatusDone(learner.address)
             expect(await textContract.getStatus(learner.address)).to.equal(
-                MintStatus.DONE,
+                2, // MintStatus.DONE
             )
         })
     })
