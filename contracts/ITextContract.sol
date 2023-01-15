@@ -9,24 +9,30 @@ interface ITextContract {
         DONE
     }
 
-    // struct for text status
+    // Struct for text status
     struct TextUserStatus {
         string imageUrl;
         MintStatus mintStatus;
     }
 
+    // Get mint status of user
     function getStatus(address user) external view returns (MintStatus status);
 
+    // Get text status of calling user
     function getTextStatus(address user)
         external
         view
         returns (TextUserStatus memory);
 
+    // Change status to UNAVAILABLE
     function changeStatusUnavailable(address user) external;
 
+    // Change status to AVAILABLE
     function changeStatusAvailable(address user) external;
 
+    // Change status to DONE
     function changeStatusDone(address user) external;
 
+    // Mint NFT
     function mint(address user) external returns (MintStatus status);
 }
