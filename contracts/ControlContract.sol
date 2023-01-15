@@ -25,6 +25,9 @@ interface ITextContract {
         MintStatus mintStatus;
     }
 
+    // get mint status of user
+    function getStatus(address user) external view returns (MintStatus);
+
     // get text status of calling user
     function getTextStatus(address user)
         external
@@ -41,8 +44,6 @@ interface ITextContract {
 
     // mint NFT
     function mint(address user) external returns (MintStatus);
-
-    function getStatus(address user) external view returns (MintStatus);
 }
 
 // contract for controling text contract
@@ -179,6 +180,15 @@ contract ControlContract is
         return textStatusList;
     }
 
+    function getStatus(address contractAddress, address user)
+        public
+        view
+        onlyRole(CONTROLLER_ROLE)
+        returns (ITextContract.MintStatus)
+    {
+        return (ITextContract(contractAddress).getStatus(user));
+    }
+
     // change mint status to UNAVAILABLE
     function changeStatusUnavailable(address contractAddress, address user)
         public
@@ -210,14 +220,5 @@ contract ControlContract is
         returns (ITextContract.MintStatus)
     {
         return (ITextContract(contractAddress).mint(msg.sender));
-    }
-
-    function getStatus(address contractAddress, address user)
-        public
-        view
-        onlyRole(CONTROLLER_ROLE)
-        returns (ITextContract.MintStatus)
-    {
-        return (ITextContract(contractAddress).getStatus(user));
     }
 }

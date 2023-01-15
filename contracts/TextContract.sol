@@ -40,7 +40,7 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
         _tokenName = "UNCHAIN Passport";
         _tokenSymbol = "CHAIPASS";
         // TODO 後で変更
-        _imageUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSutRv6L5RQqJdXp7Zc1JNAADwmgX3m0KMH52WympELsarGJcsKzwAp-ve1EcPOWa-iAl6XFcJX4yB6fwOkrkUPLCjetYZqzvL6GyJus2W4AkTy8-bKfVkD-48JXzLU31IivMXiYDJbJ0lDGn5-O4NV9AY7uP8OfHR18nuRmNIWrqIJ-B0fZc9TjFV8A/s867/eto_usagi_fukubukuro.png";
+        _imageUrl = "TEST_URL";
         // // TODO 後で変更
         // _projectName = "Test";
         // // TODO 後で変更
@@ -50,6 +50,8 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
         console.log("Token created!");
     }
+
+    event NewTokenMinted(address sender, address recipient, uint256 tokenId);
 
     // Return the user's mint status
     function getStatus(address user)
@@ -93,8 +95,6 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     function changeStatusDone(address user) public virtual override {
         _userToMintStatus[user] = ITextContract.MintStatus.DONE;
     }
-
-    event NewTokenMinted(address sender, address recipient, uint256 tokenId);
 
     // Mint NFT
     function mint(address user)
