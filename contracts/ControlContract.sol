@@ -164,10 +164,7 @@ contract ControlContract is
 
     // Mint NFT
     // this function is called by the content learner.
-    function mint(address contractAddress)
-        public
-        returns (ITextContract.MintStatus)
-    {
-        return (ITextContract(contractAddress).mint(msg.sender));
+    function mint(address contractAddress) public {
+        ITextContract(contractAddress).mint(msg.sender);
     }
 }

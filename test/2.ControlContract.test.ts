@@ -169,6 +169,21 @@ describe("Control Contract", function () {
     })
 
     describe("mint", function () {
-        //   TODO add test
+        it("emit a NewTokenMinted event of TextContract", async function () {
+            const { controlContract, textContract, learner } =
+                await loadFixture(deployTextFixture)
+
+            // change learner's mint status to AVAILABLE
+            await controlContract.changeStatusAvailable(
+                textContract.address,
+                learner.address,
+            )
+
+            await expect(
+                controlContract.connect(learner).mint(textContract.address),
+            )
+                .to.emit(textContract, "NewTokenMinted")
+                .withArgs(learner.address, learner.address, 1)
+        })
     })
 })
