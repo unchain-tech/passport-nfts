@@ -3,7 +3,7 @@ import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 
-import { MintStatus } from "./utils/enum"
+import { MintStatus } from "./enum"
 
 describe("Control Contract", function () {
     // Define a fixture to reuse the same setup in every test
@@ -68,8 +68,6 @@ describe("Control Contract", function () {
                 await controlContract.addTextContractAddress(
                     textContract.address,
                 )
-                const textContractAddressList =
-                    await controlContract.showTextContractAddressList()
 
                 // add duplicate address
                 await expect(

@@ -82,7 +82,7 @@ describe("Control Contract AccessControl", function () {
             await loadFixture(deployTextFixture)
 
         // grant CONTROLLER_ROLE to controller
-        const _ = await controlContract.grantControllerRole(controller.address)
+        await controlContract.grantControllerRole(controller.address)
 
         const isController = await controlContract.hasRole(
             CONTROLLER_ROLE,
@@ -132,12 +132,8 @@ describe("Control Contract AccessControl", function () {
         describe("showTextContractAddressList", function () {
             it("Should fail if user does not have CONTROLLER_ROLE", async function () {
                 // learner hasn't CONTROLLER_ROLE
-                const {
-                    controlContract,
-                    textContract,
-                    learner,
-                    CONTROLLER_ROLE,
-                } = await loadFixture(deployTextFixture)
+                const { controlContract, learner, CONTROLLER_ROLE } =
+                    await loadFixture(deployTextFixture)
 
                 await expect(
                     controlContract
