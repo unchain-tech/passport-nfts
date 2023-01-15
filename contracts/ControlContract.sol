@@ -10,41 +10,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 import {Base64Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol";
 
-// this is for cross contract call
-interface ITextContract {
-    // enum for checking mint status
-    enum MintStatus {
-        UNAVAILABLE,
-        AVAILABLE,
-        DONE
-    }
-
-    // struct for text status
-    struct TextUserStatus {
-        string imageUrl;
-        MintStatus mintStatus;
-    }
-
-    // get mint status of user
-    function getStatus(address user) external view returns (MintStatus);
-
-    // get text status of calling user
-    function getTextStatus(address user)
-        external
-        returns (TextUserStatus memory);
-
-    // change status to DONE
-    function changeStatusDone(address user) external;
-
-    // change status to AVAILABLE
-    function changeStatusAvailable(address user) external;
-
-    // change status to UNAVAILABLE
-    function changeStatusUnavailable(address user) external;
-
-    // mint NFT
-    function mint(address user) external returns (MintStatus);
-}
+import "./ITextContract.sol";
 
 // contract for controling text contract
 contract ControlContract is
@@ -52,19 +18,6 @@ contract ControlContract is
     AccessControlUpgradeable,
     ERC721URIStorageUpgradeable
 {
-    // enum for checking mint status
-    enum MintStatus {
-        UNAVAILABLE,
-        AVAILABLE,
-        DONE
-    }
-
-    // struct for text status
-    struct TextUserStatus {
-        string imageUrl;
-        MintStatus mintStatus;
-    }
-
     // address list of text contract address
     address[] private _addressList;
 
@@ -76,7 +29,7 @@ contract ControlContract is
     mapping(bytes32 => uint8) private _hashes;
 
     // event
-    event getUserStatus(TextUserStatus[] statusList);
+    event getUserStatus(ITextContract.TextUserStatus[] statusList);
 
     // mofifier to check if there is no the same address in address list
     modifier onlyNewAddress(address contractAddress) {
@@ -160,19 +113,21 @@ contract ControlContract is
     function getTexts(address[] memory textAddressList, address user)
         public
         onlyRole(CONTROLLER_ROLE)
-        returns (TextUserStatus[] memory)
+        returns (ITextContract.TextUserStatus[] memory)
     {
-        TextUserStatus[] memory textStatusList = new TextUserStatus[](
-            textAddressList.length
-        );
+        ITextContract.TextUserStatus[]
+            memory textStatusList = new ITextContract.TextUserStatus[](
+                textAddressList.length
+            );
         for (uint8 i; i < textAddressList.length; i++) {
             ITextContract.TextUserStatus memory userStatus = ITextContract(
                 textAddressList[i]
             ).getTextStatus(user);
-            TextUserStatus memory textUserStatus = TextUserStatus(
-                userStatus.imageUrl,
-                (MintStatus)(uint8(userStatus.mintStatus))
-            );
+            ITextContract.TextUserStatus memory textUserStatus = ITextContract
+                .TextUserStatus(
+                    userStatus.imageUrl,
+                    (ITextContract.MintStatus)(uint8(userStatus.mintStatus))
+                );
             textStatusList[i] = textUserStatus;
         }
         emit getUserStatus(textStatusList);
