@@ -34,5 +34,5 @@ interface ITextContract {
     function changeStatusDone(address user) external;
 
     // Mint NFT
-    function mint(address user) external returns (MintStatus status);
+    function mint(address user) external;
 }

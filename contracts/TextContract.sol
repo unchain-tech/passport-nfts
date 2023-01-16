@@ -97,13 +97,7 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     }
 
     // Mint NFT
-    function mint(address user)
-        public
-        virtual
-        override
-        onlyAvailable(user)
-        returns (ITextContract.MintStatus)
-    {
+    function mint(address user) public virtual override onlyAvailable(user) {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
@@ -120,7 +114,5 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
         // send event
         emit NewTokenMinted(user, user, newItemId);
-
-        return _userToMintStatus[user];
     }
 }

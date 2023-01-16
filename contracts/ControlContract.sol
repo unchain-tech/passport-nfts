@@ -74,11 +74,7 @@ contract ControlContract is
         return super.supportsInterface(interfaceId);
     }
 
-    function grantControllerRole(address _to)
-        public
-        onlyRole(ADMIN_ROLE)
-        returns (address)
-    {
+    function grantControllerRole(address _to) public onlyRole(ADMIN_ROLE) {
         // grant controller role to _to
         grantRole(CONTROLLER_ROLE, _to);
 
@@ -86,8 +82,6 @@ contract ControlContract is
         _checkRole(CONTROLLER_ROLE, _to);
 
         console.log("Contorol role granted to: ", _to);
-
-        return _to;
     }
 
     function addTextContractAddress(address contractAddress)
@@ -170,10 +164,7 @@ contract ControlContract is
 
     // Mint NFT
     // this function is called by the content learner.
-    function mint(address contractAddress)
-        public
-        returns (ITextContract.MintStatus)
-    {
-        return (ITextContract(contractAddress).mint(msg.sender));
+    function mint(address contractAddress) public {
+        ITextContract(contractAddress).mint(msg.sender);
     }
 }
