@@ -110,7 +110,7 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
         _setTokenURI(newItemId, "TEST");
 
         // user status change when mint succeed
-        _userToMintStatus[user] = ITextContract.MintStatus.DONE;
+        changeStatusDone(user);
 
         // send event
         emit NewTokenMinted(user, user, newItemId);
