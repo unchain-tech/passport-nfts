@@ -196,22 +196,55 @@ describe("Control Contract", function () {
     })
 
     describe("multiMint", function () {
-        it("emit a NewTokenMinted event of TextContract", async function () {
-            const { controlContract, textContract, owner, learnerA, learnerB } =
-                await loadFixture(deployTextFixture)
+        context("when the correct arguments is specified", function () {
+            it("emit a NewTokenMinted event of TextContract", async function () {
+                const {
+                    controlContract,
+                    textContract,
+                    owner,
+                    learnerA,
+                    learnerB,
+                } = await loadFixture(deployTextFixture)
 
-            const recipients = [learnerA.address, learnerB.address]
-            const contractAddresses = [
-                textContract.address,
-                textContract.address,
-            ]
-            await expect(
-                controlContract.multiMint(recipients, contractAddresses),
-            )
-                .to.emit(textContract, "NewTokenMinted")
-                .withArgs(owner.address, learnerA.address, 1)
-                .to.emit(textContract, "NewTokenMinted")
-                .withArgs(owner.address, learnerB.address, 2)
+                const recipients = [learnerA.address, learnerB.address]
+                const contractAddresses = [
+                    textContract.address,
+                    textContract.address,
+                ]
+                await expect(
+                    controlContract.multiMint(recipients, contractAddresses),
+                )
+                    .to.emit(textContract, "NewTokenMinted")
+                    .withArgs(owner.address, learnerA.address, 1)
+                    .to.emit(textContract, "NewTokenMinted")
+                    .withArgs(owner.address, learnerB.address, 2)
+            })
         })
+
+        context(
+            "when the number of recipients and contracts do not match",
+            function () {
+                it("reverts", async function () {
+                    const { controlContract, textContract, learnerA } =
+                        await loadFixture(deployTextFixture)
+
+                    const recipients = [learnerA.address]
+                    const contractAddresses = [
+                        textContract.address,
+                        textContract.address,
+                    ]
+
+                    // add duplicate address
+                    await expect(
+                        controlContract.multiMint(
+                            recipients,
+                            contractAddresses,
+                        ),
+                    ).to.be.revertedWith(
+                        "Length of data array must be the same.",
+                    )
+                })
+            },
+        )
     })
 })
