@@ -14,7 +14,7 @@ describe("Control Contract", function () {
         )
 
         // Contracts are deployed using the first signer/account by default
-        const [owner, controller, learner] = await ethers.getSigners()
+        const [owner, controller, learnerA, learnerB] = await ethers.getSigners()
 
         const controlContract = await upgrades.deployProxy(
             ControlContractFactory,
@@ -34,7 +34,7 @@ describe("Control Contract", function () {
         await controlContract.deployed()
         await textContract.deployed()
 
-        return { controlContract, textContract, owner, controller, learner }
+        return { controlContract, textContract, owner, controller, learnerA, learnerB }
     }
 
     // Test case
@@ -80,13 +80,13 @@ describe("Control Contract", function () {
     describe("getTexts", function () {
         // TODO: getTextsの戻り値をassertionで確認するテスト方法にする
         it("return user mint statuses", async function () {
-            const { controlContract, textContract, learner } =
+            const { controlContract, textContract, learnerA } =
                 await loadFixture(deployTextFixture)
 
             const textContractList = [textContract.address]
             const txForGetUserStatus = await controlContract.getTexts(
                 textContractList,
-                learner.address,
+                learnerA.address,
             )
 
             // select which event to get
@@ -103,12 +103,12 @@ describe("Control Contract", function () {
 
     describe("getStatus", function () {
         it("return UNAVAILABLE", async function () {
-            const { controlContract, textContract, learner } =
+            const { controlContract, textContract, learnerA } =
                 await loadFixture(deployTextFixture)
             expect(
                 await controlContract.getStatus(
                     textContract.address,
-                    learner.address,
+                    learnerA.address,
                 ),
             ).to.equal(0) // MintStatus.UNAVAILABLE
         })
@@ -116,17 +116,17 @@ describe("Control Contract", function () {
 
     describe("changeStatusUnavailable", function () {
         it("change mint status to UNAVAILABLE", async function () {
-            const { controlContract, textContract, learner } =
+            const { controlContract, textContract, learnerA } =
                 await loadFixture(deployTextFixture)
 
             await controlContract.changeStatusUnavailable(
                 textContract.address,
-                learner.address,
+                learnerA.address,
             )
             expect(
                 await controlContract.getStatus(
                     textContract.address,
-                    learner.address,
+                    learnerA.address,
                 ),
             ).to.equal(0) // MintStatus.UNAVAILABLE
         })
@@ -134,17 +134,17 @@ describe("Control Contract", function () {
 
     describe("changeStatusAvailable", function () {
         it("change mint status to AVAILABLE", async function () {
-            const { controlContract, textContract, learner } =
+            const { controlContract, textContract, learnerA } =
                 await loadFixture(deployTextFixture)
 
             await controlContract.changeStatusAvailable(
                 textContract.address,
-                learner.address,
+                learnerA.address,
             )
             expect(
                 await controlContract.getStatus(
                     textContract.address,
-                    learner.address,
+                    learnerA.address,
                 ),
             ).to.equal(1) // MintStatus.AVAILABLE
         })
@@ -152,17 +152,17 @@ describe("Control Contract", function () {
 
     describe("changeStatusDone", function () {
         it("change mint status to DONE", async function () {
-            const { controlContract, textContract, learner } =
+            const { controlContract, textContract, learnerA } =
                 await loadFixture(deployTextFixture)
 
             await controlContract.changeStatusDone(
                 textContract.address,
-                learner.address,
+                learnerA.address,
             )
             expect(
                 await controlContract.getStatus(
                     textContract.address,
-                    learner.address,
+                    learnerA.address,
                 ),
             ).to.equal(2) // MintStatus.DONE
         })
@@ -170,20 +170,37 @@ describe("Control Contract", function () {
 
     describe("mint", function () {
         it("emit a NewTokenMinted event of TextContract", async function () {
-            const { controlContract, textContract, learner } =
+            const { controlContract, textContract, learnerA } =
                 await loadFixture(deployTextFixture)
 
-            // change learner's mint status to AVAILABLE
+            // change learnerA's mint status to AVAILABLE
             await controlContract.changeStatusAvailable(
                 textContract.address,
-                learner.address,
+                learnerA.address,
             )
 
             await expect(
-                controlContract.connect(learner).mint(textContract.address),
+                controlContract.connect(learnerA).mint(textContract.address),
             )
                 .to.emit(textContract, "NewTokenMinted")
-                .withArgs(learner.address, learner.address, 1)
+                .withArgs(learnerA.address, learnerA.address, 1)
+        })
+    })
+
+    describe("multiMint", function () {
+        it("emit a NewTokenMinted event of TextContract", async function () {
+            const { controlContract, textContract, owner, learnerA, learnerB } =
+                await loadFixture(deployTextFixture)
+
+            const recipients = [learnerA.address, learnerB.address];
+            const contractAddresses = [textContract.address, textContract.address]
+            await expect(
+                controlContract.multiMint(recipients, contractAddresses),
+            )
+                .to.emit(textContract, "NewTokenMinted")
+                .withArgs(owner.address, learnerA.address, 1)
+                .to.emit(textContract, "NewTokenMinted")
+                .withArgs(owner.address, learnerB.address, 2)
         })
     })
 })

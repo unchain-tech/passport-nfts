@@ -93,18 +93,39 @@ describe("Control Contract AccessControl", function () {
 
     // ===== onlyRole =====
     context("Users without ADMIN_ROLE", function () {
-        it("grantControllerRole: Should fail if user does not have ADMIN_ROLE", async function () {
-            // controller hasn't ADMIN_ROLE
-            const { controlContract, controller, learner, ADMIN_ROLE } =
-                await loadFixture(deployTextFixture)
+        describe("grantControllerRole", function () {
+            it("Should fail if user does not have ADMIN_ROLE", async function () {
+                // controller hasn't ADMIN_ROLE
+                const { controlContract, controller, learner, ADMIN_ROLE } =
+                    await loadFixture(deployTextFixture)
 
-            await expect(
-                controlContract
-                    .connect(controller)
-                    .grantControllerRole(learner.address),
-            ).to.be.revertedWith(
-                `AccessControl: account ${controller.address.toLowerCase()} is missing role ${ADMIN_ROLE}`,
-            )
+                await expect(
+                    controlContract
+                        .connect(controller)
+                        .grantControllerRole(learner.address),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${controller.address.toLowerCase()} is missing role ${ADMIN_ROLE}`,
+                )
+            })
+        })
+
+        describe("multiMint", function () {
+            it("Should fail if user does not have ADMIN_ROLE", async function () {
+                // controller hasn't ADMIN_ROLE
+                const { controlContract, textContract, controller, learner, ADMIN_ROLE } =
+                    await loadFixture(deployTextFixture)
+
+                const recipients = [learner.address];
+                const contractAddresses = [textContract.address];
+
+                await expect(
+                    controlContract
+                        .connect(controller)
+                        .multiMint(recipients, contractAddresses),
+                ).to.be.revertedWith(
+                    `AccessControl: account ${controller.address.toLowerCase()} is missing role ${ADMIN_ROLE}`,
+                )
+            })
         })
     })
 
