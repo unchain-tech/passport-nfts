@@ -167,4 +167,29 @@ contract ControlContract is
     function mint(address contractAddress) public {
         ITextContract(contractAddress).mint(msg.sender);
     }
+
+    function multiMint(
+        address[] memory recipients,
+        address[] memory contractAddresses
+    ) public onlyRole(ADMIN_ROLE) {
+        // check if parameters length is the same
+        require(
+            recipients.length == contractAddresses.length,
+            "Length of data array must be the same."
+        );
+
+        for (uint256 i = 0; i < recipients.length; i++) {
+            // check user mint status
+            ITextContract.MintStatus recipientStatus = ITextContract(
+                contractAddresses[i]
+            ).getStatus(recipients[i]);
+
+            if (recipientStatus == ITextContract.MintStatus.DONE) {
+                console.log("NFT has been already minted to %s", recipients[i]);
+            } else {
+                // execute mint
+                ITextContract(contractAddresses[i]).mintByAdmin(msg.sender, recipients[i]);
+            }
+        }
+    }
 }
