@@ -168,6 +168,7 @@ contract ControlContract is
         ITextContract(contractAddress).mint(msg.sender);
     }
 
+    // Mint multiple NFTs
     function multiMint(
         address[] memory recipients,
         address[] memory contractAddresses
