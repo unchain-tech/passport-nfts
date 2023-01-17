@@ -118,7 +118,11 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
     // Mint NFT
     // This function is called when ControlContract admin calls multiMint
-    function mintByAdmin(address sender, address recipient) public virtual override {
+    function mintByAdmin(address sender, address recipient)
+        public
+        virtual
+        override
+    {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();

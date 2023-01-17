@@ -189,7 +189,10 @@ contract ControlContract is
                 console.log("NFT has been already minted to %s", recipients[i]);
             } else {
                 // execute mint
-                ITextContract(contractAddresses[i]).mintByAdmin(msg.sender, recipients[i]);
+                ITextContract(contractAddresses[i]).mintByAdmin(
+                    msg.sender,
+                    recipients[i]
+                );
             }
         }
     }

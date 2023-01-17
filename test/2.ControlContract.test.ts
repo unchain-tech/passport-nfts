@@ -14,7 +14,8 @@ describe("Control Contract", function () {
         )
 
         // Contracts are deployed using the first signer/account by default
-        const [owner, controller, learnerA, learnerB] = await ethers.getSigners()
+        const [owner, controller, learnerA, learnerB] =
+            await ethers.getSigners()
 
         const controlContract = await upgrades.deployProxy(
             ControlContractFactory,
@@ -34,7 +35,14 @@ describe("Control Contract", function () {
         await controlContract.deployed()
         await textContract.deployed()
 
-        return { controlContract, textContract, owner, controller, learnerA, learnerB }
+        return {
+            controlContract,
+            textContract,
+            owner,
+            controller,
+            learnerA,
+            learnerB,
+        }
     }
 
     // Test case
@@ -192,8 +200,11 @@ describe("Control Contract", function () {
             const { controlContract, textContract, owner, learnerA, learnerB } =
                 await loadFixture(deployTextFixture)
 
-            const recipients = [learnerA.address, learnerB.address];
-            const contractAddresses = [textContract.address, textContract.address]
+            const recipients = [learnerA.address, learnerB.address]
+            const contractAddresses = [
+                textContract.address,
+                textContract.address,
+            ]
             await expect(
                 controlContract.multiMint(recipients, contractAddresses),
             )

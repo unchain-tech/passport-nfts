@@ -142,7 +142,9 @@ describe("Text Contract", function () {
                 deployTextFixture,
             )
 
-            await expect(textContract.mintByAdmin(owner.address, learner.address))
+            await expect(
+                textContract.mintByAdmin(owner.address, learner.address),
+            )
                 .to.emit(textContract, "NewTokenMinted")
                 .withArgs(owner.address, learner.address, 1)
         })

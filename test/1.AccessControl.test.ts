@@ -112,11 +112,16 @@ describe("Control Contract AccessControl", function () {
         describe("multiMint", function () {
             it("Should fail if user does not have ADMIN_ROLE", async function () {
                 // controller hasn't ADMIN_ROLE
-                const { controlContract, textContract, controller, learner, ADMIN_ROLE } =
-                    await loadFixture(deployTextFixture)
+                const {
+                    controlContract,
+                    textContract,
+                    controller,
+                    learner,
+                    ADMIN_ROLE,
+                } = await loadFixture(deployTextFixture)
 
-                const recipients = [learner.address];
-                const contractAddresses = [textContract.address];
+                const recipients = [learner.address]
+                const contractAddresses = [textContract.address]
 
                 await expect(
                     controlContract
