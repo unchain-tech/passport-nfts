@@ -36,7 +36,7 @@ interface ITextContract {
     // Mint NFT
     function mint(address user) external;
 
-    // Mint NFT by ControlContract's admin
+    // Mint NFT
     // This function is called when ControlContract admin calls multiMint
     function mintByAdmin(address sender, address recipient) external;
 }
