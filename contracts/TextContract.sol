@@ -110,9 +110,34 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
         _setTokenURI(newItemId, "TEST");
 
         // user status change when mint succeed
-        _userToMintStatus[user] = ITextContract.MintStatus.DONE;
+        changeStatusDone(user);
 
         // send event
         emit NewTokenMinted(user, user, newItemId);
+    }
+
+    // Mint NFT
+    // This function is called when ControlContract admin calls multiMint
+    function mintByAdmin(address sender, address recipient)
+        public
+        virtual
+        override
+    {
+        _tokenIds.increment();
+
+        uint256 newItemId = _tokenIds.current();
+
+        // execute mint
+        _safeMint(recipient, newItemId);
+
+        // TODO 第二引数の値をJSONデータに変更する
+        // set JSON data
+        _setTokenURI(newItemId, "TEST");
+
+        // user status change when mint succeed
+        changeStatusDone(recipient);
+
+        // send event
+        emit NewTokenMinted(sender, recipient, newItemId);
     }
 }

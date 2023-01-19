@@ -135,4 +135,18 @@ describe("Text Contract", function () {
             })
         })
     })
+
+    describe("mintByAdmin", function () {
+        it("emit a NewTokenMinted event", async function () {
+            const { textContract, owner, learner } = await loadFixture(
+                deployTextFixture,
+            )
+
+            await expect(
+                textContract.mintByAdmin(owner.address, learner.address),
+            )
+                .to.emit(textContract, "NewTokenMinted")
+                .withArgs(owner.address, learner.address, 1)
+        })
+    })
 })
