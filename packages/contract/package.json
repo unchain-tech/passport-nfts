@@ -4,10 +4,10 @@
     "description": "UNCHAIN passport NFT contract",
     "private": true,
     "scripts": {
-        "prettier": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --check .",
-        "prettier:format": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --write .",
-        "solhint": "solhint --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
-        "solhint:fix": "solhint --fix --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
+        "prettier": "prettier --check \"contracts/**/*.sol\"",
+        "prexttier:fix": "prettier --write \"contracts/**/*.sol\"",
+        "solhint": "solhint --max-error 0 -c ./.solhint.json \"contracts/**/*.sol\"",
+        "solhint:fix": "solhint --fix --max-error 0 -c ./.solhint.json \"contracts/**/*.sol\"",
         "test": "npx hardhat test test/0.integrated.test.ts"
     },
     "devDependencies": {

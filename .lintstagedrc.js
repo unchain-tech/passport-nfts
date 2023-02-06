@@ -11,12 +11,12 @@ const buildFormatCommand = (filenames) =>
     .join(' ')} `;
 
 const buildSolhintCommand = (filenames) =>
-  `solhint --max-error 0 --ignore-path packages/contract/.solhintignore ${filenames
+  `solhint --max-error 0 -c packages/contract/.solhint.json --ignore-path .gitignore ${filenames
     .map((f) => path.relative(process.cwd(), f))
     .join(' ')} `;
 
 const buildPrettierCommand = (filenames) =>
-  `prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path packages/contract/.prettierignore --check ${filenames
+  `prettier --check ${filenames
     .map((f) => path.relative(process.cwd(), f))
     .join(' ')} `;
 
