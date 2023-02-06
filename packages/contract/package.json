@@ -8,7 +8,6 @@
         "prettier:format": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --write .",
         "solhint:check": "solhint --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
         "solhint:fix": "solhint --fix --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
-        "precommit": "yarn lint && yarn prettier:check && yarn solhint:check",
         "test": "npx hardhat test test/0.integrated.test.ts"
     },
     "devDependencies": {
