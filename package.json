@@ -18,12 +18,17 @@
     "honganji <yujicavs@icloud.com> (https://github.com/honganji)"
   ],
   "devDependencies": {
-    "rome": "^11.0.0"
+    "lint-staged": "^13.1.0",
+    "rome": "^11.0.0",
+    "simple-git-hooks": "^2.8.1"
   },
   "workspaces": {
     "packages": [
       "packages/*"
     ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
   },
   "scripts": {
     "contract": "yarn workspace contract",
