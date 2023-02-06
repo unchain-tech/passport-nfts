@@ -32,6 +32,8 @@
   },
   "scripts": {
     "contract": "yarn workspace contract",
+    "client": "yarn workspace client",
+    "client:dev": "yarn workspace client dev",
     "format": "yarn run rome format .",
     "format:fix": "yarn run rome format . --write",
     "lint": "yarn run rome check .",
