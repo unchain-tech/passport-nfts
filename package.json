@@ -17,7 +17,9 @@
     "yk-saito <60546319+yk-saito@users.noreply.github.com> (https://github.com/yk-saito)",
     "honganji <yujicavs@icloud.com> (https://github.com/honganji)"
   ],
-  "devDependencies": {},
+  "devDependencies": {
+    "rome": "^11.0.0"
+  },
   "workspaces": {
     "packages": [
       "packages/*"
@@ -25,6 +27,10 @@
   },
   "scripts": {
     "contract": "yarn workspace contract",
+    "format": "yarn run rome format .",
+    "format:fix": "yarn run rome format . --write",
+    "lint": "yarn run rome check .",
+    "lint:fix": "yarn run rome check . --apply",
     "test": "yarn workspace contract test"
   }
 }
