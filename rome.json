@@ -3,7 +3,6 @@
     "enabled": true,
     "indentStyle": "space",
     "indentSize": 2,
-    "lineWidth": 80,
     "ignore": [
       ".yarn/**",
       "**/.gitignore",
