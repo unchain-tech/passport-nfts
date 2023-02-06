@@ -1,13 +1,13 @@
-import React from 'react'
-import { Screen } from '../../features/enum'
-import Address from '../atoms/address'
-import MainTitle from '../atoms/mainTitle'
-import Subtitle from '../atoms/subtitle'
+import React from 'react';
+import { Screen } from '../../features/enum';
+import Address from '../atoms/address';
+import MainTitle from '../atoms/mainTitle';
+import Subtitle from '../atoms/subtitle';
 
 type Props = {
-  subtitle: string
-  screen: Screen
-}
+  subtitle: string;
+  screen: Screen;
+};
 
 export default function Title(props: Props) {
   return (
@@ -25,5 +25,5 @@ export default function Title(props: Props) {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 type Props = {
-  textList: string[]
-}
+  textList: string[];
+};
 
 export default function SelectionBox(props: Props) {
   return (
@@ -13,5 +13,5 @@ export default function SelectionBox(props: Props) {
         ))}
       </select>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function MainTitle() {
   return (
@@ -6,5 +6,5 @@ export default function MainTitle() {
       <div className='gradient-text from-[#2BAC4F] to-[#C8FFD7]'>UNCHAIN</div>
       <div className='gradient-text from-[#FF1485] to-[#FFD3FD]'>PASSPORT</div>
     </div>
-  )
+  );
 }

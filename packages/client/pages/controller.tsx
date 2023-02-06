@@ -1,5 +1,5 @@
-import React from 'react'
-import ControllerTemp from '../components/templates/controllerTemp'
+import React from 'react';
+import ControllerTemp from '../components/templates/controllerTemp';
 
 export default function Controller() {
   const imgIdList: string[] = [
@@ -25,20 +25,20 @@ export default function Controller() {
     'QmeCP9NaqBKPJroZMCGaMnd73zXPcEKrUPDFHSWfuaYkYv',
     'QmXYADTkQEoEk88Gx4KkqZBVkKyiZq8nkMoAzN1gAxNKqi',
     'QmYkdzfNrVnN3qsDXY3UGbemg7x1ezE2kdtdsZznPv6cjb',
-  ]
+  ];
 
   const mintStatusList: number[] = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  ]
+  ];
 
-  const address = '0xf293jrd892j3ihr92jjdhe9wfieh'
+  const address = '0xf293jrd892j3ihr92jjdhe9wfieh';
 
   const textList: string[] = [
     'ETH-DAPP',
     'ETH NFT COLLECTION',
     'ETH NFT MAKER',
     'POLYGON GENERATIVE NFT',
-  ]
+  ];
 
   return (
     <ControllerTemp
@@ -48,5 +48,5 @@ export default function Controller() {
       address={address}
       textList={textList}
     />
-  )
+  );
 }

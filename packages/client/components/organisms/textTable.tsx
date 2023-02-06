@@ -1,14 +1,14 @@
-import React from 'react'
-import { Screen } from '../../features/enum'
-import { divideList } from '../../hooks/uiFunction'
-import Text from '../molecules/text'
+import React from 'react';
+import { Screen } from '../../features/enum';
+import { divideList } from '../../hooks/uiFunction';
+import Text from '../molecules/text';
 
 type Props = {
-  imgIdList: string[]
-  itemNum: number
-  mintStatusList: number[]
-  screen: Screen
-}
+  imgIdList: string[];
+  itemNum: number;
+  mintStatusList: number[];
+  screen: Screen;
+};
 
 export default function TextTable(props: Props) {
   return (
@@ -32,8 +32,8 @@ export default function TextTable(props: Props) {
               ))}
             </div>
           )
-        )
+        ),
       )}
     </div>
-  )
+  );
 }

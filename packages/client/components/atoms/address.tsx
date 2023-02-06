@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 type Props = {
-  address: string
-}
+  address: string;
+};
 
 export default function Address(props: Props) {
   return (
@@ -9,5 +9,5 @@ export default function Address(props: Props) {
       <div>wallet address:</div>
       <div className='w-10 text-ellipsis overflow-hidden'>{props.address}</div>
     </div>
-  )
+  );
 }

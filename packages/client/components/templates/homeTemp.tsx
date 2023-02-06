@@ -1,15 +1,15 @@
-import React from 'react'
-import Button from '../atoms/Button'
-import Title from '../organisms/title'
-import Image from 'next/image'
-import { Screen } from '../../features/enum'
+import React from 'react';
+import Button from '../atoms/Button';
+import Title from '../organisms/title';
+import Image from 'next/image';
+import { Screen } from '../../features/enum';
 
 type Props = {
-  subtitle: string
-  imgUrl: string
-  buttonName: string
-  isAdmin: boolean
-}
+  subtitle: string;
+  imgUrl: string;
+  buttonName: string;
+  isAdmin: boolean;
+};
 
 export default function HomeTemp(props: Props) {
   return (
@@ -23,5 +23,5 @@ export default function HomeTemp(props: Props) {
         mode={null}
       />
     </div>
-  )
+  );
 }

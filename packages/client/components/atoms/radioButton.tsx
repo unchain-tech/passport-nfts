@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
-import { Mode } from '../../features/enum'
+import React, { useState } from 'react';
+import { Mode } from '../../features/enum';
 type Props = {
-  passValue: any
-}
+  passValue: any;
+};
 
 export default function RadioButton(props: Props) {
-  const items: string[] = ['Mint NFT mode', 'Grant Mint-Role Mode']
+  const items: string[] = ['Mint NFT mode', 'Grant Mint-Role Mode'];
 
-  const [selectedValue, setSelectedValue] = useState('Mint NFT mode')
+  const [selectedValue, setSelectedValue] = useState('Mint NFT mode');
 
   const handleChange = (e: { target: { id: string; value: string } }) => {
-    setSelectedValue(e.target.id)
-    props.passValue(e.target.value)
-  }
+    setSelectedValue(e.target.id);
+    props.passValue(e.target.value);
+  };
   return (
     <div className='flex flex-col'>
       {items.map((item) => (
@@ -29,5 +29,5 @@ export default function RadioButton(props: Props) {
         </label>
       ))}
     </div>
-  )
+  );
 }

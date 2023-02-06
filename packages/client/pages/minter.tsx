@@ -1,5 +1,5 @@
-import React from 'react'
-import MinterTemp from '../components/templates/minterTemp'
+import React from 'react';
+import MinterTemp from '../components/templates/minterTemp';
 
 const imgIdList: string[] = [
   'QmXk3kdRvV6TV9yZvtZPgKHoYmywnURy3Qhs8Bjo5szg1J',
@@ -24,11 +24,11 @@ const imgIdList: string[] = [
   'QmeCP9NaqBKPJroZMCGaMnd73zXPcEKrUPDFHSWfuaYkYv',
   'QmXYADTkQEoEk88Gx4KkqZBVkKyiZq8nkMoAzN1gAxNKqi',
   'QmYkdzfNrVnN3qsDXY3UGbemg7x1ezE2kdtdsZznPv6cjb',
-]
+];
 
 const mintStatusList: number[] = [
   0, 1, 2, 0, 1, 2, 2, 2, 1, 0, 0, 1, 2, 0, 1, 2, 2, 2, 1, 0, 1, 0,
-]
+];
 
 export default function Minter() {
   return (
@@ -38,5 +38,5 @@ export default function Minter() {
       imgIdList={imgIdList}
       mintStatusList={mintStatusList}
     />
-  )
+  );
 }

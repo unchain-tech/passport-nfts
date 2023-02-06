@@ -1,15 +1,15 @@
-import React from 'react'
-import { Mode } from '../../features/enum'
-import SelectionBox from '../atoms/selectionBox'
-import AddAddressButton from '../molecules/addAddressButton'
-import AddressBox from '../molecules/addressBox'
-import ShowRecipientsButton from '../molecules/showRecipientsButton'
+import React from 'react';
+import { Mode } from '../../features/enum';
+import SelectionBox from '../atoms/selectionBox';
+import AddAddressButton from '../molecules/addAddressButton';
+import AddressBox from '../molecules/addressBox';
+import ShowRecipientsButton from '../molecules/showRecipientsButton';
 
 type Props = {
-  address: string
-  textList: string[]
-  mode: Mode
-}
+  address: string;
+  textList: string[];
+  mode: Mode;
+};
 
 export default function TextBoxGroup(props: Props) {
   return (
@@ -30,5 +30,5 @@ export default function TextBoxGroup(props: Props) {
       )}
       <ShowRecipientsButton />
     </div>
-  )
+  );
 }

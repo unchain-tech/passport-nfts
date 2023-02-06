@@ -1,8 +1,8 @@
-import Head from 'next/head'
-import HomeTemp from '../components/templates/homeTemp'
+import Head from 'next/head';
+import HomeTemp from '../components/templates/homeTemp';
 
 export default function Home() {
-  const isAdmin = true
+  const isAdmin = true;
   return (
     <>
       <Head>
@@ -18,5 +18,5 @@ export default function Home() {
         isAdmin={isAdmin}
       />
     </>
-  )
+  );
 }

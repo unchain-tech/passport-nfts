@@ -1,10 +1,10 @@
-import Image from 'next/image'
-import React from 'react'
-import { MediaRenderer } from '@thirdweb-dev/react'
+import Image from 'next/image';
+import React from 'react';
+import { MediaRenderer } from '@thirdweb-dev/react';
 type Props = {
-  imgId: string
-  mintStatus: number
-}
+  imgId: string;
+  mintStatus: number;
+};
 
 export default function TextImg(props: Props) {
   return (
@@ -17,5 +17,5 @@ export default function TextImg(props: Props) {
         }`}
       />
     </div>
-  )
+  );
 }
