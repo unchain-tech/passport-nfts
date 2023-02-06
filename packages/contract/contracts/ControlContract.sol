@@ -64,7 +64,9 @@ contract ControlContract is
     }
 
     // this is essential function for upgrade util
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
         virtual
@@ -84,11 +86,9 @@ contract ControlContract is
         console.log("Contorol role granted to: ", _to);
     }
 
-    function addTextContractAddress(address contractAddress)
-        public
-        onlyNewAddress(contractAddress)
-        onlyRole(CONTROLLER_ROLE)
-    {
+    function addTextContractAddress(
+        address contractAddress
+    ) public onlyNewAddress(contractAddress) onlyRole(CONTROLLER_ROLE) {
         _addressList.push(contractAddress);
     }
 
@@ -104,7 +104,10 @@ contract ControlContract is
     }
 
     // get text status list from each text contract
-    function getTexts(address[] memory textAddressList, address user)
+    function getTexts(
+        address[] memory textAddressList,
+        address user
+    )
         public
         onlyRole(CONTROLLER_ROLE)
         returns (ITextContract.TextUserStatus[] memory)
@@ -129,36 +132,34 @@ contract ControlContract is
         return textStatusList;
     }
 
-    function getStatus(address contractAddress, address user)
-        public
-        view
-        onlyRole(CONTROLLER_ROLE)
-        returns (ITextContract.MintStatus)
-    {
+    function getStatus(
+        address contractAddress,
+        address user
+    ) public view onlyRole(CONTROLLER_ROLE) returns (ITextContract.MintStatus) {
         return (ITextContract(contractAddress).getStatus(user));
     }
 
     // change mint status to UNAVAILABLE
-    function changeStatusUnavailable(address contractAddress, address user)
-        public
-        onlyRole(CONTROLLER_ROLE)
-    {
+    function changeStatusUnavailable(
+        address contractAddress,
+        address user
+    ) public onlyRole(CONTROLLER_ROLE) {
         ITextContract(contractAddress).changeStatusUnavailable(user);
     }
 
     // change mint status to AVAILABLE
-    function changeStatusAvailable(address contractAddress, address user)
-        public
-        onlyRole(CONTROLLER_ROLE)
-    {
+    function changeStatusAvailable(
+        address contractAddress,
+        address user
+    ) public onlyRole(CONTROLLER_ROLE) {
         ITextContract(contractAddress).changeStatusAvailable(user);
     }
 
     // change mint status to DONE
-    function changeStatusDone(address contractAddress, address user)
-        public
-        onlyRole(CONTROLLER_ROLE)
-    {
+    function changeStatusDone(
+        address contractAddress,
+        address user
+    ) public onlyRole(CONTROLLER_ROLE) {
         ITextContract(contractAddress).changeStatusDone(user);
     }
 

@@ -54,25 +54,17 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     event NewTokenMinted(address sender, address recipient, uint256 tokenId);
 
     // Return the user's mint status
-    function getStatus(address user)
-        public
-        view
-        virtual
-        override
-        returns (ITextContract.MintStatus)
-    {
+    function getStatus(
+        address user
+    ) public view virtual override returns (ITextContract.MintStatus) {
         // If there is no user data, the default value(UNAVAILABLE == 0) is returned
         return _userToMintStatus[user];
     }
 
     // Return text status
-    function getTextStatus(address user)
-        public
-        view
-        virtual
-        override
-        returns (TextUserStatus memory)
-    {
+    function getTextStatus(
+        address user
+    ) public view virtual override returns (TextUserStatus memory) {
         TextUserStatus memory textStatus = TextUserStatus({
             imageUrl: _imageUrl,
             mintStatus: getStatus(user)
@@ -118,11 +110,10 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
     // Mint NFT
     // This function is called when ControlContract admin calls multiMint
-    function mintByAdmin(address sender, address recipient)
-        public
-        virtual
-        override
-    {
+    function mintByAdmin(
+        address sender,
+        address recipient
+    ) public virtual override {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();

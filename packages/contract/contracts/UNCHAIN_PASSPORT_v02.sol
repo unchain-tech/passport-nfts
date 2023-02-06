@@ -80,7 +80,9 @@ contract UNCHAIN_PASSPORT_v02 is
         return contractInfo;
     }
 
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
         virtual
@@ -90,11 +92,9 @@ contract UNCHAIN_PASSPORT_v02 is
         return super.supportsInterface(interfaceId);
     }
 
-    function grantAdminRole(address _to)
-        public
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        returns (address)
-    {
+    function grantAdminRole(
+        address _to
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) returns (address) {
         // grant admin role to _to
         grantRole(ADMIN_ROLE, _to);
 
@@ -106,11 +106,9 @@ contract UNCHAIN_PASSPORT_v02 is
         return _to;
     }
 
-    function grantMinterRole(address _to)
-        public
-        onlyRole(ADMIN_ROLE)
-        returns (address)
-    {
+    function grantMinterRole(
+        address _to
+    ) public onlyRole(ADMIN_ROLE) returns (address) {
         // grant minter role to _to
         grantRole(MINTER_ROLE, _to);
 

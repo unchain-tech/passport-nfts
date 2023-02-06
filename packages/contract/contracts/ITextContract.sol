@@ -19,10 +19,9 @@ interface ITextContract {
     function getStatus(address user) external view returns (MintStatus status);
 
     // Get text status of calling user
-    function getTextStatus(address user)
-        external
-        view
-        returns (TextUserStatus memory);
+    function getTextStatus(
+        address user
+    ) external view returns (TextUserStatus memory);
 
     // Change status to UNAVAILABLE
     function changeStatusUnavailable(address user) external;
