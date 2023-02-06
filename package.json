@@ -1,0 +1,30 @@
+{
+  "name": "UNCHAIN-passports-V2",
+  "version": "1.0.0",
+  "description": "UNCHAIN passport NFT contract",
+  "license": "UNLICENSED",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shiftbase-inc/UNCHAIN-passports-V2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shiftbase-inc/UNCHAIN-passports-V2/issues"
+  },
+  "author": "SHØ <neila@users.noreply.github.com> (http://akxra.art/)",
+  "contributors": [
+    "SHØ <neila@users.noreply.github.com> (http://akxra.art/)",
+    "yk-saito <60546319+yk-saito@users.noreply.github.com> (https://github.com/yk-saito)",
+    "honganji <yujicavs@icloud.com> (https://github.com/honganji)"
+  ],
+  "devDependencies": {},
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "contract": "yarn workspace contract",
+    "test": "yarn workspace contract test"
+  }
+}

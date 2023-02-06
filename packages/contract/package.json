@@ -1,23 +1,17 @@
 {
-    "name": "unchain_passport_v2",
+    "name": "contract",
     "version": "1.0.0",
     "description": "UNCHAIN passport NFT contract",
-    "main": "contracts/UNCHAIN_PASSPORT_v02.sol",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/shiftbase-inc/UNCHAIN-passports-V2.git"
+    "private": true,
+    "scripts": {
+        "lint": "eslint --fix test/** scripts/**",
+        "prettier:check": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --check .",
+        "prettier:format": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --write .",
+        "solhint:check": "solhint --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
+        "solhint:fix": "solhint --fix --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
+        "precommit": "yarn lint && yarn prettier:check && yarn solhint:check",
+        "test": "npx hardhat test test/0.integrated.test.ts"
     },
-    "author": "SHØ <neila@users.noreply.github.com> (http://akxra.art/)",
-    "contributors": [
-        "SHØ <neila@users.noreply.github.com> (http://akxra.art/)",
-        "yk-saito <60546319+yk-saito@users.noreply.github.com> (https://github.com/yk-saito)",
-        "honganji <yujicavs@icloud.com> (https://github.com/honganji)"
-    ],
-    "license": "UNLICENSED",
-    "bugs": {
-        "url": "https://github.com/shiftbase-inc/UNCHAIN-passports-V2/issues"
-    },
-    "homepage": "https://github.com/shiftbase-inc/UNCHAIN-passports-V2#readme",
     "devDependencies": {
         "@nomicfoundation/hardhat-network-helpers": "^1.0.7",
         "@nomiclabs/hardhat-ethers": "^2.0.6",
@@ -54,14 +48,5 @@
     },
     "dependencies": {
         "@openzeppelin/contracts-upgradeable": "^4.6.0"
-    },
-    "scripts": {
-        "lint": "eslint --fix test/** scripts/**",
-        "prettier:check": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --check .",
-        "prettier:format": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --write .",
-        "solhint:check": "solhint --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
-        "solhint:fix": "solhint --fix --max-error 0 --ignore-path .solhintignore \"contracts/**/*.sol\"",
-        "precommit": "yarn lint && yarn prettier:check && yarn solhint:check",
-        "test": "npx hardhat test test/0.integrated.test.ts"
     }
 }
