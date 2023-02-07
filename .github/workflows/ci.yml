@@ -29,12 +29,10 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: lint
-        run: yarn lint
       - name: solhint
         run: yarn workspace contract solhint
-      - name: format
-        run: yarn format
+      - name: lint & format
+        run: yarn ci
 
   contract-test:
     runs-on: ubuntu-latest
