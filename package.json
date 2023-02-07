@@ -18,6 +18,7 @@
     "honganji <yujicavs@icloud.com> (https://github.com/honganji)"
   ],
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
     "eslint": "^8.33.0",
