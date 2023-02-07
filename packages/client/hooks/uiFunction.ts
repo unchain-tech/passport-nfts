@@ -5,7 +5,7 @@ export const divideList = (
   let listOfImgIdList: string[][] = new Array();
   let temImgIdList: string[] = new Array();
   imgIdList.map((imgId, i) => {
-    if ((i + 1) % itemNum == 0) {
+    if ((i + 1) % itemNum === 0) {
       temImgIdList.push(imgId);
       listOfImgIdList.push(temImgIdList);
       temImgIdList = new Array();
@@ -13,7 +13,7 @@ export const divideList = (
       temImgIdList.push(imgId);
     }
 
-    if (i == imgIdList.length - 1) listOfImgIdList.push(temImgIdList);
+    if (i === imgIdList.length - 1) listOfImgIdList.push(temImgIdList);
   });
 
   return listOfImgIdList;

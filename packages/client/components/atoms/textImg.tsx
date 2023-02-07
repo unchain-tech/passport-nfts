@@ -13,7 +13,7 @@ export default function TextImg(props: Props) {
         src={`ipfs://${props.imgId}`}
         alt='home_img'
         className={`w-52 h-52 ${
-          props.mintStatus == 1 ? '' : 'opacity-40 blur-[2px]'
+          props.mintStatus === 1 ? '' : 'opacity-40 blur-[2px]'
         }`}
       />
     </div>

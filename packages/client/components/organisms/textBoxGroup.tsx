@@ -14,7 +14,7 @@ type Props = {
 export default function TextBoxGroup(props: Props) {
   return (
     <div className='flex flex-row space-x-4'>
-      {props.mode == Mode.MintNFT ? (
+      {props.mode === Mode.MintNFT ? (
         <div className='flex flex-row space-x-4'>
           <SelectionBox textList={props.textList} />
           <AddressBox />

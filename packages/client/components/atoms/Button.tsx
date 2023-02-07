@@ -14,9 +14,9 @@ export default function Button(props: Props) {
   return (
     <button
       onClick={() => {
-        if (props.screen == Screen.HOME) {
-          props.isAdmin ? router.push('controller') : router.push(`/minter`);
-        } else if (props.mode == Mode.MintNFT) {
+        if (props.screen === Screen.HOME) {
+          props.isAdmin ? router.push('controller') : router.push("/minter");
+        } else if (props.mode === Mode.MintNFT) {
           console.log('Mint NFT');
         } else {
           console.log('Grant Mint-Role');
