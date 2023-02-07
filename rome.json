@@ -1,0 +1,31 @@
+{
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentSize": 2,
+    "ignore": [
+      ".yarn/**",
+      "**/.gitignore",
+      "**/.next/**",
+      "**/typechain-types/**"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {},
+    "ignore": [
+      ".yarn/**",
+      "**/.gitignore",
+      "**/.next/**",
+      "**/typechain-types/**"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "semicolons": "always",
+      "trailingComma": "all"
+    }
+  }
+}

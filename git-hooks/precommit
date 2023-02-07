@@ -1,7 +1,0 @@
-#!/bin/sh
-
-set -eux
-
-yarn lint && yarn prettier:check && yarn solhint:check
-
-exit $?

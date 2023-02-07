@@ -1,0 +1,18 @@
+node_modules
+.env
+coverage
+coverage.json
+package-lock.json
+.vscode
+.DS_Store
+.openzeppelin
+
+
+#Hardhat files
+cache
+artifacts
+dist
+
+#typechain
+typechain
+typechain-types
