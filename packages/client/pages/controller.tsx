@@ -1,5 +1,6 @@
 import React from 'react';
-import ControllerTemp from '../components/templates/controllerTemp';
+
+import ControllerTemp from '@/components/templates/controllerTemp';
 
 export default function Controller() {
   const imgIdList: string[] = [
@@ -42,7 +43,7 @@ export default function Controller() {
 
   return (
     <ControllerTemp
-      subtitle='Let mint UNCHAIN Passports to those who finished the challenges'
+      subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
       imgIdList={imgIdList}
       mintStatusList={mintStatusList}
       address={address}

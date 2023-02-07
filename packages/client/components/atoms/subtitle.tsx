@@ -5,7 +5,7 @@ type Props = {
 };
 export default function Subtitle(props: Props) {
   return (
-    <div className='text-white text-3xl'>
+    <div className="text-white text-3xl">
       Welcome to UNCHAIN passport dApp!!
     </div>
   );

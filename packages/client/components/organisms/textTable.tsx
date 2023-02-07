@@ -1,7 +1,8 @@
 import React from 'react';
-import { Screen } from '../../features/enum';
-import { divideList } from '../../hooks/uiFunction';
-import Text from '../molecules/text';
+
+import Text from '@/components/molecules/text';
+import { Screen } from '@/features/enum';
+import { divideList } from '@/hooks/uiFunction';
 
 type Props = {
   imgIdList: string[];
@@ -18,7 +19,7 @@ export default function TextTable(props: Props) {
       } border-solid border-2 border-white scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-[#00DC16] scrollbar-track-gray-100`}
     >
       {divideList(props.imgIdList, props.itemNum).map((imgIdList, i) => (
-        <div className='flex flex-row' key={i + 1}>
+        <div className="flex flex-row" key={i + 1}>
           {imgIdList.map((imgId, j) => (
             <Text
               imgId={imgId}

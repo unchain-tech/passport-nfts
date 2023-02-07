@@ -1,7 +1,8 @@
 import React, { useLayoutEffect } from 'react';
-import { Screen } from '../../features/enum';
-import TextTable from '../organisms/textTable';
-import Title from '../organisms/title';
+
+import TextTable from '@/components/organisms/textTable';
+import Title from '@/components/organisms/title';
+import { Screen } from '@/features/enum';
 
 type Props = {
   subtitle: string;
@@ -11,7 +12,7 @@ type Props = {
 };
 export default function MinterTemp(props: Props) {
   return (
-    <div className='center bg-black space-y-8 overflow-scroll '>
+    <div className="center bg-black space-y-8 overflow-scroll ">
       <Title subtitle={props.subtitle} screen={Screen.MINTER} />
       <TextTable
         imgIdList={props.imgIdList}

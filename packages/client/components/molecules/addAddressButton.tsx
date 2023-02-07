@@ -1,10 +1,11 @@
 import React from 'react';
-import TextBox from '../atoms/textBox';
+
+import TextBox from '@/components/atoms/textBox';
 
 export default function AddAddressButton() {
   return (
     <div>
-      <TextBox text='Add Address' />
+      <TextBox text="Add Address" />
     </div>
   );
 }

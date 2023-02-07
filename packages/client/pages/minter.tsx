@@ -1,5 +1,6 @@
 import React from 'react';
-import MinterTemp from '../components/templates/minterTemp';
+
+import MinterTemp from '@/components/templates/minterTemp';
 
 const imgIdList: string[] = [
   'QmXk3kdRvV6TV9yZvtZPgKHoYmywnURy3Qhs8Bjo5szg1J',
@@ -33,8 +34,8 @@ const mintStatusList: number[] = [
 export default function Minter() {
   return (
     <MinterTemp
-      subtitle='Let mint UNCHAIN Passports to those who finished the challenges'
-      buttonName='Give Mint Roles'
+      subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
+      buttonName="Give Mint Roles"
       imgIdList={imgIdList}
       mintStatusList={mintStatusList}
     />

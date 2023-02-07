@@ -1,7 +1,7 @@
 // Load dependencies
+import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import { ethers, upgrades } from 'hardhat';
-import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 
 describe('Control Contract AccessControl', function () {
   // Define a fixture to reuse the same setup in every test

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import { Mode } from '../../features/enum';
+
 type Props = {
   passValue: (value: Mode) => void;
 };
@@ -17,12 +19,12 @@ export default function RadioButton(props: Props) {
     }
   };
   return (
-    <div className='flex flex-col'>
+    <div className="flex flex-col">
       {items.map((item) => (
         <label key={item}>
           <input
             id={item}
-            type='radio'
+            type="radio"
             value={item === 'Mint NFT mode' ? Mode.MintNFT : Mode.GrantRole}
             onChange={handleChange}
             checked={item === selectedValue}
