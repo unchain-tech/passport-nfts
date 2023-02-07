@@ -15,7 +15,7 @@ export default function Button(props: Props) {
     <button
       onClick={() => {
         if (props.screen === Screen.HOME) {
-          props.isAdmin ? router.push('controller') : router.push("/minter");
+          props.isAdmin ? router.push('controller') : router.push('/minter');
         } else if (props.mode === Mode.MintNFT) {
           console.log('Mint NFT');
         } else {

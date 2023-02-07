@@ -34,7 +34,7 @@ export default function ControllerTemp(props: Props) {
         mode={modeValue}
       />
       <div className='flex flex-row justify-between items-center w-full'>
-        <div className='w-1/5'/>
+        <div className='w-1/5' />
         <Button
           text={modeValue === Mode.MintNFT ? 'Mint NFT' : 'Grant Mint-Role'}
           isAdmin={null}

@@ -11,8 +11,10 @@ export default function RadioButton(props: Props) {
 
   const handleChange = (e: { target: { id: string; value: string } }) => {
     setSelectedValue(e.target.id);
-    props.passValue(e.target.value === "0" ? Mode.MintNFT : Mode.GrantRole);
-    {console.log(e.target.value)}
+    props.passValue(e.target.value === '0' ? Mode.MintNFT : Mode.GrantRole);
+    {
+      console.log(e.target.value);
+    }
   };
   return (
     <div className='flex flex-col'>

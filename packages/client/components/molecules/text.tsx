@@ -20,7 +20,7 @@ export default function Text(props: Props) {
             window.confirm("Would you like to mint this text's NFT?");
           }
         }}
-        onKeyDown={()=>{}}
+        onKeyDown={() => {}}
       >
         <div className='text-red-400'>{`${
           props.mintStatus === 0 ? 'not' : ''

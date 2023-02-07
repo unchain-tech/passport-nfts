@@ -9,7 +9,7 @@ export default function SelectionBox(props: Props) {
     <div className=''>
       <select className='h-10 W-10 rounded-sm flex items-center justify-center text-ellipsis overflow-hidden'>
         {props.textList.map((text, i) => (
-          <option key={i+1}>{text}</option>
+          <option key={i + 1}>{text}</option>
         ))}
       </select>
     </div>
