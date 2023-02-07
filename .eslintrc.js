@@ -5,7 +5,7 @@ module.exports = {
     mocha: true,
     node: true,
   },
-  plugins: ['@typescript-eslint', '@trivago/prettier-plugin-sort-imports'],
+  plugins: ['@typescript-eslint'],
   extends: ['standard', 'prettier', 'plugin:node/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -17,6 +17,8 @@ module.exports = {
       { ignores: ['modules'] },
     ],
     'node/no-unpublished-require': ['warn'],
+    'node/no-unpublished-import': ['warn'],
+    'node/no-missing-import': ['warn'],
     'no-lone-blocks': ['off'],
     'no-unused-vars': ['warn'],
   },
