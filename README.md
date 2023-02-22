@@ -1,9 +1,21 @@
-# 初期設定
+# UNCHAIN NFTs
+
+## Configurations
+
+- eslint
+- solhint
+- prettier
+- yarn workspaces
+  - client
+  - contract
+
+## Setup
 
 ```
-// 依存ファイルインストール
-$ yarn
-
-// githooks ファイルが`git-hooks`ディレクトリに保存されているので, hooksPathに設定する
-$ git config core.hooksPath git-hooks/
+yarn install
+yarn simple-git-hooks
 ```
+
+## Architecture
+
+`docs/`を参照

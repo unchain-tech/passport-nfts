@@ -1,18 +1,7 @@
-node_modules
-.env
-coverage
-coverage.json
-package-lock.json
-.vscode
-.DS_Store
-.openzeppelin
+**/yarn-error.log*
 
+# dependencies
+**/node_modules
 
-#Hardhat files
-cache
-artifacts
-dist
-
-#typechain
-typechain
-typechain-types
+# misc
+**/.DS_Store
