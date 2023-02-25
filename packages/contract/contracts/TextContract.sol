@@ -6,6 +6,7 @@ import '@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
+import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol';
 
 import './ITextContract.sol';
 
@@ -13,9 +14,10 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
   // Token info
   string private _tokenName;
   string private _tokenSymbol;
+  string private _tokenDescription;
   string private _imageUrl;
-  // string private _projectName;
-  // string private _passportHash;
+  string private _projectName;
+  string private _passportHash;
 
   using CountersUpgradeable for CountersUpgradeable.Counter;
   CountersUpgradeable.Counter private _tokenIds;
@@ -37,14 +39,13 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     // setup token
     _tokenName = 'UNCHAIN Passport';
     _tokenSymbol = 'CHAIPASS';
-    // TODO 後で変更
+    _tokenDescription = 'Immutable and permenent proof of your UNCHAIN project completion.';
+    // TODO: 学習コンテンツに応じて値を変更
     _imageUrl = 'TEST_URL';
-    // // TODO 後で変更
-    // _projectName = "Test";
-    // // TODO 後で変更
-    // _passportHash = "test";
+    _projectName = 'test';
+    _passportHash = 'test';
 
-    __ERC721_init(_tokenName, 'CHAIPASS');
+    __ERC721_init(_tokenName, _tokenSymbol);
 
     console.log('Token created!');
   }
@@ -91,13 +92,13 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     _tokenIds.increment();
 
     uint256 newItemId = _tokenIds.current();
+    string memory tokenURI = _generateTokenURI();
 
     // execute mint
     _safeMint(user, newItemId);
 
-    // TODO 第二引数の値をJSONデータに変更する
     // set JSON data
-    _setTokenURI(newItemId, 'TEST');
+    _setTokenURI(newItemId, tokenURI);
 
     // user status change when mint succeed
     changeStatusDone(user);
@@ -128,5 +129,39 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
     // send event
     emit NewTokenMinted(sender, recipient, newItemId);
+  }
+
+  function _generateTokenURI() private view returns (string memory) {
+    // Make Json metadata and base 64 encode it.
+    bytes memory _attributes;
+    _attributes = abi.encodePacked(
+      '"attributes": [{"trait_type": "UNCHAIN Project", "value": "',
+      _projectName,
+      '"}]'
+    );
+
+    string memory metadata = Base64Upgradeable.encode(
+      bytes(
+        abi.encodePacked(
+          '{"name": "',
+          _tokenName,
+          ': ',
+          _projectName,
+          '", "description": "',
+          _tokenDescription,
+          '", "image": "',
+          'https://ipfs.io/ipfs/',
+          _passportHash,
+          '",',
+          string(_attributes),
+          '}'
+        )
+      )
+    );
+    string memory tokenURI = string(
+      abi.encodePacked('data:application/json;base64,', metadata)
+    );
+
+    return tokenURI;
   }
 }

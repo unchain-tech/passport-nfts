@@ -125,4 +125,31 @@ describe('Text Contract', function () {
         .withArgs(owner.address, learner.address, 1);
     });
   });
+
+  describe('tokenURI', function () {
+    it('should get a token URI', async function () {
+      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const tokenId = 1;
+
+      // NOTE: In practice, the mint status is changed by a user
+      // with the Controller-Role calling from ControlContract.
+      await textContract.changeStatusAvailable(learner.address);
+
+      await expect(textContract.mint(learner.address))
+        .to.emit(textContract, 'NewTokenMinted')
+        .withArgs(learner.address, learner.address, 1);
+
+      const getTokenURI = await textContract.tokenURI(tokenId);
+      // 29 = length of "data:application/json;base64,"
+      const json = atob(getTokenURI.substring(29));
+      const object = JSON.parse(json);
+      expect(object.name).to.equal('UNCHAIN Passport: test');
+      expect(object.description).to.equal(
+        'Immutable and permenent proof of your UNCHAIN project completion.',
+      );
+      expect(object.image).to.equal('https://ipfs.io/ipfs/test');
+      expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
+      expect(object.attributes[0].value).to.equal('test');
+    });
+  });
 });
