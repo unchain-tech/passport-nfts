@@ -39,7 +39,7 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     // setup token
     _tokenName = 'UNCHAIN Passport';
     _tokenSymbol = 'CHAIPASS';
-    _tokenDescription = 'Immutable and permenent proof of your UNCHAIN project completion.';
+    _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     // TODO: 学習コンテンツに応じて値を変更
     _imageUrl = 'TEST_URL';
     _projectName = 'test';

@@ -145,7 +145,7 @@ describe('Text Contract', function () {
       const object = JSON.parse(json);
       expect(object.name).to.equal('UNCHAIN Passport: test');
       expect(object.description).to.equal(
-        'Immutable and permenent proof of your UNCHAIN project completion.',
+        'Immutable and permanent proof of your UNCHAIN project completion.',
       );
       expect(object.image).to.equal('https://ipfs.io/ipfs/test');
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
