@@ -29,7 +29,7 @@ contract ControlContract is
   mapping(bytes32 => uint8) private _hashes;
 
   // event
-  event getUserStatus(ITextContract.TextUserStatus[] statusList);
+  event getUserStatus(ITextContract.UserTextInfo[] statusList);
 
   // mofifier to check if there is no the same address in address list
   modifier onlyNewAddress(address contractAddress) {
@@ -91,6 +91,7 @@ contract ControlContract is
 
   // for testing to check this contract can get text contract address
   // TODO delete when development is done
+  // TODO: passportHashも一緒にして返すように変更する
   function showTextContractAddressList()
     public
     view
@@ -101,39 +102,39 @@ contract ControlContract is
   }
 
   // get text status list from each text contract
-  function getTexts(
+  function getUserTextInfoAll(
     address[] memory textAddressList,
     address user
   )
     public
     onlyRole(CONTROLLER_ROLE)
-    returns (ITextContract.TextUserStatus[] memory)
+    returns (ITextContract.UserTextInfo[] memory)
   {
-    ITextContract.TextUserStatus[]
-      memory textStatusList = new ITextContract.TextUserStatus[](
+    ITextContract.UserTextInfo[]
+      memory UserTextInfoList = new ITextContract.UserTextInfo[](
         textAddressList.length
       );
     for (uint8 i; i < textAddressList.length; i++) {
-      ITextContract.TextUserStatus memory userStatus = ITextContract(
+      ITextContract.UserTextInfo memory userStatus = ITextContract(
         textAddressList[i]
-      ).getTextStatus(user);
-      ITextContract.TextUserStatus memory textUserStatus = ITextContract
-        .TextUserStatus(
+      ).getUserTextInfo(user);
+      ITextContract.UserTextInfo memory userTextInfo = ITextContract
+        .UserTextInfo(
           userStatus.passportHash,
           (ITextContract.MintStatus)(uint8(userStatus.mintStatus))
         );
-      textStatusList[i] = textUserStatus;
+      UserTextInfoList[i] = userTextInfo;
     }
-    emit getUserStatus(textStatusList);
+    emit getUserStatus(UserTextInfoList);
 
-    return textStatusList;
+    return UserTextInfoList;
   }
 
-  function getStatus(
+  function getUserMintStatus(
     address contractAddress,
     address user
   ) public view onlyRole(CONTROLLER_ROLE) returns (ITextContract.MintStatus) {
-    return (ITextContract(contractAddress).getStatus(user));
+    return (ITextContract(contractAddress).getUserMintStatus(user));
   }
 
   // change mint status to UNAVAILABLE
@@ -181,7 +182,7 @@ contract ControlContract is
       // check user mint status
       ITextContract.MintStatus recipientStatus = ITextContract(
         contractAddresses[i]
-      ).getStatus(recipients[i]);
+      ).getUserMintStatus(recipients[i]);
 
       if (recipientStatus == ITextContract.MintStatus.DONE) {
         console.log('NFT has been already minted to %s', recipients[i]);

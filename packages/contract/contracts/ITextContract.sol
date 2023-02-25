@@ -10,18 +10,20 @@ interface ITextContract {
   }
 
   // Struct for text status
-  struct TextUserStatus {
+  struct UserTextInfo {
     string passportHash;
     MintStatus mintStatus;
   }
 
   // Get mint status of user
-  function getStatus(address user) external view returns (MintStatus status);
+  function getUserMintStatus(
+    address user
+  ) external view returns (MintStatus status);
 
   // Get text status of calling user
-  function getTextStatus(
+  function getUserTextInfo(
     address user
-  ) external view returns (TextUserStatus memory);
+  ) external view returns (UserTextInfo memory);
 
   // Change status to UNAVAILABLE
   function changeStatusUnavailable(address user) external;

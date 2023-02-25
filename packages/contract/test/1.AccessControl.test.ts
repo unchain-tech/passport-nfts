@@ -161,7 +161,7 @@ describe('Control Contract AccessControl', function () {
       });
     });
 
-    describe('getTexts', function () {
+    describe('getUserTextInfoAll', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
         const { controlContract, textContract, learner, CONTROLLER_ROLE } =
@@ -170,14 +170,14 @@ describe('Control Contract AccessControl', function () {
         await expect(
           controlContract
             .connect(learner)
-            .getTexts([textContract.address], learner.address),
+            .getUserTextInfoAll([textContract.address], learner.address),
         ).to.be.revertedWith(
           `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
         );
       });
     });
 
-    describe('getStatus', function () {
+    describe('getUserMintStatus', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
         const { controlContract, textContract, learner, CONTROLLER_ROLE } =
@@ -186,7 +186,7 @@ describe('Control Contract AccessControl', function () {
         await expect(
           controlContract
             .connect(learner)
-            .getStatus(textContract.address, learner.address),
+            .getUserMintStatus(textContract.address, learner.address),
         ).to.be.revertedWith(
           `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
         );

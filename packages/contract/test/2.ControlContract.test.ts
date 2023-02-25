@@ -70,7 +70,7 @@ describe('Control Contract', function () {
     });
   });
 
-  describe('getTexts', function () {
+  describe('getUserTextInfoAll', function () {
     // TODO: getTextsの戻り値をassertionで確認するテスト方法にする
     it('return user mint statuses', async function () {
       const { controlContract, textContract, learnerA } = await loadFixture(
@@ -78,7 +78,7 @@ describe('Control Contract', function () {
       );
 
       const textContractList = [textContract.address];
-      const txForGetUserStatus = await controlContract.getTexts(
+      const txForGetUserStatus = await controlContract.getUserTextInfoAll(
         textContractList,
         learnerA.address,
       );
@@ -95,13 +95,16 @@ describe('Control Contract', function () {
     });
   });
 
-  describe('getStatus', function () {
+  describe('getUserMintStatus', function () {
     it('return UNAVAILABLE', async function () {
       const { controlContract, textContract, learnerA } = await loadFixture(
         deployTextFixture,
       );
       expect(
-        await controlContract.getStatus(textContract.address, learnerA.address),
+        await controlContract.getUserMintStatus(
+          textContract.address,
+          learnerA.address,
+        ),
       ).to.equal(0); // MintStatus.UNAVAILABLE
     });
   });
@@ -117,7 +120,10 @@ describe('Control Contract', function () {
         learnerA.address,
       );
       expect(
-        await controlContract.getStatus(textContract.address, learnerA.address),
+        await controlContract.getUserMintStatus(
+          textContract.address,
+          learnerA.address,
+        ),
       ).to.equal(0); // MintStatus.UNAVAILABLE
     });
   });
@@ -133,7 +139,10 @@ describe('Control Contract', function () {
         learnerA.address,
       );
       expect(
-        await controlContract.getStatus(textContract.address, learnerA.address),
+        await controlContract.getUserMintStatus(
+          textContract.address,
+          learnerA.address,
+        ),
       ).to.equal(1); // MintStatus.AVAILABLE
     });
   });
@@ -149,7 +158,10 @@ describe('Control Contract', function () {
         learnerA.address,
       );
       expect(
-        await controlContract.getStatus(textContract.address, learnerA.address),
+        await controlContract.getUserMintStatus(
+          textContract.address,
+          learnerA.address,
+        ),
       ).to.equal(2); // MintStatus.DONE
     });
   });

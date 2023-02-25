@@ -26,7 +26,7 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
   // mint status meets
   modifier onlyAvailable(address _user) {
-    ITextContract.TextUserStatus memory textUserStatus = getTextStatus(_user);
+    ITextContract.UserTextInfo memory textUserStatus = getUserTextInfo(_user);
     require(
       textUserStatus.mintStatus == ITextContract.MintStatus.AVAILABLE,
       "you're mint status is not AVAILABLE!"
@@ -51,7 +51,7 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
   event NewTokenMinted(address sender, address recipient, uint256 tokenId);
 
   // Return the user's mint status
-  function getStatus(
+  function getUserMintStatus(
     address user
   ) public view virtual override returns (ITextContract.MintStatus) {
     // If there is no user data, the default value(UNAVAILABLE == 0) is returned
@@ -59,12 +59,12 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
   }
 
   // Return text status
-  function getTextStatus(
+  function getUserTextInfo(
     address user
-  ) public view virtual override returns (TextUserStatus memory) {
-    TextUserStatus memory textStatus = TextUserStatus({
+  ) public view virtual override returns (UserTextInfo memory) {
+    UserTextInfo memory textStatus = UserTextInfo({
       passportHash: _passportHash,
-      mintStatus: getStatus(user)
+      mintStatus: getUserMintStatus(user)
     });
 
     return textStatus;

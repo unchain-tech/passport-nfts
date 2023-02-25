@@ -21,21 +21,21 @@ describe('Text Contract', function () {
   }
 
   // Test case
-  describe('getStatus', function () {
+  describe('getUserMintStatus', function () {
     it("return default status 'UNAVAILABLE' of the learner", async function () {
       const { textContract, learner } = await loadFixture(deployTextFixture);
 
-      expect(await textContract.getStatus(learner.address)).to.equal(
+      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
       );
     });
   });
 
-  describe('getTextStatus', function () {
+  describe('getUserTextInfo', function () {
     it("return NFT's image-URL and mint status of learner", async function () {
       const { textContract, learner } = await loadFixture(deployTextFixture);
 
-      const textStatus = await textContract.getTextStatus(learner.address);
+      const textStatus = await textContract.getUserTextInfo(learner.address);
 
       expect(textStatus.passportHash).to.equal('test');
       expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
@@ -47,7 +47,7 @@ describe('Text Contract', function () {
       const { textContract, learner } = await loadFixture(deployTextFixture);
 
       await textContract.changeStatusUnavailable(learner.address);
-      expect(await textContract.getStatus(learner.address)).to.equal(
+      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
       );
     });
@@ -58,7 +58,7 @@ describe('Text Contract', function () {
       const { textContract, learner } = await loadFixture(deployTextFixture);
 
       await textContract.changeStatusAvailable(learner.address);
-      expect(await textContract.getStatus(learner.address)).to.equal(
+      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
       );
     });
@@ -69,7 +69,7 @@ describe('Text Contract', function () {
       const { textContract, learner } = await loadFixture(deployTextFixture);
 
       await textContract.changeStatusDone(learner.address);
-      expect(await textContract.getStatus(learner.address)).to.equal(
+      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
       );
     });
