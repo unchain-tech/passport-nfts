@@ -37,7 +37,7 @@ describe('Text Contract', function () {
 
       const textStatus = await textContract.getTextStatus(learner.address);
 
-      expect(textStatus.imageUrl).to.equal('TEST_URL');
+      expect(textStatus.passportHash).to.equal('test');
       expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
     });
   });

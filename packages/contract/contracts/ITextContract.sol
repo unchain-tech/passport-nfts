@@ -11,7 +11,7 @@ interface ITextContract {
 
   // Struct for text status
   struct TextUserStatus {
-    string imageUrl;
+    string passportHash;
     MintStatus mintStatus;
   }
 

@@ -15,7 +15,6 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
   string private _tokenName;
   string private _tokenSymbol;
   string private _tokenDescription;
-  string private _imageUrl;
   string private _projectName;
   string private _passportHash;
 
@@ -41,7 +40,6 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     // TODO: 学習コンテンツに応じて値を変更
-    _imageUrl = 'TEST_URL';
     _projectName = 'test';
     _passportHash = 'test';
 
@@ -65,7 +63,7 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
     address user
   ) public view virtual override returns (TextUserStatus memory) {
     TextUserStatus memory textStatus = TextUserStatus({
-      imageUrl: _imageUrl,
+      passportHash: _passportHash,
       mintStatus: getStatus(user)
     });
 

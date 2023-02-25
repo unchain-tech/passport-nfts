@@ -119,7 +119,7 @@ contract ControlContract is
       ).getTextStatus(user);
       ITextContract.TextUserStatus memory textUserStatus = ITextContract
         .TextUserStatus(
-          userStatus.imageUrl,
+          userStatus.passportHash,
           (ITextContract.MintStatus)(uint8(userStatus.mintStatus))
         );
       textStatusList[i] = textUserStatus;
