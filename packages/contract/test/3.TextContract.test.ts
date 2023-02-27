@@ -21,6 +21,14 @@ describe('Text Contract', function () {
   }
 
   // Test case
+  describe('getPassportHash', function () {
+    it('return passportHash', async function () {
+      const { textContract, learner } = await loadFixture(deployTextFixture);
+
+      expect(await textContract.getPassportHash()).to.equal('test');
+    });
+  });
+
   describe('getUserMintStatus', function () {
     it("return default status 'UNAVAILABLE' of the learner", async function () {
       const { textContract, learner } = await loadFixture(deployTextFixture);

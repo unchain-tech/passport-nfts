@@ -47,10 +47,12 @@ describe('Control Contract', function () {
         );
 
         await controlContract.addTextContractAddress(textContract.address);
-        const textContractAddressList =
-          await controlContract.showTextContractAddressList();
+        const textContractAddressList = await controlContract.getAllTextInfo();
 
-        expect(textContractAddressList[0]).to.equal(textContract.address);
+        expect(textContractAddressList[0].textContractAddress).to.equal(
+          textContract.address,
+        );
+        expect(textContractAddressList[0].passportHash).to.equal('test');
       });
     });
 

@@ -154,7 +154,7 @@ describe('Control Contract AccessControl', function () {
         );
 
         await expect(
-          controlContract.connect(learner).showTextContractAddressList(),
+          controlContract.connect(learner).getAllTextInfo(),
         ).to.be.revertedWith(
           `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
         );

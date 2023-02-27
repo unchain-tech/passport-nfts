@@ -50,6 +50,10 @@ contract TextContract is ITextContract, ERC721URIStorageUpgradeable {
 
   event NewTokenMinted(address sender, address recipient, uint256 tokenId);
 
+  function getPassportHash() public view returns (string memory) {
+    return _passportHash;
+  }
+
   // Return the user's mint status
   function getUserMintStatus(
     address user

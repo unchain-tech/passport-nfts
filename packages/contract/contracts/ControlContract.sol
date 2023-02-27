@@ -18,6 +18,11 @@ contract ControlContract is
   AccessControlUpgradeable,
   ERC721URIStorageUpgradeable
 {
+  struct TextInfo {
+    address textContractAddress;
+    string passportHash;
+  }
+
   // address list of text contract address
   address[] private _addressList;
 
@@ -89,16 +94,24 @@ contract ControlContract is
     _addressList.push(contractAddress);
   }
 
-  // for testing to check this contract can get text contract address
-  // TODO delete when development is done
-  // TODO: passportHashも一緒にして返すように変更する
-  function showTextContractAddressList()
+  function getAllTextInfo()
     public
     view
     onlyRole(CONTROLLER_ROLE)
-    returns (address[] memory)
+    returns (TextInfo[] memory)
   {
-    return _addressList;
+    uint256 length = _addressList.length;
+    TextInfo[] memory AllTextInfo = new TextInfo[](length);
+
+    for (uint256 i = 0; i < length; i++) {
+      TextInfo memory textInfo = TextInfo({
+        textContractAddress: _addressList[i],
+        passportHash: ITextContract(_addressList[i]).getPassportHash()
+      });
+      AllTextInfo[i] = textInfo;
+    }
+
+    return AllTextInfo;
   }
 
   // get text status list from each text contract

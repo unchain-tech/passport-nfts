@@ -15,6 +15,8 @@ interface ITextContract {
     MintStatus mintStatus;
   }
 
+  function getPassportHash() external view returns (string memory);
+
   // Get mint status of user
   function getUserMintStatus(
     address user
