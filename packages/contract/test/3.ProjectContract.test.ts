@@ -3,47 +3,61 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import { ethers, upgrades } from 'hardhat';
 
-describe('Text Contract', function () {
+describe('ProjectContract', function () {
   // Define a fixture to reuse the same setup in every test
-  async function deployTextFixture() {
-    const TextContractFactory = await ethers.getContractFactory('TextContract');
+  async function deployProjectFixture() {
+    const ProjectContractFactory = await ethers.getContractFactory(
+      'ProjectContract',
+    );
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
 
-    const textContract = await upgrades.deployProxy(TextContractFactory, [], {
-      initializer: 'initialize',
-    });
+    const ProjectContract = await upgrades.deployProxy(
+      ProjectContractFactory,
+      [],
+      {
+        initializer: 'initialize',
+      },
+    );
 
-    await textContract.deployed();
+    await ProjectContract.deployed();
 
-    return { textContract, owner, learner };
+    return { ProjectContract, owner, learner };
   }
 
   // Test case
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const { ProjectContract, learner } = await loadFixture(
+        deployProjectFixture,
+      );
 
-      expect(await textContract.getPassportHash()).to.equal('test');
+      expect(await ProjectContract.getPassportHash()).to.equal('test');
     });
   });
 
   describe('getUserMintStatus', function () {
     it("return default status 'UNAVAILABLE' of the learner", async function () {
-      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const { ProjectContract, learner } = await loadFixture(
+        deployProjectFixture,
+      );
 
-      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
+      expect(await ProjectContract.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
       );
     });
   });
 
-  describe('getUserTextInfo', function () {
+  describe('getUserProjectInfo', function () {
     it("return NFT's image-URL and mint status of learner", async function () {
-      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const { ProjectContract, learner } = await loadFixture(
+        deployProjectFixture,
+      );
 
-      const textStatus = await textContract.getUserTextInfo(learner.address);
+      const textStatus = await ProjectContract.getUserProjectInfo(
+        learner.address,
+      );
 
       expect(textStatus.passportHash).to.equal('test');
       expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
@@ -52,10 +66,12 @@ describe('Text Contract', function () {
 
   describe('changeStatusUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
-      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const { ProjectContract, learner } = await loadFixture(
+        deployProjectFixture,
+      );
 
-      await textContract.changeStatusUnavailable(learner.address);
-      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
+      await ProjectContract.changeStatusUnavailable(learner.address);
+      expect(await ProjectContract.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
       );
     });
@@ -63,10 +79,12 @@ describe('Text Contract', function () {
 
   describe('changeStatusAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
-      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const { ProjectContract, learner } = await loadFixture(
+        deployProjectFixture,
+      );
 
-      await textContract.changeStatusAvailable(learner.address);
-      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
+      await ProjectContract.changeStatusAvailable(learner.address);
+      expect(await ProjectContract.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
       );
     });
@@ -74,10 +92,12 @@ describe('Text Contract', function () {
 
   describe('changeStatusDone', function () {
     it("change learner's mint status to DONE", async function () {
-      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const { ProjectContract, learner } = await loadFixture(
+        deployProjectFixture,
+      );
 
-      await textContract.changeStatusDone(learner.address);
-      expect(await textContract.getUserMintStatus(learner.address)).to.equal(
+      await ProjectContract.changeStatusDone(learner.address);
+      expect(await ProjectContract.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
       );
     });
@@ -86,24 +106,28 @@ describe('Text Contract', function () {
   describe('mint', function () {
     context("when learner's mint status is AVAILABLE", function () {
       it('emit a NewTokenMinted event', async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture);
+        const { ProjectContract, learner } = await loadFixture(
+          deployProjectFixture,
+        );
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await textContract.changeStatusAvailable(learner.address);
+        await ProjectContract.changeStatusAvailable(learner.address);
 
-        await expect(textContract.mint(learner.address))
-          .to.emit(textContract, 'NewTokenMinted')
+        await expect(ProjectContract.mint(learner.address))
+          .to.emit(ProjectContract, 'NewTokenMinted')
           .withArgs(learner.address, learner.address, 1);
       });
     });
 
     context("when learner's mint status is UNAVAILABLE", function () {
       it('reverts', async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture);
+        const { ProjectContract, learner } = await loadFixture(
+          deployProjectFixture,
+        );
 
         // check status UNAVAILABLE
-        await expect(textContract.mint(learner.address)).to.be.revertedWith(
+        await expect(ProjectContract.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
         );
       });
@@ -111,11 +135,13 @@ describe('Text Contract', function () {
 
     context("when learner's mint status is DONE", function () {
       it('reverts', async function () {
-        const { textContract, learner } = await loadFixture(deployTextFixture);
+        const { ProjectContract, learner } = await loadFixture(
+          deployProjectFixture,
+        );
 
         // check status DONE
-        await textContract.changeStatusDone(learner.address);
-        await expect(textContract.mint(learner.address)).to.be.revertedWith(
+        await ProjectContract.changeStatusDone(learner.address);
+        await expect(ProjectContract.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
         );
       });
@@ -124,30 +150,32 @@ describe('Text Contract', function () {
 
   describe('mintByAdmin', function () {
     it('emit a NewTokenMinted event', async function () {
-      const { textContract, owner, learner } = await loadFixture(
-        deployTextFixture,
+      const { ProjectContract, owner, learner } = await loadFixture(
+        deployProjectFixture,
       );
 
-      await expect(textContract.mintByAdmin(owner.address, learner.address))
-        .to.emit(textContract, 'NewTokenMinted')
+      await expect(ProjectContract.mintByAdmin(owner.address, learner.address))
+        .to.emit(ProjectContract, 'NewTokenMinted')
         .withArgs(owner.address, learner.address, 1);
     });
   });
 
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
-      const { textContract, learner } = await loadFixture(deployTextFixture);
+      const { ProjectContract, learner } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await textContract.changeStatusAvailable(learner.address);
+      await ProjectContract.changeStatusAvailable(learner.address);
 
-      await expect(textContract.mint(learner.address))
-        .to.emit(textContract, 'NewTokenMinted')
+      await expect(ProjectContract.mint(learner.address))
+        .to.emit(ProjectContract, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, 1);
 
-      const getTokenURI = await textContract.tokenURI(tokenId);
+      const getTokenURI = await ProjectContract.tokenURI(tokenId);
       // 29 = length of "data:application/json;base64,"
       const json = atob(getTokenURI.substring(29));
       const object = JSON.parse(json);
