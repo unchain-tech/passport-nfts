@@ -10,20 +10,20 @@ import '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
 
 import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol';
 
-import './ITextContract.sol';
+import './IProject.sol';
 
-// contract for controling text contract
-contract ControlContract is
+// contract for controling project contract
+contract ProjectsController is
   Initializable,
   AccessControlUpgradeable,
   ERC721URIStorageUpgradeable
 {
-  struct TextInfo {
-    address textContractAddress;
+  struct ProjectInfo {
+    address projectContractAddress;
     string passportHash;
   }
 
-  // address list of text contract address
+  // address list of project contract address
   address[] private _addressList;
 
   //setup admin and controller role
@@ -34,7 +34,7 @@ contract ControlContract is
   mapping(bytes32 => uint8) private _hashes;
 
   // event
-  event getUserStatus(ITextContract.UserTextInfo[] statusList);
+  event getUserStatus(IProject.UserProjectInfo[] statusList);
 
   // mofifier to check if there is no the same address in address list
   modifier onlyNewAddress(address contractAddress) {
@@ -88,66 +88,66 @@ contract ControlContract is
     console.log('Contorol role granted to: ', _to);
   }
 
-  function addTextContractAddress(
+  function addProjectContractAddress(
     address contractAddress
   ) public onlyNewAddress(contractAddress) onlyRole(CONTROLLER_ROLE) {
     _addressList.push(contractAddress);
   }
 
-  function getAllTextInfo()
+  function getAllProjectInfo()
     public
     view
     onlyRole(CONTROLLER_ROLE)
-    returns (TextInfo[] memory)
+    returns (ProjectInfo[] memory)
   {
     uint256 length = _addressList.length;
-    TextInfo[] memory AllTextInfo = new TextInfo[](length);
+    ProjectInfo[] memory AllProjectInfo = new ProjectInfo[](length);
 
     for (uint256 i = 0; i < length; i++) {
-      TextInfo memory textInfo = TextInfo({
-        textContractAddress: _addressList[i],
-        passportHash: ITextContract(_addressList[i]).getPassportHash()
+      ProjectInfo memory projectInfo = ProjectInfo({
+        projectContractAddress: _addressList[i],
+        passportHash: IProject(_addressList[i]).getPassportHash()
       });
-      AllTextInfo[i] = textInfo;
+      AllProjectInfo[i] = projectInfo;
     }
 
-    return AllTextInfo;
+    return AllProjectInfo;
   }
 
-  // get text status list from each text contract
-  function getUserTextInfoAll(
-    address[] memory textAddressList,
+  // get project status list from each project contract
+  function getUserProjectInfoAll(
+    address[] memory projectAddressList,
     address user
   )
     public
     onlyRole(CONTROLLER_ROLE)
-    returns (ITextContract.UserTextInfo[] memory)
+    returns (IProject.UserProjectInfo[] memory)
   {
-    ITextContract.UserTextInfo[]
-      memory UserTextInfoList = new ITextContract.UserTextInfo[](
-        textAddressList.length
+    IProject.UserProjectInfo[]
+      memory UserProjectInfoList = new IProject.UserProjectInfo[](
+        projectAddressList.length
       );
-    for (uint8 i; i < textAddressList.length; i++) {
-      ITextContract.UserTextInfo memory userStatus = ITextContract(
-        textAddressList[i]
-      ).getUserTextInfo(user);
-      ITextContract.UserTextInfo memory userTextInfo = ITextContract
-        .UserTextInfo(
+    for (uint8 i; i < projectAddressList.length; i++) {
+      IProject.UserProjectInfo memory userStatus = IProject(
+        projectAddressList[i]
+      ).getUserProjectInfo(user);
+      IProject.UserProjectInfo memory userProjectInfo = IProject
+        .UserProjectInfo(
           userStatus.passportHash,
-          (ITextContract.MintStatus)(uint8(userStatus.mintStatus))
+          (IProject.MintStatus)(uint8(userStatus.mintStatus))
         );
-      UserTextInfoList[i] = userTextInfo;
+      UserProjectInfoList[i] = userProjectInfo;
     }
-    emit getUserStatus(UserTextInfoList);
+    emit getUserStatus(UserProjectInfoList);
 
-    return UserTextInfoList;
+    return UserProjectInfoList;
   }
 
   function getUserMintStatus(
     address contractAddress,
     address user
-  ) public view onlyRole(CONTROLLER_ROLE) returns (ITextContract.MintStatus) {
-    return (ITextContract(contractAddress).getUserMintStatus(user));
+  ) public view onlyRole(CONTROLLER_ROLE) returns (IProject.MintStatus) {
+    return (IProject(contractAddress).getUserMintStatus(user));
   }
 
   // change mint status to UNAVAILABLE
@@ -155,7 +155,7 @@ contract ControlContract is
     address contractAddress,
     address user
   ) public onlyRole(CONTROLLER_ROLE) {
-    ITextContract(contractAddress).changeStatusUnavailable(user);
+    IProject(contractAddress).changeStatusUnavailable(user);
   }
 
   // change mint status to AVAILABLE
@@ -163,7 +163,7 @@ contract ControlContract is
     address contractAddress,
     address user
   ) public onlyRole(CONTROLLER_ROLE) {
-    ITextContract(contractAddress).changeStatusAvailable(user);
+    IProject(contractAddress).changeStatusAvailable(user);
   }
 
   // change mint status to DONE
@@ -171,13 +171,13 @@ contract ControlContract is
     address contractAddress,
     address user
   ) public onlyRole(CONTROLLER_ROLE) {
-    ITextContract(contractAddress).changeStatusDone(user);
+    IProject(contractAddress).changeStatusDone(user);
   }
 
   // Mint NFT
   // this function is called by the content learner.
   function mint(address contractAddress) public {
-    ITextContract(contractAddress).mint(msg.sender);
+    IProject(contractAddress).mint(msg.sender);
   }
 
   // Mint NFT to multiple recipients
@@ -193,18 +193,14 @@ contract ControlContract is
 
     for (uint256 i = 0; i < recipients.length; i++) {
       // check user mint status
-      ITextContract.MintStatus recipientStatus = ITextContract(
-        contractAddresses[i]
-      ).getUserMintStatus(recipients[i]);
+      IProject.MintStatus recipientStatus = IProject(contractAddresses[i])
+        .getUserMintStatus(recipients[i]);
 
-      if (recipientStatus == ITextContract.MintStatus.DONE) {
+      if (recipientStatus == IProject.MintStatus.DONE) {
         console.log('NFT has been already minted to %s', recipients[i]);
       } else {
         // execute mint
-        ITextContract(contractAddresses[i]).mintByAdmin(
-          msg.sender,
-          recipients[i]
-        );
+        IProject(contractAddresses[i]).mintByAdmin(msg.sender, recipients[i]);
       }
     }
   }

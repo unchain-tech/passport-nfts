@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-interface ITextContract {
+interface IProject {
   // Status to manage user's mint status
   enum MintStatus {
     UNAVAILABLE,
@@ -9,8 +9,8 @@ interface ITextContract {
     DONE
   }
 
-  // Struct for text status
-  struct UserTextInfo {
+  // Struct for project status
+  struct UserProjectInfo {
     string passportHash;
     MintStatus mintStatus;
   }
@@ -22,10 +22,10 @@ interface ITextContract {
     address user
   ) external view returns (MintStatus status);
 
-  // Get text status of calling user
-  function getUserTextInfo(
+  // Get project status of calling user
+  function getUserProjectInfo(
     address user
-  ) external view returns (UserTextInfo memory);
+  ) external view returns (UserProjectInfo memory);
 
   // Change status to UNAVAILABLE
   function changeStatusUnavailable(address user) external;
