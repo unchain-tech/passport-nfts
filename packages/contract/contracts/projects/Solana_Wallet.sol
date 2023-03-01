@@ -9,7 +9,7 @@ import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base6
 
 import './IProject.sol';
 
-contract Solana_Wallete is IProject, ERC721URIStorageUpgradeable {
+contract Solana_Wallet is IProject, ERC721URIStorageUpgradeable {
   // Token info
   string private _tokenName;
   string private _tokenSymbol;
