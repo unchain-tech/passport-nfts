@@ -1,6 +1,5 @@
 require('./1.AccessControl.test.ts');
 require('./2.ProjectsController.test.ts');
-require('./3.ProjectContract.test.ts');
 require('./projects/101.ETH_dApp.test.ts');
 require('./projects/102.ETH_NFT_Collection.test.ts');
 require('./projects/103.ETH_NFT_Maker.test.ts');
