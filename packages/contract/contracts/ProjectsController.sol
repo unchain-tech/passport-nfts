@@ -10,7 +10,7 @@ import '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
 
 import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol';
 
-import './IProject.sol';
+import './projects/IProject.sol';
 
 // contract for controling project contract
 contract ProjectsController is
