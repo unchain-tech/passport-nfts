@@ -68,13 +68,13 @@ describe('Polygon_ENS_Domain', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { PolygonENSDomain, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await PolygonENSDomain.changeStatusUnavailable(learner.address);
+      await PolygonENSDomain.changeStatusToUnavailable(learner.address);
 
       expect(
         await PolygonENSDomain.getUserMintStatus(learner.address),
@@ -84,13 +84,13 @@ describe('Polygon_ENS_Domain', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { PolygonENSDomain, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await PolygonENSDomain.changeStatusAvailable(learner.address);
+      await PolygonENSDomain.changeStatusToAvailable(learner.address);
 
       expect(
         await PolygonENSDomain.getUserMintStatus(learner.address),
@@ -100,13 +100,13 @@ describe('Polygon_ENS_Domain', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { PolygonENSDomain, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await PolygonENSDomain.changeStatusDone(learner.address);
+      await PolygonENSDomain.changeStatusToDone(learner.address);
 
       expect(
         await PolygonENSDomain.getUserMintStatus(learner.address),
@@ -125,7 +125,7 @@ describe('Polygon_ENS_Domain', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await PolygonENSDomain.changeStatusAvailable(learner.address);
+        await PolygonENSDomain.changeStatusToAvailable(learner.address);
 
         await expect(PolygonENSDomain.mint(learner.address))
           .to.emit(PolygonENSDomain, 'NewTokenMinted')
@@ -150,7 +150,7 @@ describe('Polygon_ENS_Domain', function () {
         const { PolygonENSDomain, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await PolygonENSDomain.changeStatusDone(learner.address);
+        await PolygonENSDomain.changeStatusToDone(learner.address);
 
         await expect(PolygonENSDomain.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -181,7 +181,7 @@ describe('Polygon_ENS_Domain', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await PolygonENSDomain.changeStatusAvailable(learner.address);
+      await PolygonENSDomain.changeStatusToAvailable(learner.address);
       await expect(PolygonENSDomain.mint(learner.address))
         .to.emit(PolygonENSDomain, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

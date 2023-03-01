@@ -62,13 +62,13 @@ describe('ICP_Static_Site', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ICPStaticSite, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ICPStaticSite.changeStatusUnavailable(learner.address);
+      await ICPStaticSite.changeStatusToUnavailable(learner.address);
 
       expect(await ICPStaticSite.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -76,13 +76,13 @@ describe('ICP_Static_Site', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { ICPStaticSite, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ICPStaticSite.changeStatusAvailable(learner.address);
+      await ICPStaticSite.changeStatusToAvailable(learner.address);
 
       expect(await ICPStaticSite.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -90,13 +90,13 @@ describe('ICP_Static_Site', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { ICPStaticSite, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ICPStaticSite.changeStatusDone(learner.address);
+      await ICPStaticSite.changeStatusToDone(learner.address);
 
       expect(await ICPStaticSite.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -113,7 +113,7 @@ describe('ICP_Static_Site', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await ICPStaticSite.changeStatusAvailable(learner.address);
+        await ICPStaticSite.changeStatusToAvailable(learner.address);
 
         await expect(ICPStaticSite.mint(learner.address))
           .to.emit(ICPStaticSite, 'NewTokenMinted')
@@ -138,7 +138,7 @@ describe('ICP_Static_Site', function () {
         const { ICPStaticSite, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await ICPStaticSite.changeStatusDone(learner.address);
+        await ICPStaticSite.changeStatusToDone(learner.address);
 
         await expect(ICPStaticSite.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -169,7 +169,7 @@ describe('ICP_Static_Site', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await ICPStaticSite.changeStatusAvailable(learner.address);
+      await ICPStaticSite.changeStatusToAvailable(learner.address);
       await expect(ICPStaticSite.mint(learner.address))
         .to.emit(ICPStaticSite, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

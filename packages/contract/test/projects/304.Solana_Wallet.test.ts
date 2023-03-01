@@ -56,11 +56,11 @@ describe('Solana_Wallet', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { SolanaWallet, learner } = await loadFixture(deployProjectFixture);
 
-      await SolanaWallet.changeStatusUnavailable(learner.address);
+      await SolanaWallet.changeStatusToUnavailable(learner.address);
 
       expect(await SolanaWallet.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -68,11 +68,11 @@ describe('Solana_Wallet', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { SolanaWallet, learner } = await loadFixture(deployProjectFixture);
 
-      await SolanaWallet.changeStatusAvailable(learner.address);
+      await SolanaWallet.changeStatusToAvailable(learner.address);
 
       expect(await SolanaWallet.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -80,11 +80,11 @@ describe('Solana_Wallet', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { SolanaWallet, learner } = await loadFixture(deployProjectFixture);
 
-      await SolanaWallet.changeStatusDone(learner.address);
+      await SolanaWallet.changeStatusToDone(learner.address);
 
       expect(await SolanaWallet.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -101,7 +101,7 @@ describe('Solana_Wallet', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await SolanaWallet.changeStatusAvailable(learner.address);
+        await SolanaWallet.changeStatusToAvailable(learner.address);
 
         await expect(SolanaWallet.mint(learner.address))
           .to.emit(SolanaWallet, 'NewTokenMinted')
@@ -126,7 +126,7 @@ describe('Solana_Wallet', function () {
         const { SolanaWallet, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await SolanaWallet.changeStatusDone(learner.address);
+        await SolanaWallet.changeStatusToDone(learner.address);
 
         await expect(SolanaWallet.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -155,7 +155,7 @@ describe('Solana_Wallet', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await SolanaWallet.changeStatusAvailable(learner.address);
+      await SolanaWallet.changeStatusToAvailable(learner.address);
       await expect(SolanaWallet.mint(learner.address))
         .to.emit(SolanaWallet, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

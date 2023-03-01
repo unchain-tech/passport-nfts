@@ -62,13 +62,13 @@ describe('Solana_NFT_Drop', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { SolanaNFTDrop, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await SolanaNFTDrop.changeStatusUnavailable(learner.address);
+      await SolanaNFTDrop.changeStatusToUnavailable(learner.address);
 
       expect(await SolanaNFTDrop.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -76,13 +76,13 @@ describe('Solana_NFT_Drop', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { SolanaNFTDrop, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await SolanaNFTDrop.changeStatusAvailable(learner.address);
+      await SolanaNFTDrop.changeStatusToAvailable(learner.address);
 
       expect(await SolanaNFTDrop.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -90,13 +90,13 @@ describe('Solana_NFT_Drop', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { SolanaNFTDrop, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await SolanaNFTDrop.changeStatusDone(learner.address);
+      await SolanaNFTDrop.changeStatusToDone(learner.address);
 
       expect(await SolanaNFTDrop.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -113,7 +113,7 @@ describe('Solana_NFT_Drop', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await SolanaNFTDrop.changeStatusAvailable(learner.address);
+        await SolanaNFTDrop.changeStatusToAvailable(learner.address);
 
         await expect(SolanaNFTDrop.mint(learner.address))
           .to.emit(SolanaNFTDrop, 'NewTokenMinted')
@@ -138,7 +138,7 @@ describe('Solana_NFT_Drop', function () {
         const { SolanaNFTDrop, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await SolanaNFTDrop.changeStatusDone(learner.address);
+        await SolanaNFTDrop.changeStatusToDone(learner.address);
 
         await expect(SolanaNFTDrop.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -169,7 +169,7 @@ describe('Solana_NFT_Drop', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await SolanaNFTDrop.changeStatusAvailable(learner.address);
+      await SolanaNFTDrop.changeStatusToAvailable(learner.address);
       await expect(SolanaNFTDrop.mint(learner.address))
         .to.emit(SolanaNFTDrop, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

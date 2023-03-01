@@ -1,4 +1,5 @@
 ## Sequence Diagram
+
 ---
 
 ```mermaid
@@ -45,6 +46,7 @@ sequenceDiagram
 ```
 
 ## Class Diagram
+
 ---
 
 ```mermaid
@@ -65,9 +67,9 @@ classDiagram
         +getAllProjectInfo(): ProjectInfo[]
         +getUserProjectInfoAll(projectAddressList: address[], user: address): UserProjectInfo[]
         +getUserMintStatus(contractAddress: address, user: address): MintStatus
-        +changeStatusUnavailable(contractAddress: address, user: address)
-        +changeStatusAvailable(contractAddress: address, user: address)
-        +changeStatusDone(contractAddress: address, user: address)
+        +changeStatusToUnavailable(contractAddress: address, user: address)
+        +changeStatusToAvailable(contractAddress: address, user: address)
+        +changeStatusToDone(contractAddress: address, user: address)
         +mint(user: address)
         +multiMint(recipients: address[], contractAddresses: address[])
     }
@@ -83,9 +85,9 @@ classDiagram
         getPassportHash(): string
         getUserMintStatus(user: address): MintStatus
         getUserProjectInfo(user: address): UserProjectInfo
-        changeStatusUnavailable(user: address)
-        changeStatusAvailable(user: address)
-        changeStatusDone(user: address)
+        changeStatusToUnavailable(user: address)
+        changeStatusToAvailable(user: address)
+        changeStatusToDone(user: address)
         mint(user: address)
         mintByAdmin(sender: address, recipient: address)
     }
@@ -110,9 +112,9 @@ classDiagram
         +getPassportHash(): string
         +getUserMintStatus(user: address): MintStatus
         +getUserProjectInfo(user: address): UserProjectInfo
-        +changeStatusUnavailable(user: address)
-        +changeStatusAvailable(user: address)
-        +changeStatusDone(user: address)
+        +changeStatusToUnavailable(user: address)
+        +changeStatusToAvailable(user: address)
+        +changeStatusToDone(user: address)
         +mint(user: address)
         +mintByAdmin(sender: address, recipient: address)
         -generateTokenURI(): string

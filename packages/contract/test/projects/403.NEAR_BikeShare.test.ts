@@ -62,13 +62,13 @@ describe('NEAR_BikeShare', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { NEARBikeShare, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARBikeShare.changeStatusUnavailable(learner.address);
+      await NEARBikeShare.changeStatusToUnavailable(learner.address);
 
       expect(await NEARBikeShare.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -76,13 +76,13 @@ describe('NEAR_BikeShare', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { NEARBikeShare, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARBikeShare.changeStatusAvailable(learner.address);
+      await NEARBikeShare.changeStatusToAvailable(learner.address);
 
       expect(await NEARBikeShare.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -90,13 +90,13 @@ describe('NEAR_BikeShare', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { NEARBikeShare, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARBikeShare.changeStatusDone(learner.address);
+      await NEARBikeShare.changeStatusToDone(learner.address);
 
       expect(await NEARBikeShare.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -113,7 +113,7 @@ describe('NEAR_BikeShare', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await NEARBikeShare.changeStatusAvailable(learner.address);
+        await NEARBikeShare.changeStatusToAvailable(learner.address);
 
         await expect(NEARBikeShare.mint(learner.address))
           .to.emit(NEARBikeShare, 'NewTokenMinted')
@@ -138,7 +138,7 @@ describe('NEAR_BikeShare', function () {
         const { NEARBikeShare, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await NEARBikeShare.changeStatusDone(learner.address);
+        await NEARBikeShare.changeStatusToDone(learner.address);
 
         await expect(NEARBikeShare.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -169,7 +169,7 @@ describe('NEAR_BikeShare', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await NEARBikeShare.changeStatusAvailable(learner.address);
+      await NEARBikeShare.changeStatusToAvailable(learner.address);
       await expect(NEARBikeShare.mint(learner.address))
         .to.emit(NEARBikeShare, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

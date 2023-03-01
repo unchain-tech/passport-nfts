@@ -54,11 +54,11 @@ describe('ETH_dApp', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ETHDapp, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHDapp.changeStatusUnavailable(learner.address);
+      await ETHDapp.changeStatusToUnavailable(learner.address);
 
       expect(await ETHDapp.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -66,11 +66,11 @@ describe('ETH_dApp', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { ETHDapp, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHDapp.changeStatusAvailable(learner.address);
+      await ETHDapp.changeStatusToAvailable(learner.address);
 
       expect(await ETHDapp.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -78,11 +78,11 @@ describe('ETH_dApp', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { ETHDapp, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHDapp.changeStatusDone(learner.address);
+      await ETHDapp.changeStatusToDone(learner.address);
 
       expect(await ETHDapp.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -97,7 +97,7 @@ describe('ETH_dApp', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await ETHDapp.changeStatusAvailable(learner.address);
+        await ETHDapp.changeStatusToAvailable(learner.address);
 
         await expect(ETHDapp.mint(learner.address))
           .to.emit(ETHDapp, 'NewTokenMinted')
@@ -118,7 +118,7 @@ describe('ETH_dApp', function () {
     context("when learner's mint status is DONE", function () {
       it('reverts', async function () {
         const { ETHDapp, learner } = await loadFixture(deployProjectFixture);
-        await ETHDapp.changeStatusDone(learner.address);
+        await ETHDapp.changeStatusToDone(learner.address);
 
         await expect(ETHDapp.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -147,7 +147,7 @@ describe('ETH_dApp', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await ETHDapp.changeStatusAvailable(learner.address);
+      await ETHDapp.changeStatusToAvailable(learner.address);
       await expect(ETHDapp.mint(learner.address))
         .to.emit(ETHDapp, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

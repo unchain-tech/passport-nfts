@@ -56,11 +56,11 @@ describe('ETH_Yield_Farm', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ETHYieldFarm, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHYieldFarm.changeStatusUnavailable(learner.address);
+      await ETHYieldFarm.changeStatusToUnavailable(learner.address);
 
       expect(await ETHYieldFarm.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -68,11 +68,11 @@ describe('ETH_Yield_Farm', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { ETHYieldFarm, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHYieldFarm.changeStatusAvailable(learner.address);
+      await ETHYieldFarm.changeStatusToAvailable(learner.address);
 
       expect(await ETHYieldFarm.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -80,11 +80,11 @@ describe('ETH_Yield_Farm', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { ETHYieldFarm, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHYieldFarm.changeStatusDone(learner.address);
+      await ETHYieldFarm.changeStatusToDone(learner.address);
 
       expect(await ETHYieldFarm.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -101,7 +101,7 @@ describe('ETH_Yield_Farm', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await ETHYieldFarm.changeStatusAvailable(learner.address);
+        await ETHYieldFarm.changeStatusToAvailable(learner.address);
 
         await expect(ETHYieldFarm.mint(learner.address))
           .to.emit(ETHYieldFarm, 'NewTokenMinted')
@@ -126,7 +126,7 @@ describe('ETH_Yield_Farm', function () {
         const { ETHYieldFarm, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await ETHYieldFarm.changeStatusDone(learner.address);
+        await ETHYieldFarm.changeStatusToDone(learner.address);
 
         await expect(ETHYieldFarm.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -155,7 +155,7 @@ describe('ETH_Yield_Farm', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await ETHYieldFarm.changeStatusAvailable(learner.address);
+      await ETHYieldFarm.changeStatusToAvailable(learner.address);
       await expect(ETHYieldFarm.mint(learner.address))
         .to.emit(ETHYieldFarm, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

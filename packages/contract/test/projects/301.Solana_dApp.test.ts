@@ -54,11 +54,11 @@ describe('Solana_dApp', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
 
-      await SolanaDapp.changeStatusUnavailable(learner.address);
+      await SolanaDapp.changeStatusToUnavailable(learner.address);
 
       expect(await SolanaDapp.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -66,11 +66,11 @@ describe('Solana_dApp', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
 
-      await SolanaDapp.changeStatusAvailable(learner.address);
+      await SolanaDapp.changeStatusToAvailable(learner.address);
 
       expect(await SolanaDapp.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -78,11 +78,11 @@ describe('Solana_dApp', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
 
-      await SolanaDapp.changeStatusDone(learner.address);
+      await SolanaDapp.changeStatusToDone(learner.address);
 
       expect(await SolanaDapp.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -97,7 +97,7 @@ describe('Solana_dApp', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await SolanaDapp.changeStatusAvailable(learner.address);
+        await SolanaDapp.changeStatusToAvailable(learner.address);
 
         await expect(SolanaDapp.mint(learner.address))
           .to.emit(SolanaDapp, 'NewTokenMinted')
@@ -118,7 +118,7 @@ describe('Solana_dApp', function () {
     context("when learner's mint status is DONE", function () {
       it('reverts', async function () {
         const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
-        await SolanaDapp.changeStatusDone(learner.address);
+        await SolanaDapp.changeStatusToDone(learner.address);
 
         await expect(SolanaDapp.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -147,7 +147,7 @@ describe('Solana_dApp', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await SolanaDapp.changeStatusAvailable(learner.address);
+      await SolanaDapp.changeStatusToAvailable(learner.address);
       await expect(SolanaDapp.mint(learner.address))
         .to.emit(SolanaDapp, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

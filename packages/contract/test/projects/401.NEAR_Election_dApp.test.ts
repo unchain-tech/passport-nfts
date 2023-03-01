@@ -68,13 +68,13 @@ describe('NEAR_Election_dApp', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { NEARElectionDapp, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARElectionDapp.changeStatusUnavailable(learner.address);
+      await NEARElectionDapp.changeStatusToUnavailable(learner.address);
 
       expect(
         await NEARElectionDapp.getUserMintStatus(learner.address),
@@ -84,13 +84,13 @@ describe('NEAR_Election_dApp', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { NEARElectionDapp, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARElectionDapp.changeStatusAvailable(learner.address);
+      await NEARElectionDapp.changeStatusToAvailable(learner.address);
 
       expect(
         await NEARElectionDapp.getUserMintStatus(learner.address),
@@ -100,13 +100,13 @@ describe('NEAR_Election_dApp', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { NEARElectionDapp, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARElectionDapp.changeStatusDone(learner.address);
+      await NEARElectionDapp.changeStatusToDone(learner.address);
 
       expect(
         await NEARElectionDapp.getUserMintStatus(learner.address),
@@ -125,7 +125,7 @@ describe('NEAR_Election_dApp', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await NEARElectionDapp.changeStatusAvailable(learner.address);
+        await NEARElectionDapp.changeStatusToAvailable(learner.address);
 
         await expect(NEARElectionDapp.mint(learner.address))
           .to.emit(NEARElectionDapp, 'NewTokenMinted')
@@ -150,7 +150,7 @@ describe('NEAR_Election_dApp', function () {
         const { NEARElectionDapp, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await NEARElectionDapp.changeStatusDone(learner.address);
+        await NEARElectionDapp.changeStatusToDone(learner.address);
 
         await expect(NEARElectionDapp.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -181,7 +181,7 @@ describe('NEAR_Election_dApp', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await NEARElectionDapp.changeStatusAvailable(learner.address);
+      await NEARElectionDapp.changeStatusToAvailable(learner.address);
       await expect(NEARElectionDapp.mint(learner.address))
         .to.emit(NEARElectionDapp, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

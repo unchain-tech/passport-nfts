@@ -54,11 +54,11 @@ describe('ETH_NFT_Maker', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ETHNFTMaker, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHNFTMaker.changeStatusUnavailable(learner.address);
+      await ETHNFTMaker.changeStatusToUnavailable(learner.address);
 
       expect(await ETHNFTMaker.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -66,11 +66,11 @@ describe('ETH_NFT_Maker', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { ETHNFTMaker, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHNFTMaker.changeStatusAvailable(learner.address);
+      await ETHNFTMaker.changeStatusToAvailable(learner.address);
 
       expect(await ETHNFTMaker.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -78,11 +78,11 @@ describe('ETH_NFT_Maker', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { ETHNFTMaker, learner } = await loadFixture(deployProjectFixture);
 
-      await ETHNFTMaker.changeStatusDone(learner.address);
+      await ETHNFTMaker.changeStatusToDone(learner.address);
 
       expect(await ETHNFTMaker.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -99,7 +99,7 @@ describe('ETH_NFT_Maker', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await ETHNFTMaker.changeStatusAvailable(learner.address);
+        await ETHNFTMaker.changeStatusToAvailable(learner.address);
 
         await expect(ETHNFTMaker.mint(learner.address))
           .to.emit(ETHNFTMaker, 'NewTokenMinted')
@@ -124,7 +124,7 @@ describe('ETH_NFT_Maker', function () {
         const { ETHNFTMaker, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await ETHNFTMaker.changeStatusDone(learner.address);
+        await ETHNFTMaker.changeStatusToDone(learner.address);
 
         await expect(ETHNFTMaker.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -153,7 +153,7 @@ describe('ETH_NFT_Maker', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await ETHNFTMaker.changeStatusAvailable(learner.address);
+      await ETHNFTMaker.changeStatusToAvailable(learner.address);
       await expect(ETHNFTMaker.mint(learner.address))
         .to.emit(ETHNFTMaker, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

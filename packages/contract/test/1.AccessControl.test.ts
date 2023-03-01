@@ -190,14 +190,14 @@ describe('ProjectsController Contract AccessControl', function () {
       });
     });
 
-    describe('changeStatusUnavailable', function () {
+    describe('changeStatusToUnavailable', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
         const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
           await loadFixture(deployTextFixture);
 
         await expect(
-          ProjectsController.connect(learner).changeStatusUnavailable(
+          ProjectsController.connect(learner).changeStatusToUnavailable(
             ETHDapp.address,
             learner.address,
           ),
@@ -207,14 +207,14 @@ describe('ProjectsController Contract AccessControl', function () {
       });
     });
 
-    describe('changeStatusAvailable', function () {
+    describe('changeStatusToAvailable', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
         const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
           await loadFixture(deployTextFixture);
 
         await expect(
-          ProjectsController.connect(learner).changeStatusAvailable(
+          ProjectsController.connect(learner).changeStatusToAvailable(
             ETHDapp.address,
             learner.address,
           ),
@@ -224,14 +224,14 @@ describe('ProjectsController Contract AccessControl', function () {
       });
     });
 
-    describe('changeStatusDone', function () {
+    describe('changeStatusToDone', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
         const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
           await loadFixture(deployTextFixture);
 
         await expect(
-          ProjectsController.connect(learner).changeStatusDone(
+          ProjectsController.connect(learner).changeStatusToDone(
             ETHDapp.address,
             learner.address,
           ),

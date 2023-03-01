@@ -114,13 +114,13 @@ describe('ProjectsController Contract', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it('change mint status to UNAVAILABLE', async function () {
       const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ProjectsController.changeStatusUnavailable(
+      await ProjectsController.changeStatusToUnavailable(
         ETHDapp.address,
         learnerA.address,
       );
@@ -133,13 +133,13 @@ describe('ProjectsController Contract', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it('change mint status to AVAILABLE', async function () {
       const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ProjectsController.changeStatusAvailable(
+      await ProjectsController.changeStatusToAvailable(
         ETHDapp.address,
         learnerA.address,
       );
@@ -152,13 +152,13 @@ describe('ProjectsController Contract', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it('change mint status to DONE', async function () {
       const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ProjectsController.changeStatusDone(
+      await ProjectsController.changeStatusToDone(
         ETHDapp.address,
         learnerA.address,
       );
@@ -178,7 +178,7 @@ describe('ProjectsController Contract', function () {
       );
 
       // change learnerA's mint status to AVAILABLE
-      await ProjectsController.changeStatusAvailable(
+      await ProjectsController.changeStatusToAvailable(
         ETHDapp.address,
         learnerA.address,
       );

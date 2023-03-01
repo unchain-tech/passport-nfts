@@ -62,13 +62,13 @@ describe('ASTAR_SocialFi', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ASTARSocialFi, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ASTARSocialFi.changeStatusUnavailable(learner.address);
+      await ASTARSocialFi.changeStatusToUnavailable(learner.address);
 
       expect(await ASTARSocialFi.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -76,13 +76,13 @@ describe('ASTAR_SocialFi', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { ASTARSocialFi, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ASTARSocialFi.changeStatusAvailable(learner.address);
+      await ASTARSocialFi.changeStatusToAvailable(learner.address);
 
       expect(await ASTARSocialFi.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -90,13 +90,13 @@ describe('ASTAR_SocialFi', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { ASTARSocialFi, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await ASTARSocialFi.changeStatusDone(learner.address);
+      await ASTARSocialFi.changeStatusToDone(learner.address);
 
       expect(await ASTARSocialFi.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -113,7 +113,7 @@ describe('ASTAR_SocialFi', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await ASTARSocialFi.changeStatusAvailable(learner.address);
+        await ASTARSocialFi.changeStatusToAvailable(learner.address);
 
         await expect(ASTARSocialFi.mint(learner.address))
           .to.emit(ASTARSocialFi, 'NewTokenMinted')
@@ -138,7 +138,7 @@ describe('ASTAR_SocialFi', function () {
         const { ASTARSocialFi, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await ASTARSocialFi.changeStatusDone(learner.address);
+        await ASTARSocialFi.changeStatusToDone(learner.address);
 
         await expect(ASTARSocialFi.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -169,7 +169,7 @@ describe('ASTAR_SocialFi', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await ASTARSocialFi.changeStatusAvailable(learner.address);
+      await ASTARSocialFi.changeStatusToAvailable(learner.address);
       await expect(ASTARSocialFi.mint(learner.address))
         .to.emit(ASTARSocialFi, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

@@ -66,13 +66,13 @@ describe('AVAX_Asset_Tokenization', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { AVAXAssetTokenization, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await AVAXAssetTokenization.changeStatusUnavailable(learner.address);
+      await AVAXAssetTokenization.changeStatusToUnavailable(learner.address);
 
       expect(
         await AVAXAssetTokenization.getUserMintStatus(learner.address),
@@ -82,13 +82,13 @@ describe('AVAX_Asset_Tokenization', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { AVAXAssetTokenization, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await AVAXAssetTokenization.changeStatusAvailable(learner.address);
+      await AVAXAssetTokenization.changeStatusToAvailable(learner.address);
 
       expect(
         await AVAXAssetTokenization.getUserMintStatus(learner.address),
@@ -98,13 +98,13 @@ describe('AVAX_Asset_Tokenization', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { AVAXAssetTokenization, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await AVAXAssetTokenization.changeStatusDone(learner.address);
+      await AVAXAssetTokenization.changeStatusToDone(learner.address);
 
       expect(
         await AVAXAssetTokenization.getUserMintStatus(learner.address),
@@ -123,7 +123,7 @@ describe('AVAX_Asset_Tokenization', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await AVAXAssetTokenization.changeStatusAvailable(learner.address);
+        await AVAXAssetTokenization.changeStatusToAvailable(learner.address);
 
         await expect(AVAXAssetTokenization.mint(learner.address))
           .to.emit(AVAXAssetTokenization, 'NewTokenMinted')
@@ -148,7 +148,7 @@ describe('AVAX_Asset_Tokenization', function () {
         const { AVAXAssetTokenization, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await AVAXAssetTokenization.changeStatusDone(learner.address);
+        await AVAXAssetTokenization.changeStatusToDone(learner.address);
 
         await expect(
           AVAXAssetTokenization.mint(learner.address),
@@ -181,7 +181,7 @@ describe('AVAX_Asset_Tokenization', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await AVAXAssetTokenization.changeStatusAvailable(learner.address);
+      await AVAXAssetTokenization.changeStatusToAvailable(learner.address);
       await expect(AVAXAssetTokenization.mint(learner.address))
         .to.emit(AVAXAssetTokenization, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

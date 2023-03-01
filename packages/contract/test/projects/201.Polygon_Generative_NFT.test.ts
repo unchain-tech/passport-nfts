@@ -68,13 +68,13 @@ describe('Polygon_Generative_NFT', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { PolygonGenerativeNFT, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await PolygonGenerativeNFT.changeStatusUnavailable(learner.address);
+      await PolygonGenerativeNFT.changeStatusToUnavailable(learner.address);
 
       expect(
         await PolygonGenerativeNFT.getUserMintStatus(learner.address),
@@ -84,13 +84,13 @@ describe('Polygon_Generative_NFT', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { PolygonGenerativeNFT, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await PolygonGenerativeNFT.changeStatusAvailable(learner.address);
+      await PolygonGenerativeNFT.changeStatusToAvailable(learner.address);
 
       expect(
         await PolygonGenerativeNFT.getUserMintStatus(learner.address),
@@ -100,13 +100,13 @@ describe('Polygon_Generative_NFT', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { PolygonGenerativeNFT, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await PolygonGenerativeNFT.changeStatusDone(learner.address);
+      await PolygonGenerativeNFT.changeStatusToDone(learner.address);
 
       expect(
         await PolygonGenerativeNFT.getUserMintStatus(learner.address),
@@ -125,7 +125,7 @@ describe('Polygon_Generative_NFT', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await PolygonGenerativeNFT.changeStatusAvailable(learner.address);
+        await PolygonGenerativeNFT.changeStatusToAvailable(learner.address);
 
         await expect(PolygonGenerativeNFT.mint(learner.address))
           .to.emit(PolygonGenerativeNFT, 'NewTokenMinted')
@@ -150,7 +150,7 @@ describe('Polygon_Generative_NFT', function () {
         const { PolygonGenerativeNFT, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await PolygonGenerativeNFT.changeStatusDone(learner.address);
+        await PolygonGenerativeNFT.changeStatusToDone(learner.address);
 
         await expect(
           PolygonGenerativeNFT.mint(learner.address),
@@ -183,7 +183,7 @@ describe('Polygon_Generative_NFT', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await PolygonGenerativeNFT.changeStatusAvailable(learner.address);
+      await PolygonGenerativeNFT.changeStatusToAvailable(learner.address);
       await expect(PolygonGenerativeNFT.mint(learner.address))
         .to.emit(PolygonGenerativeNFT, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

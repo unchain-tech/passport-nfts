@@ -68,13 +68,13 @@ describe('Solana_Online_Store', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { SolanaOnlineStore, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await SolanaOnlineStore.changeStatusUnavailable(learner.address);
+      await SolanaOnlineStore.changeStatusToUnavailable(learner.address);
 
       expect(
         await SolanaOnlineStore.getUserMintStatus(learner.address),
@@ -84,13 +84,13 @@ describe('Solana_Online_Store', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { SolanaOnlineStore, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await SolanaOnlineStore.changeStatusAvailable(learner.address);
+      await SolanaOnlineStore.changeStatusToAvailable(learner.address);
 
       expect(
         await SolanaOnlineStore.getUserMintStatus(learner.address),
@@ -100,13 +100,13 @@ describe('Solana_Online_Store', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { SolanaOnlineStore, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await SolanaOnlineStore.changeStatusDone(learner.address);
+      await SolanaOnlineStore.changeStatusToDone(learner.address);
 
       expect(
         await SolanaOnlineStore.getUserMintStatus(learner.address),
@@ -125,7 +125,7 @@ describe('Solana_Online_Store', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await SolanaOnlineStore.changeStatusAvailable(learner.address);
+        await SolanaOnlineStore.changeStatusToAvailable(learner.address);
 
         await expect(SolanaOnlineStore.mint(learner.address))
           .to.emit(SolanaOnlineStore, 'NewTokenMinted')
@@ -150,7 +150,7 @@ describe('Solana_Online_Store', function () {
         const { SolanaOnlineStore, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await SolanaOnlineStore.changeStatusDone(learner.address);
+        await SolanaOnlineStore.changeStatusToDone(learner.address);
 
         await expect(
           SolanaOnlineStore.mint(learner.address),
@@ -183,7 +183,7 @@ describe('Solana_Online_Store', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await SolanaOnlineStore.changeStatusAvailable(learner.address);
+      await SolanaOnlineStore.changeStatusToAvailable(learner.address);
       await expect(SolanaOnlineStore.mint(learner.address))
         .to.emit(SolanaOnlineStore, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

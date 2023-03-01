@@ -24,6 +24,8 @@ contract ETH_DAO is IProject, ERC721URIStorageUpgradeable {
   // Mapping learner's address and NFT mint status
   mapping(address => IProject.MintStatus) private _userToMintStatus;
 
+  event NewTokenMinted(address sender, address recipient, uint256 tokenId);
+
   // Mint status meets
   modifier onlyAvailable(address _user) {
     IProject.UserProjectInfo memory projectUserStatus = getUserProjectInfo(
@@ -47,8 +49,6 @@ contract ETH_DAO is IProject, ERC721URIStorageUpgradeable {
     __ERC721_init(_tokenName, _tokenSymbol);
   }
 
-  event NewTokenMinted(address sender, address recipient, uint256 tokenId);
-
   function getPassportHash() public view returns (string memory) {
     return _passportHash;
   }
@@ -71,15 +71,15 @@ contract ETH_DAO is IProject, ERC721URIStorageUpgradeable {
     return projectStatus;
   }
 
-  function changeStatusUnavailable(address user) public virtual override {
+  function changeStatusToUnavailable(address user) public virtual override {
     _userToMintStatus[user] = IProject.MintStatus.UNAVAILABLE;
   }
 
-  function changeStatusAvailable(address user) public virtual override {
+  function changeStatusToAvailable(address user) public virtual override {
     _userToMintStatus[user] = IProject.MintStatus.AVAILABLE;
   }
 
-  function changeStatusDone(address user) public virtual override {
+  function changeStatusToDone(address user) public virtual override {
     _userToMintStatus[user] = IProject.MintStatus.DONE;
   }
 
@@ -90,7 +90,7 @@ contract ETH_DAO is IProject, ERC721URIStorageUpgradeable {
 
     _safeMint(user, newItemId);
     _setTokenURI(newItemId, tokenURI);
-    changeStatusDone(user);
+    changeStatusToDone(user);
 
     emit NewTokenMinted(user, user, newItemId);
   }
@@ -106,7 +106,7 @@ contract ETH_DAO is IProject, ERC721URIStorageUpgradeable {
 
     _safeMint(recipient, newItemId);
     _setTokenURI(newItemId, tokenURI);
-    changeStatusDone(recipient);
+    changeStatusToDone(recipient);
 
     emit NewTokenMinted(sender, recipient, newItemId);
   }

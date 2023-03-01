@@ -68,13 +68,13 @@ describe('NEAR_Hotel_Booking_dApp', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { NEARHotelBookingDapp, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARHotelBookingDapp.changeStatusUnavailable(learner.address);
+      await NEARHotelBookingDapp.changeStatusToUnavailable(learner.address);
 
       expect(
         await NEARHotelBookingDapp.getUserMintStatus(learner.address),
@@ -84,13 +84,13 @@ describe('NEAR_Hotel_Booking_dApp', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { NEARHotelBookingDapp, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARHotelBookingDapp.changeStatusAvailable(learner.address);
+      await NEARHotelBookingDapp.changeStatusToAvailable(learner.address);
 
       expect(
         await NEARHotelBookingDapp.getUserMintStatus(learner.address),
@@ -100,13 +100,13 @@ describe('NEAR_Hotel_Booking_dApp', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { NEARHotelBookingDapp, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await NEARHotelBookingDapp.changeStatusDone(learner.address);
+      await NEARHotelBookingDapp.changeStatusToDone(learner.address);
 
       expect(
         await NEARHotelBookingDapp.getUserMintStatus(learner.address),
@@ -125,7 +125,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await NEARHotelBookingDapp.changeStatusAvailable(learner.address);
+        await NEARHotelBookingDapp.changeStatusToAvailable(learner.address);
 
         await expect(NEARHotelBookingDapp.mint(learner.address))
           .to.emit(NEARHotelBookingDapp, 'NewTokenMinted')
@@ -150,7 +150,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
         const { NEARHotelBookingDapp, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await NEARHotelBookingDapp.changeStatusDone(learner.address);
+        await NEARHotelBookingDapp.changeStatusToDone(learner.address);
 
         await expect(
           NEARHotelBookingDapp.mint(learner.address),
@@ -183,7 +183,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await NEARHotelBookingDapp.changeStatusAvailable(learner.address);
+      await NEARHotelBookingDapp.changeStatusToAvailable(learner.address);
       await expect(NEARHotelBookingDapp.mint(learner.address))
         .to.emit(NEARHotelBookingDapp, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);

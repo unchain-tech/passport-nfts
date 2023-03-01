@@ -62,13 +62,13 @@ describe('AVAX_Messenger', function () {
     });
   });
 
-  describe('changeStatusUnavailable', function () {
+  describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { AVAXMessenger, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await AVAXMessenger.changeStatusUnavailable(learner.address);
+      await AVAXMessenger.changeStatusToUnavailable(learner.address);
 
       expect(await AVAXMessenger.getUserMintStatus(learner.address)).to.equal(
         0, // MintStatus.UNAVAILABLE
@@ -76,13 +76,13 @@ describe('AVAX_Messenger', function () {
     });
   });
 
-  describe('changeStatusAvailable', function () {
+  describe('changeStatusToAvailable', function () {
     it("change learner's mint status to AVAILABLE", async function () {
       const { AVAXMessenger, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await AVAXMessenger.changeStatusAvailable(learner.address);
+      await AVAXMessenger.changeStatusToAvailable(learner.address);
 
       expect(await AVAXMessenger.getUserMintStatus(learner.address)).to.equal(
         1, // MintStatus.AVAILABLE
@@ -90,13 +90,13 @@ describe('AVAX_Messenger', function () {
     });
   });
 
-  describe('changeStatusDone', function () {
+  describe('changeStatusToDone', function () {
     it("change learner's mint status to DONE", async function () {
       const { AVAXMessenger, learner } = await loadFixture(
         deployProjectFixture,
       );
 
-      await AVAXMessenger.changeStatusDone(learner.address);
+      await AVAXMessenger.changeStatusToDone(learner.address);
 
       expect(await AVAXMessenger.getUserMintStatus(learner.address)).to.equal(
         2, // MintStatus.DONE
@@ -113,7 +113,7 @@ describe('AVAX_Messenger', function () {
 
         // NOTE: In practice, the mint status is changed by a user
         // with the Controller-Role calling from ControlContract.
-        await AVAXMessenger.changeStatusAvailable(learner.address);
+        await AVAXMessenger.changeStatusToAvailable(learner.address);
 
         await expect(AVAXMessenger.mint(learner.address))
           .to.emit(AVAXMessenger, 'NewTokenMinted')
@@ -138,7 +138,7 @@ describe('AVAX_Messenger', function () {
         const { AVAXMessenger, learner } = await loadFixture(
           deployProjectFixture,
         );
-        await AVAXMessenger.changeStatusDone(learner.address);
+        await AVAXMessenger.changeStatusToDone(learner.address);
 
         await expect(AVAXMessenger.mint(learner.address)).to.be.revertedWith(
           "you're mint status is not AVAILABLE!",
@@ -169,7 +169,7 @@ describe('AVAX_Messenger', function () {
 
       // NOTE: In practice, the mint status is changed by a user
       // with the Controller-Role calling from ControlContract.
-      await AVAXMessenger.changeStatusAvailable(learner.address);
+      await AVAXMessenger.changeStatusToAvailable(learner.address);
       await expect(AVAXMessenger.mint(learner.address))
         .to.emit(AVAXMessenger, 'NewTokenMinted')
         .withArgs(learner.address, learner.address, tokenId);
