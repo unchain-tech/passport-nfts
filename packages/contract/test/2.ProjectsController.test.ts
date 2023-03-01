@@ -9,9 +9,7 @@ describe('ProjectsController Contract', function () {
     const ProjectsControllerFactory = await ethers.getContractFactory(
       'ProjectsController',
     );
-    const ProjectContractFactory = await ethers.getContractFactory(
-      'ProjectContract',
-    );
+    const ETHDappFactory = await ethers.getContractFactory('ETH_dApp');
 
     // Contracts are deployed using the first signer/account by default
     const [owner, controller, learnerA, learnerB] = await ethers.getSigners();
@@ -23,20 +21,16 @@ describe('ProjectsController Contract', function () {
         initializer: 'initialize',
       },
     );
-    const ProjectContract = await upgrades.deployProxy(
-      ProjectContractFactory,
-      [],
-      {
-        initializer: 'initialize',
-      },
-    );
+    const ETHDapp = await upgrades.deployProxy(ETHDappFactory, [], {
+      initializer: 'initialize',
+    });
 
     await ProjectsController.deployed();
-    await ProjectContract.deployed();
+    await ETHDapp.deployed();
 
     return {
       ProjectsController,
-      ProjectContract,
+      ETHDapp,
       owner,
       controller,
       learnerA,
@@ -45,39 +39,37 @@ describe('ProjectsController Contract', function () {
   }
 
   // Test case
-  describe('adding a ProjectContract address', function () {
+  describe('adding a ETHDapp address', function () {
     context('when adding a new ProjectContract address', function () {
       it('should keep a list of ProjectContract addresses', async function () {
-        const { ProjectsController, ProjectContract } = await loadFixture(
+        const { ProjectsController, ETHDapp } = await loadFixture(
           deployProjectFixture,
         );
 
-        await ProjectsController.addProjectContractAddress(
-          ProjectContract.address,
-        );
+        await ProjectsController.addProjectContractAddress(ETHDapp.address);
         const ProjectContractAddressList =
           await ProjectsController.getAllProjectInfo();
 
         expect(ProjectContractAddressList[0].projectContractAddress).to.equal(
-          ProjectContract.address,
+          ETHDapp.address,
         );
-        expect(ProjectContractAddressList[0].passportHash).to.equal('test');
+        expect(ProjectContractAddressList[0].passportHash).to.equal(
+          'QmXk3kdRvV6TV9yZvtZPgKHoYmywnURy3Qhs8Bjo5szg1J',
+        );
       });
     });
 
     context('when adding a duplicate ProjectContract address', function () {
       it('should keep a list of ProjectContract addresses', async function () {
-        const { ProjectsController, ProjectContract } = await loadFixture(
+        const { ProjectsController, ETHDapp } = await loadFixture(
           deployProjectFixture,
         );
 
-        await ProjectsController.addProjectContractAddress(
-          ProjectContract.address,
-        );
+        await ProjectsController.addProjectContractAddress(ETHDapp.address);
 
         // add duplicate address
         await expect(
-          ProjectsController.addProjectContractAddress(ProjectContract.address),
+          ProjectsController.addProjectContractAddress(ETHDapp.address),
         ).to.be.revertedWith('the address is already added!');
       });
     });
@@ -86,10 +78,11 @@ describe('ProjectsController Contract', function () {
   describe('getUserProjectInfoAll', function () {
     // TODO: getProjectsの戻り値をassertionで確認するテスト方法にする
     it('return user mint statuses', async function () {
-      const { ProjectsController, ProjectContract, learnerA } =
-        await loadFixture(deployProjectFixture);
+      const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
+        deployProjectFixture,
+      );
 
-      const ProjectContractList = [ProjectContract.address];
+      const ProjectContractList = [ETHDapp.address];
       const txForGetUserStatus = await ProjectsController.getUserProjectInfoAll(
         ProjectContractList,
         learnerA.address,
@@ -109,11 +102,12 @@ describe('ProjectsController Contract', function () {
 
   describe('getUserMintStatus', function () {
     it('return UNAVAILABLE', async function () {
-      const { ProjectsController, ProjectContract, learnerA } =
-        await loadFixture(deployProjectFixture);
+      const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
+        deployProjectFixture,
+      );
       expect(
         await ProjectsController.getUserMintStatus(
-          ProjectContract.address,
+          ETHDapp.address,
           learnerA.address,
         ),
       ).to.equal(0); // MintStatus.UNAVAILABLE
@@ -122,16 +116,17 @@ describe('ProjectsController Contract', function () {
 
   describe('changeStatusUnavailable', function () {
     it('change mint status to UNAVAILABLE', async function () {
-      const { ProjectsController, ProjectContract, learnerA } =
-        await loadFixture(deployProjectFixture);
+      const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
+        deployProjectFixture,
+      );
 
       await ProjectsController.changeStatusUnavailable(
-        ProjectContract.address,
+        ETHDapp.address,
         learnerA.address,
       );
       expect(
         await ProjectsController.getUserMintStatus(
-          ProjectContract.address,
+          ETHDapp.address,
           learnerA.address,
         ),
       ).to.equal(0); // MintStatus.UNAVAILABLE
@@ -140,16 +135,17 @@ describe('ProjectsController Contract', function () {
 
   describe('changeStatusAvailable', function () {
     it('change mint status to AVAILABLE', async function () {
-      const { ProjectsController, ProjectContract, learnerA } =
-        await loadFixture(deployProjectFixture);
+      const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
+        deployProjectFixture,
+      );
 
       await ProjectsController.changeStatusAvailable(
-        ProjectContract.address,
+        ETHDapp.address,
         learnerA.address,
       );
       expect(
         await ProjectsController.getUserMintStatus(
-          ProjectContract.address,
+          ETHDapp.address,
           learnerA.address,
         ),
       ).to.equal(1); // MintStatus.AVAILABLE
@@ -158,16 +154,17 @@ describe('ProjectsController Contract', function () {
 
   describe('changeStatusDone', function () {
     it('change mint status to DONE', async function () {
-      const { ProjectsController, ProjectContract, learnerA } =
-        await loadFixture(deployProjectFixture);
+      const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
+        deployProjectFixture,
+      );
 
       await ProjectsController.changeStatusDone(
-        ProjectContract.address,
+        ETHDapp.address,
         learnerA.address,
       );
       expect(
         await ProjectsController.getUserMintStatus(
-          ProjectContract.address,
+          ETHDapp.address,
           learnerA.address,
         ),
       ).to.equal(2); // MintStatus.DONE
@@ -176,19 +173,18 @@ describe('ProjectsController Contract', function () {
 
   describe('mint', function () {
     it('emit a NewTokenMinted event of ProjectContract', async function () {
-      const { ProjectsController, ProjectContract, learnerA } =
-        await loadFixture(deployProjectFixture);
+      const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
+        deployProjectFixture,
+      );
 
       // change learnerA's mint status to AVAILABLE
       await ProjectsController.changeStatusAvailable(
-        ProjectContract.address,
+        ETHDapp.address,
         learnerA.address,
       );
 
-      await expect(
-        ProjectsController.connect(learnerA).mint(ProjectContract.address),
-      )
-        .to.emit(ProjectContract, 'NewTokenMinted')
+      await expect(ProjectsController.connect(learnerA).mint(ETHDapp.address))
+        .to.emit(ETHDapp, 'NewTokenMinted')
         .withArgs(learnerA.address, learnerA.address, 1);
     });
   });
@@ -196,25 +192,17 @@ describe('ProjectsController Contract', function () {
   describe('multiMint', function () {
     context('when the correct arguments is specified', function () {
       it('emit a NewTokenMinted event of ProjectContract', async function () {
-        const {
-          ProjectsController,
-          ProjectContract,
-          owner,
-          learnerA,
-          learnerB,
-        } = await loadFixture(deployProjectFixture);
+        const { ProjectsController, ETHDapp, owner, learnerA, learnerB } =
+          await loadFixture(deployProjectFixture);
 
         const recipients = [learnerA.address, learnerB.address];
-        const contractAddresses = [
-          ProjectContract.address,
-          ProjectContract.address,
-        ];
+        const contractAddresses = [ETHDapp.address, ETHDapp.address];
         await expect(
           ProjectsController.multiMint(recipients, contractAddresses),
         )
-          .to.emit(ProjectContract, 'NewTokenMinted')
+          .to.emit(ETHDapp, 'NewTokenMinted')
           .withArgs(owner.address, learnerA.address, 1)
-          .to.emit(ProjectContract, 'NewTokenMinted')
+          .to.emit(ETHDapp, 'NewTokenMinted')
           .withArgs(owner.address, learnerB.address, 2);
       });
     });
@@ -223,14 +211,12 @@ describe('ProjectsController Contract', function () {
       'when the number of recipients and contracts do not match',
       function () {
         it('reverts', async function () {
-          const { ProjectsController, ProjectContract, learnerA } =
-            await loadFixture(deployProjectFixture);
+          const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
+            deployProjectFixture,
+          );
 
           const recipients = [learnerA.address];
-          const contractAddresses = [
-            ProjectContract.address,
-            ProjectContract.address,
-          ];
+          const contractAddresses = [ETHDapp.address, ETHDapp.address];
 
           // add duplicate address
           await expect(

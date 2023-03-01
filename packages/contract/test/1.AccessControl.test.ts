@@ -9,9 +9,7 @@ describe('ProjectsController Contract AccessControl', function () {
     const ProjectsControllerFactory = await ethers.getContractFactory(
       'ProjectsController',
     );
-    const ProjectContractFactory = await ethers.getContractFactory(
-      'ProjectContract',
-    );
+    const ETHDappFactory = await ethers.getContractFactory('ETH_dApp');
 
     // Contracts are deployed using the first signer/account by default
     const [owner, controller, learner] = await ethers.getSigners();
@@ -23,18 +21,14 @@ describe('ProjectsController Contract AccessControl', function () {
         initializer: 'initialize',
       },
     );
-    const ProjectContract = await upgrades.deployProxy(
-      ProjectContractFactory,
-      [],
-      {
-        initializer: 'initialize',
-      },
-    );
+    const ETHDapp = await upgrades.deployProxy(ETHDappFactory, [], {
+      initializer: 'initialize',
+    });
 
     await ProjectsController.deployed();
-    await ProjectContract.deployed();
+    await ETHDapp.deployed();
 
-    // setup role
+    // Setup role
     const ADMIN_ROLE = ethers.utils.keccak256(
       ethers.utils.toUtf8Bytes('ADMIN_ROLE'),
     );
@@ -44,7 +38,7 @@ describe('ProjectsController Contract AccessControl', function () {
 
     return {
       ProjectsController,
-      ProjectContract,
+      ETHDapp,
       owner,
       controller,
       learner,
@@ -61,6 +55,7 @@ describe('ProjectsController Contract AccessControl', function () {
     );
 
     const isAdmin = await ProjectsController.hasRole(ADMIN_ROLE, owner.address);
+
     expect(isAdmin).to.equal(true);
   });
 
@@ -73,6 +68,7 @@ describe('ProjectsController Contract AccessControl', function () {
       CONTROLLER_ROLE,
       owner.address,
     );
+
     expect(isController).to.equal(true);
   });
 
@@ -112,16 +108,10 @@ describe('ProjectsController Contract AccessControl', function () {
     describe('multiMint', function () {
       it('Should fail if user does not have ADMIN_ROLE', async function () {
         // controller hasn't ADMIN_ROLE
-        const {
-          ProjectsController,
-          ProjectContract,
-          controller,
-          learner,
-          ADMIN_ROLE,
-        } = await loadFixture(deployTextFixture);
-
+        const { ProjectsController, ETHDapp, controller, learner, ADMIN_ROLE } =
+          await loadFixture(deployTextFixture);
         const recipients = [learner.address];
-        const contractAddresses = [ProjectContract.address];
+        const contractAddresses = [ETHDapp.address];
 
         await expect(
           ProjectsController.connect(controller).multiMint(
@@ -139,16 +129,12 @@ describe('ProjectsController Contract AccessControl', function () {
     describe('addProjectContractAddress', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
-        const {
-          ProjectsController,
-          ProjectContract,
-          learner,
-          CONTROLLER_ROLE,
-        } = await loadFixture(deployTextFixture);
+        const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
+          await loadFixture(deployTextFixture);
 
         await expect(
           ProjectsController.connect(learner).addProjectContractAddress(
-            ProjectContract.address,
+            ETHDapp.address,
           ),
         ).to.be.revertedWith(
           `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
@@ -173,16 +159,12 @@ describe('ProjectsController Contract AccessControl', function () {
     describe('getUserProjectInfoAll', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
-        const {
-          ProjectsController,
-          ProjectContract,
-          learner,
-          CONTROLLER_ROLE,
-        } = await loadFixture(deployTextFixture);
+        const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
+          await loadFixture(deployTextFixture);
 
         await expect(
           ProjectsController.connect(learner).getUserProjectInfoAll(
-            [ProjectContract.address],
+            [ETHDapp.address],
             learner.address,
           ),
         ).to.be.revertedWith(
@@ -194,16 +176,12 @@ describe('ProjectsController Contract AccessControl', function () {
     describe('getUserMintStatus', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
-        const {
-          ProjectsController,
-          ProjectContract,
-          learner,
-          CONTROLLER_ROLE,
-        } = await loadFixture(deployTextFixture);
+        const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
+          await loadFixture(deployTextFixture);
 
         await expect(
           ProjectsController.connect(learner).getUserMintStatus(
-            ProjectContract.address,
+            ETHDapp.address,
             learner.address,
           ),
         ).to.be.revertedWith(
@@ -215,16 +193,12 @@ describe('ProjectsController Contract AccessControl', function () {
     describe('changeStatusUnavailable', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
-        const {
-          ProjectsController,
-          ProjectContract,
-          learner,
-          CONTROLLER_ROLE,
-        } = await loadFixture(deployTextFixture);
+        const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
+          await loadFixture(deployTextFixture);
 
         await expect(
           ProjectsController.connect(learner).changeStatusUnavailable(
-            ProjectContract.address,
+            ETHDapp.address,
             learner.address,
           ),
         ).to.be.revertedWith(
@@ -236,16 +210,12 @@ describe('ProjectsController Contract AccessControl', function () {
     describe('changeStatusAvailable', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
-        const {
-          ProjectsController,
-          ProjectContract,
-          learner,
-          CONTROLLER_ROLE,
-        } = await loadFixture(deployTextFixture);
+        const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
+          await loadFixture(deployTextFixture);
 
         await expect(
           ProjectsController.connect(learner).changeStatusAvailable(
-            ProjectContract.address,
+            ETHDapp.address,
             learner.address,
           ),
         ).to.be.revertedWith(
@@ -257,16 +227,12 @@ describe('ProjectsController Contract AccessControl', function () {
     describe('changeStatusDone', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
-        const {
-          ProjectsController,
-          ProjectContract,
-          learner,
-          CONTROLLER_ROLE,
-        } = await loadFixture(deployTextFixture);
+        const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
+          await loadFixture(deployTextFixture);
 
         await expect(
           ProjectsController.connect(learner).changeStatusDone(
-            ProjectContract.address,
+            ETHDapp.address,
             learner.address,
           ),
         ).to.be.revertedWith(
