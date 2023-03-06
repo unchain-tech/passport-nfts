@@ -51,9 +51,8 @@ sequenceDiagram
 
 ```mermaid
 classDiagram
-    ProjectsController -- ProjectInfo
+    ProjectsController
     IProject -- MintStatus
-    IProject -- UserProjectInfo
     IProject <|-- Each_Project_Contract
 
     class ProjectsController {
@@ -64,27 +63,21 @@ classDiagram
         +supportsInterface(interfaceId: bytes4)
         +grantControllerRole(to: address)
         +addProjectContractAddress(contractAddress: address)
-        +getAllProjectInfo(): ProjectInfo[]
-        +getUserProjectInfoAll(projectAddressList: address[], user: address): UserProjectInfo[]
+        +getAllProjectInfo(): address[], string[], string[]
+        +getUserProjectInfoAll(user: address): address[], string[], IProject.MintStatus[]
         +getUserMintStatus(contractAddress: address, user: address): MintStatus
         +changeStatusToUnavailable(contractAddress: address, user: address)
         +changeStatusToAvailable(contractAddress: address, user: address)
         +changeStatusToDone(contractAddress: address, user: address)
-        +mint(user: address)
-        +multiMint(recipients: address[], contractAddresses: address[])
-    }
-
-    class ProjectInfo {
-        <<Struct>>
-        projectContractAddress: address
-        passportHash: string
+        +mint(address: contractAddress)
+        +multiMint(contractAddresses: address[], recipients: address[])
     }
 
     class IProject {
         <<Interface>>
+        getProjectName(): string
         getPassportHash(): string
         getUserMintStatus(user: address): MintStatus
-        getUserProjectInfo(user: address): UserProjectInfo
         changeStatusToUnavailable(user: address)
         changeStatusToAvailable(user: address)
         changeStatusToDone(user: address)
@@ -99,19 +92,19 @@ classDiagram
         DONE
     }
 
-    class UserProjectInfo {
-        <<Struct>>
-        passportHash: string
-        mintStatus: MintStatus
-    }
-
     class Each_Project_Contract {
+        -tokenName: string;
+        -tokenSymbol: string;
+        -tokenDescription: string;
+        -imageUrl: string;
+        -projectName: string;
+        -passportHash: string;
         -tokenIds: CountersUpgradeable.Counter
         -userToMintStatus: mapping`user: address => status: MintStatus`
         +initialize()
+        +getProjectName(): string
         +getPassportHash(): string
         +getUserMintStatus(user: address): MintStatus
-        +getUserProjectInfo(user: address): UserProjectInfo
         +changeStatusToUnavailable(user: address)
         +changeStatusToAvailable(user: address)
         +changeStatusToDone(user: address)
