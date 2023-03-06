@@ -41,19 +41,6 @@ describe('ETH_NFT_Game', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { ETHNFTGame, learner } = await loadFixture(deployProjectFixture);
-
-      const textStatus = await ETHNFTGame.getUserProjectInfo(learner.address);
-
-      expect(textStatus.passportHash).to.equal(
-        'QmXrwaPtpgLmmJUq9Bgk9qgqHvbnz6mQQspBHPYzDxZ85c',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ETHNFTGame, learner } = await loadFixture(deployProjectFixture);
@@ -96,7 +83,7 @@ describe('ETH_NFT_Game', function () {
         const { ETHNFTGame, learner } = await loadFixture(deployProjectFixture);
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await ETHNFTGame.changeStatusToAvailable(learner.address);
 
         await expect(ETHNFTGame.mint(learner.address))
@@ -146,7 +133,7 @@ describe('ETH_NFT_Game', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await ETHNFTGame.changeStatusToAvailable(learner.address);
       await expect(ETHNFTGame.mint(learner.address))
         .to.emit(ETHNFTGame, 'NewTokenMinted')

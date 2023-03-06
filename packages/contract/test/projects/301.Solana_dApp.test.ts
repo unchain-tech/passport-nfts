@@ -41,19 +41,6 @@ describe('Solana_dApp', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
-
-      const textStatus = await SolanaDapp.getUserProjectInfo(learner.address);
-
-      expect(textStatus.passportHash).to.equal(
-        'QmUCZwUTTpZdSoZ9Lqe8bsqJ8EnpEsphYwSBEFc7kXfzt6',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
@@ -96,7 +83,7 @@ describe('Solana_dApp', function () {
         const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await SolanaDapp.changeStatusToAvailable(learner.address);
 
         await expect(SolanaDapp.mint(learner.address))
@@ -146,7 +133,7 @@ describe('Solana_dApp', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await SolanaDapp.changeStatusToAvailable(learner.address);
       await expect(SolanaDapp.mint(learner.address))
         .to.emit(SolanaDapp, 'NewTokenMinted')

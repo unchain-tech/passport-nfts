@@ -51,23 +51,6 @@ describe('ETH_NFT_Collection', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { ETHNFTCollection, learner } = await loadFixture(
-        deployProjectFixture,
-      );
-
-      const textStatus = await ETHNFTCollection.getUserProjectInfo(
-        learner.address,
-      );
-
-      expect(textStatus.passportHash).to.equal(
-        'QmbboPHPWPn7Fm9ULTKppC4AkeLGG8SimEPXgCM3Hr5eWN',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ETHNFTCollection, learner } = await loadFixture(
@@ -124,7 +107,7 @@ describe('ETH_NFT_Collection', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await ETHNFTCollection.changeStatusToAvailable(learner.address);
 
         await expect(ETHNFTCollection.mint(learner.address))
@@ -180,7 +163,7 @@ describe('ETH_NFT_Collection', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await ETHNFTCollection.changeStatusToAvailable(learner.address);
       await expect(ETHNFTCollection.mint(learner.address))
         .to.emit(ETHNFTCollection, 'NewTokenMinted')

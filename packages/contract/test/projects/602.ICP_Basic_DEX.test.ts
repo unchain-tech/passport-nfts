@@ -41,19 +41,6 @@ describe('ICP_Basic_DEX', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { ICPBasicDEX, learner } = await loadFixture(deployProjectFixture);
-
-      const textStatus = await ICPBasicDEX.getUserProjectInfo(learner.address);
-
-      expect(textStatus.passportHash).to.equal(
-        'QmXYADTkQEoEk88Gx4KkqZBVkKyiZq8nkMoAzN1gAxNKqi',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ICPBasicDEX, learner } = await loadFixture(deployProjectFixture);
@@ -98,7 +85,7 @@ describe('ICP_Basic_DEX', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await ICPBasicDEX.changeStatusToAvailable(learner.address);
 
         await expect(ICPBasicDEX.mint(learner.address))
@@ -152,7 +139,7 @@ describe('ICP_Basic_DEX', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await ICPBasicDEX.changeStatusToAvailable(learner.address);
       await expect(ICPBasicDEX.mint(learner.address))
         .to.emit(ICPBasicDEX, 'NewTokenMinted')

@@ -51,23 +51,6 @@ describe('NEAR_Hotel_Booking_dApp', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { NEARHotelBookingDapp, learner } = await loadFixture(
-        deployProjectFixture,
-      );
-
-      const textStatus = await NEARHotelBookingDapp.getUserProjectInfo(
-        learner.address,
-      );
-
-      expect(textStatus.passportHash).to.equal(
-        'QmZKpqK3Vn4GViQoCFqE7NfobWvprFch4qrFaK21zf5RWp',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { NEARHotelBookingDapp, learner } = await loadFixture(
@@ -124,7 +107,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await NEARHotelBookingDapp.changeStatusToAvailable(learner.address);
 
         await expect(NEARHotelBookingDapp.mint(learner.address))
@@ -182,7 +165,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await NEARHotelBookingDapp.changeStatusToAvailable(learner.address);
       await expect(NEARHotelBookingDapp.mint(learner.address))
         .to.emit(NEARHotelBookingDapp, 'NewTokenMinted')

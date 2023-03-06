@@ -47,15 +47,13 @@ describe('ProjectsController Contract', function () {
         );
 
         await ProjectsController.addProjectContractAddress(ETHDapp.address);
-        const ProjectContractAddressList =
+        const passportHash = await ETHDapp.getPassportHash();
+
+        const [projectAddresses, passportHashes] =
           await ProjectsController.getAllProjectInfo();
 
-        expect(ProjectContractAddressList[0].projectContractAddress).to.equal(
-          ETHDapp.address,
-        );
-        expect(ProjectContractAddressList[0].passportHash).to.equal(
-          'QmXk3kdRvV6TV9yZvtZPgKHoYmywnURy3Qhs8Bjo5szg1J',
-        );
+        expect(projectAddresses).to.deep.equal([ETHDapp.address]);
+        expect(passportHashes).to.deep.equal([passportHash]);
       });
     });
 
@@ -76,27 +74,20 @@ describe('ProjectsController Contract', function () {
   });
 
   describe('getUserProjectInfoAll', function () {
-    // TODO: getProjectsの戻り値をassertionで確認するテスト方法にする
     it('return user mint statuses', async function () {
       const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
         deployProjectFixture,
       );
 
-      const ProjectContractList = [ETHDapp.address];
-      const txForGetUserStatus = await ProjectsController.getUserProjectInfoAll(
-        ProjectContractList,
-        learnerA.address,
-      );
+      await ProjectsController.addProjectContractAddress(ETHDapp.address);
+      const passportHash = await ETHDapp.getPassportHash();
 
-      // select which event to get
-      const abi = ['event getUserStatus((string, uint8)[])'];
-      const iface = new ethers.utils.Interface(abi);
-      const txData = await txForGetUserStatus.wait();
+      const [projectAddresses, passportHashes, mintStatuses] =
+        await ProjectsController.getUserProjectInfoAll(learnerA.address);
 
-      // decode the all event's output and display
-      for (let i = 0; i < txData.events.length; i++) {
-        console.log(iface.parseLog(txData.events[i]).args);
-      }
+      expect(projectAddresses).to.deep.equal([ETHDapp.address]);
+      expect(passportHashes).to.deep.equal([passportHash]);
+      expect(mintStatuses).to.deep.equal([0]);
     });
   });
 

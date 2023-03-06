@@ -51,23 +51,6 @@ describe('Polygon_ENS_Domain', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { PolygonENSDomain, learner } = await loadFixture(
-        deployProjectFixture,
-      );
-
-      const textStatus = await PolygonENSDomain.getUserProjectInfo(
-        learner.address,
-      );
-
-      expect(textStatus.passportHash).to.equal(
-        'QmQtv57r5BJDCr9LmjVayvzoyDNvxyPgGBebDq3ZACVA33',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { PolygonENSDomain, learner } = await loadFixture(
@@ -124,7 +107,7 @@ describe('Polygon_ENS_Domain', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await PolygonENSDomain.changeStatusToAvailable(learner.address);
 
         await expect(PolygonENSDomain.mint(learner.address))
@@ -180,7 +163,7 @@ describe('Polygon_ENS_Domain', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await PolygonENSDomain.changeStatusToAvailable(learner.address);
       await expect(PolygonENSDomain.mint(learner.address))
         .to.emit(PolygonENSDomain, 'NewTokenMinted')

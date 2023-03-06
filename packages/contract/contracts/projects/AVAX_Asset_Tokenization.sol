@@ -28,9 +28,9 @@ contract AVAX_Asset_Tokenization is IProject, ERC721URIStorageUpgradeable {
 
   // Mint status meets
   modifier onlyAvailable(address _user) {
-    IProject.UserProjectInfo memory textUserStatus = getUserProjectInfo(_user);
+    IProject.MintStatus status = getUserMintStatus(_user);
     require(
-      textUserStatus.mintStatus == IProject.MintStatus.AVAILABLE,
+      status == IProject.MintStatus.AVAILABLE,
       "you're mint status is not AVAILABLE!"
     );
     _;
@@ -59,17 +59,6 @@ contract AVAX_Asset_Tokenization is IProject, ERC721URIStorageUpgradeable {
     return _userToMintStatus[user];
   }
 
-  function getUserProjectInfo(
-    address user
-  ) public view virtual override returns (UserProjectInfo memory) {
-    UserProjectInfo memory textStatus = UserProjectInfo({
-      passportHash: _passportHash,
-      mintStatus: getUserMintStatus(user)
-    });
-
-    return textStatus;
-  }
-
   function changeStatusToUnavailable(address user) public virtual override {
     _userToMintStatus[user] = IProject.MintStatus.UNAVAILABLE;
   }
@@ -94,7 +83,7 @@ contract AVAX_Asset_Tokenization is IProject, ERC721URIStorageUpgradeable {
     emit NewTokenMinted(user, user, newItemId);
   }
 
-  // This function is called when ControlContract admin calls multiMint
+  // This function is called when ProjectsController admin calls multiMint
   function mintByAdmin(
     address sender,
     address recipient

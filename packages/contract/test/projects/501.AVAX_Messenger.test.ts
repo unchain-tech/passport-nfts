@@ -45,23 +45,6 @@ describe('AVAX_Messenger', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { AVAXMessenger, learner } = await loadFixture(
-        deployProjectFixture,
-      );
-
-      const textStatus = await AVAXMessenger.getUserProjectInfo(
-        learner.address,
-      );
-
-      expect(textStatus.passportHash).to.equal(
-        'QmY4DbEFVo13wytcyXZk9Zxr5Lnzc9fn3W9CuAn1VqRZKx',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { AVAXMessenger, learner } = await loadFixture(
@@ -112,7 +95,7 @@ describe('AVAX_Messenger', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await AVAXMessenger.changeStatusToAvailable(learner.address);
 
         await expect(AVAXMessenger.mint(learner.address))
@@ -168,7 +151,7 @@ describe('AVAX_Messenger', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await AVAXMessenger.changeStatusToAvailable(learner.address);
       await expect(AVAXMessenger.mint(learner.address))
         .to.emit(AVAXMessenger, 'NewTokenMinted')

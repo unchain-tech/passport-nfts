@@ -41,19 +41,6 @@ describe('ETH_DAO', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { ETHDAO, learner } = await loadFixture(deployProjectFixture);
-
-      const textStatus = await ETHDAO.getUserProjectInfo(learner.address);
-
-      expect(textStatus.passportHash).to.equal(
-        'Qma3C4TyC7Msb8XfLbaB26PMmqyPL3UqwZ9dJL19nEy3AD',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ETHDAO, learner } = await loadFixture(deployProjectFixture);
@@ -96,7 +83,7 @@ describe('ETH_DAO', function () {
         const { ETHDAO, learner } = await loadFixture(deployProjectFixture);
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await ETHDAO.changeStatusToAvailable(learner.address);
 
         await expect(ETHDAO.mint(learner.address))
@@ -146,7 +133,7 @@ describe('ETH_DAO', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await ETHDAO.changeStatusToAvailable(learner.address);
       await expect(ETHDAO.mint(learner.address))
         .to.emit(ETHDAO, 'NewTokenMinted')

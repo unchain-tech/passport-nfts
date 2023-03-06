@@ -51,23 +51,6 @@ describe('Polygon_Generative_NFT', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { PolygonGenerativeNFT, learner } = await loadFixture(
-        deployProjectFixture,
-      );
-
-      const textStatus = await PolygonGenerativeNFT.getUserProjectInfo(
-        learner.address,
-      );
-
-      expect(textStatus.passportHash).to.equal(
-        'QmQW79bjqFwfeVY3TxrhFJh9WRen9mBTkL4vnntimPXqBw',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { PolygonGenerativeNFT, learner } = await loadFixture(
@@ -124,7 +107,7 @@ describe('Polygon_Generative_NFT', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await PolygonGenerativeNFT.changeStatusToAvailable(learner.address);
 
         await expect(PolygonGenerativeNFT.mint(learner.address))
@@ -182,7 +165,7 @@ describe('Polygon_Generative_NFT', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await PolygonGenerativeNFT.changeStatusToAvailable(learner.address);
       await expect(PolygonGenerativeNFT.mint(learner.address))
         .to.emit(PolygonGenerativeNFT, 'NewTokenMinted')

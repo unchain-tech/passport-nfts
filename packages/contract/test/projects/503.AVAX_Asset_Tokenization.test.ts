@@ -50,22 +50,6 @@ describe('AVAX_Asset_Tokenization', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { AVAXAssetTokenization, learner } = await loadFixture(
-        deployProjectFixture,
-      );
-
-      const textStatus = await AVAXAssetTokenization.getUserProjectInfo(
-        learner.address,
-      );
-
-      // TODO: Set hash value.
-      expect(textStatus.passportHash).to.equal('');
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { AVAXAssetTokenization, learner } = await loadFixture(
@@ -122,7 +106,7 @@ describe('AVAX_Asset_Tokenization', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await AVAXAssetTokenization.changeStatusToAvailable(learner.address);
 
         await expect(AVAXAssetTokenization.mint(learner.address))
@@ -180,7 +164,7 @@ describe('AVAX_Asset_Tokenization', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await AVAXAssetTokenization.changeStatusToAvailable(learner.address);
       await expect(AVAXAssetTokenization.mint(learner.address))
         .to.emit(AVAXAssetTokenization, 'NewTokenMinted')

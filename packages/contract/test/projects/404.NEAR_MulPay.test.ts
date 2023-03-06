@@ -41,19 +41,6 @@ describe('NEAR_MulPay', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { NEARMulPay, learner } = await loadFixture(deployProjectFixture);
-
-      const textStatus = await NEARMulPay.getUserProjectInfo(learner.address);
-
-      expect(textStatus.passportHash).to.equal(
-        'QmPGi1a3KgSyop4rj2oaYdd9x7cbMXj9VMunQNSykzd5ds',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { NEARMulPay, learner } = await loadFixture(deployProjectFixture);
@@ -96,7 +83,7 @@ describe('NEAR_MulPay', function () {
         const { NEARMulPay, learner } = await loadFixture(deployProjectFixture);
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await NEARMulPay.changeStatusToAvailable(learner.address);
 
         await expect(NEARMulPay.mint(learner.address))
@@ -146,7 +133,7 @@ describe('NEAR_MulPay', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await NEARMulPay.changeStatusToAvailable(learner.address);
       await expect(NEARMulPay.mint(learner.address))
         .to.emit(NEARMulPay, 'NewTokenMinted')

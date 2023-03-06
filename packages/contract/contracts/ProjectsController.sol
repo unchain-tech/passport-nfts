@@ -17,19 +17,12 @@ contract ProjectsController is
   AccessControlUpgradeable,
   ERC721URIStorageUpgradeable
 {
-  struct ProjectInfo {
-    address projectContractAddress;
-    string passportHash;
-  }
-
   // Address list of project contract address
   address[] private _addressList;
   // Setup admin and controller role
   // ADMIN_ROLE can modify and add CONTROLLER_ROLE
   bytes32 public constant ADMIN_ROLE = keccak256('ADMIN_ROLE');
   bytes32 public constant CONTROLLER_ROLE = keccak256('CONTROLLER_ROLE');
-
-  event getUserStatus(IProject.UserProjectInfo[] statusList);
 
   // Mofifier to check if there is no the same address in address list
   modifier onlyNewAddress(address contractAddress) {
@@ -91,43 +84,43 @@ contract ProjectsController is
     public
     view
     onlyRole(CONTROLLER_ROLE)
-    returns (ProjectInfo[] memory)
+    returns (address[] memory projectAddresses, string[] memory passportHashes)
   {
     uint256 length = _addressList.length;
-    ProjectInfo[] memory AllProjectInfo = new ProjectInfo[](length);
+    passportHashes = new string[](length);
 
-    // Get ProjectInfo from each project contract
-    for (uint256 i = 0; i < length; i++) {
-      ProjectInfo memory projectInfo = ProjectInfo({
-        projectContractAddress: _addressList[i],
-        passportHash: IProject(_addressList[i]).getPassportHash()
-      });
-      // Add ProjectInfo
-      AllProjectInfo[i] = projectInfo;
+    // Get information from each project contract
+    for (uint8 i; i < length; i++) {
+      // Add UserProjectInfo
+      passportHashes[i] = IProject(_addressList[i]).getPassportHash();
     }
 
-    return AllProjectInfo;
+    return (_addressList, passportHashes);
   }
 
   function getUserProjectInfoAll(
-    address[] memory projectAddressList,
     address user
-  ) public returns (IProject.UserProjectInfo[] memory) {
-    uint256 length = projectAddressList.length;
-    IProject.UserProjectInfo[]
-      memory UserProjectInfoList = new IProject.UserProjectInfo[](length);
+  )
+    public
+    view
+    returns (
+      address[] memory projectAddresses,
+      string[] memory passportHashes,
+      IProject.MintStatus[] memory mintStatuses
+    )
+  {
+    uint256 length = _addressList.length;
+    passportHashes = new string[](length);
+    mintStatuses = new IProject.MintStatus[](length);
 
-    // Get UserProjectInfo from each project contract
+    // Get information from each project contract
     for (uint8 i; i < length; i++) {
-      IProject.UserProjectInfo memory userProjectInfo = IProject(
-        projectAddressList[i]
-      ).getUserProjectInfo(user);
       // Add UserProjectInfo
-      UserProjectInfoList[i] = userProjectInfo;
+      passportHashes[i] = IProject(_addressList[i]).getPassportHash();
+      mintStatuses[i] = IProject(_addressList[i]).getUserMintStatus(user);
     }
-    emit getUserStatus(UserProjectInfoList);
 
-    return UserProjectInfoList;
+    return (_addressList, passportHashes, mintStatuses);
   }
 
   function getUserMintStatus(

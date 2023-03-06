@@ -51,23 +51,6 @@ describe('NEAR_Election_dApp', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { NEARElectionDapp, learner } = await loadFixture(
-        deployProjectFixture,
-      );
-
-      const textStatus = await NEARElectionDapp.getUserProjectInfo(
-        learner.address,
-      );
-
-      expect(textStatus.passportHash).to.equal(
-        'QmYK1uqMzqtgpEi5MqWqdAMemoopSKf2rswKjhR2w3wBNH',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { NEARElectionDapp, learner } = await loadFixture(
@@ -124,7 +107,7 @@ describe('NEAR_Election_dApp', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await NEARElectionDapp.changeStatusToAvailable(learner.address);
 
         await expect(NEARElectionDapp.mint(learner.address))
@@ -180,7 +163,7 @@ describe('NEAR_Election_dApp', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await NEARElectionDapp.changeStatusToAvailable(learner.address);
       await expect(NEARElectionDapp.mint(learner.address))
         .to.emit(NEARElectionDapp, 'NewTokenMinted')

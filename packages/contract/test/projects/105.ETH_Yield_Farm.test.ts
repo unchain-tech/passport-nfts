@@ -43,19 +43,6 @@ describe('ETH_Yield_Farm', function () {
     });
   });
 
-  describe('getUserProjectInfo', function () {
-    it("return NFT's image-URL and mint status of learner", async function () {
-      const { ETHYieldFarm, learner } = await loadFixture(deployProjectFixture);
-
-      const textStatus = await ETHYieldFarm.getUserProjectInfo(learner.address);
-
-      expect(textStatus.passportHash).to.equal(
-        'QmcKaf9bLvMAzjAwYXwAQTaQVvtkffFKfpBRpGgBP71c1p',
-      );
-      expect(textStatus.mintStatus).to.equal(0); // MintStatus.UNAVAILABLE
-    });
-  });
-
   describe('changeStatusToUnavailable', function () {
     it("change learner's mint status to UNAVAILABLE", async function () {
       const { ETHYieldFarm, learner } = await loadFixture(deployProjectFixture);
@@ -100,7 +87,7 @@ describe('ETH_Yield_Farm', function () {
         );
 
         // NOTE: In practice, the mint status is changed by a user
-        // with the Controller-Role calling from ControlContract.
+        // with the Controller-Role calling from ProjectsController.
         await ETHYieldFarm.changeStatusToAvailable(learner.address);
 
         await expect(ETHYieldFarm.mint(learner.address))
@@ -154,7 +141,7 @@ describe('ETH_Yield_Farm', function () {
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
-      // with the Controller-Role calling from ControlContract.
+      // with the Controller-Role calling from ProjectsController.
       await ETHYieldFarm.changeStatusToAvailable(learner.address);
       await expect(ETHYieldFarm.mint(learner.address))
         .to.emit(ETHYieldFarm, 'NewTokenMinted')
