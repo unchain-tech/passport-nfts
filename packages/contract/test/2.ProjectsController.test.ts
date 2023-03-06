@@ -39,7 +39,7 @@ describe('ProjectsController Contract', function () {
   }
 
   // Test case
-  describe('adding a ETHDapp address', function () {
+  describe('addProjectContractAddress & getAllProjectInfo', function () {
     context('when adding a new ProjectContract address', function () {
       it('should keep a list of ProjectContract addresses', async function () {
         /** Arrange */
@@ -79,16 +79,18 @@ describe('ProjectsController Contract', function () {
 
   describe('getUserProjectInfoAll', function () {
     it('return user mint statuses', async function () {
+      /** Arrange */
       const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
         deployProjectFixture,
       );
-
       await ProjectsController.addProjectContractAddress(ETHDapp.address);
       const passportHash = await ETHDapp.getPassportHash();
 
+      /** Act */
       const [projectAddresses, passportHashes, mintStatuses] =
         await ProjectsController.getUserProjectInfoAll(learnerA.address);
 
+      /** Assert */
       expect(projectAddresses).to.deep.equal([ETHDapp.address]);
       expect(passportHashes).to.deep.equal([passportHash]);
       expect(mintStatuses).to.deep.equal([0]);
@@ -100,6 +102,7 @@ describe('ProjectsController Contract', function () {
       const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
         deployProjectFixture,
       );
+
       expect(
         await ProjectsController.getUserMintStatus(
           ETHDapp.address,
@@ -119,6 +122,7 @@ describe('ProjectsController Contract', function () {
         ETHDapp.address,
         learnerA.address,
       );
+
       expect(
         await ProjectsController.getUserMintStatus(
           ETHDapp.address,
@@ -138,6 +142,7 @@ describe('ProjectsController Contract', function () {
         ETHDapp.address,
         learnerA.address,
       );
+
       expect(
         await ProjectsController.getUserMintStatus(
           ETHDapp.address,
@@ -157,6 +162,7 @@ describe('ProjectsController Contract', function () {
         ETHDapp.address,
         learnerA.address,
       );
+
       expect(
         await ProjectsController.getUserMintStatus(
           ETHDapp.address,
@@ -168,16 +174,17 @@ describe('ProjectsController Contract', function () {
 
   describe('mint', function () {
     it('emit a NewTokenMinted event of ProjectContract', async function () {
+      /** Arrange */
       const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
         deployProjectFixture,
       );
-
       // change learnerA's mint status to AVAILABLE
       await ProjectsController.changeStatusToAvailable(
         ETHDapp.address,
         learnerA.address,
       );
 
+      /** Act & Assert */
       await expect(ProjectsController.connect(learnerA).mint(ETHDapp.address))
         .to.emit(ETHDapp, 'NewTokenMinted')
         .withArgs(learnerA.address, learnerA.address, 1);
@@ -187,11 +194,13 @@ describe('ProjectsController Contract', function () {
   describe('multiMint', function () {
     context('when the correct arguments is specified', function () {
       it('emit a NewTokenMinted event of ProjectContract', async function () {
+        /** Arrange */
         const { ProjectsController, ETHDapp, owner, learnerA, learnerB } =
           await loadFixture(deployProjectFixture);
-
         const recipients = [learnerA.address, learnerB.address];
         const contractAddresses = [ETHDapp.address, ETHDapp.address];
+
+        /** Act & Assert */
         await expect(
           ProjectsController.multiMint(recipients, contractAddresses),
         )
@@ -206,13 +215,14 @@ describe('ProjectsController Contract', function () {
       'when the number of recipients and contracts do not match',
       function () {
         it('reverts', async function () {
+          /** Arrange */
           const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
             deployProjectFixture,
           );
-
           const recipients = [learnerA.address];
           const contractAddresses = [ETHDapp.address, ETHDapp.address];
 
+          /** Act & Assert */
           // add duplicate address
           await expect(
             ProjectsController.multiMint(recipients, contractAddresses),
