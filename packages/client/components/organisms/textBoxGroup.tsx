@@ -1,5 +1,7 @@
 import React from 'react';
 
+import CsvReadButton from '../molecules/csvReadButton';
+
 import SelectionBox from '@/components/atoms/selectionBox';
 import AddAddressButton from '@/components/molecules/addAddressButton';
 import AddressBox from '@/components/molecules/addressBox';
@@ -34,7 +36,7 @@ function switchContent(mode: Mode, textList: string[]) {
     case Mode.ADDCONTRACT:
       return (
         <div className="flex flex-raw space-x-5">
-          <AddressBox />
+          <CsvReadButton />
         </div>
       );
   }
