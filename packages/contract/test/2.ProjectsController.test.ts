@@ -197,12 +197,12 @@ describe('ProjectsController Contract', function () {
         /** Arrange */
         const { ProjectsController, ETHDapp, owner, learnerA, learnerB } =
           await loadFixture(deployProjectFixture);
-        const recipients = [learnerA.address, learnerB.address];
         const contractAddresses = [ETHDapp.address, ETHDapp.address];
+        const recipients = [learnerA.address, learnerB.address];
 
         /** Act & Assert */
         await expect(
-          ProjectsController.multiMint(recipients, contractAddresses),
+          ProjectsController.multiMint(contractAddresses, recipients),
         )
           .to.emit(ETHDapp, 'NewTokenMinted')
           .withArgs(owner.address, learnerA.address, 1)
@@ -219,13 +219,13 @@ describe('ProjectsController Contract', function () {
           const { ProjectsController, ETHDapp, learnerA } = await loadFixture(
             deployProjectFixture,
           );
-          const recipients = [learnerA.address];
           const contractAddresses = [ETHDapp.address, ETHDapp.address];
+          const recipients = [learnerA.address];
 
           /** Act & Assert */
           // add duplicate address
           await expect(
-            ProjectsController.multiMint(recipients, contractAddresses),
+            ProjectsController.multiMint(contractAddresses, recipients),
           ).to.be.revertedWith('Length of data array must be the same.');
         });
       },

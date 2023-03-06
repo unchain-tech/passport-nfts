@@ -163,8 +163,8 @@ contract ProjectsController is
   }
 
   function multiMint(
-    address[] memory recipients,
-    address[] memory contractAddresses
+    address[] memory contractAddresses,
+    address[] memory recipients
   ) public onlyRole(ADMIN_ROLE) {
     // Check if parameters length is the same
     require(
