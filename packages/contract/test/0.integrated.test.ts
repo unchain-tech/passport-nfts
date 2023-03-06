@@ -23,4 +23,4 @@ require('./projects/503.AVAX_Asset_Tokenization.test.ts');
 require('./projects/504.AVAX_Subnet.test.ts');
 require('./projects/601.ICP_Static_Site.test.ts');
 require('./projects/602.ICP_Basic_DEX.test.ts');
-require('./projects/701.ASTER_SocialFi.test.ts');
+require('./projects/701.ASTAR_SocialFi.test.ts');
