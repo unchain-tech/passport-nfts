@@ -35,12 +35,6 @@ function switchContent(mode: Mode, textList: string[]) {
       return (
         <div className="flex flex-raw space-x-5">
           <AddressBox />
-          <button
-            className="bg-white rounded-sm px-2"
-            onClick={() => console.log('add contract address')}
-          >
-            add contract
-          </button>
         </div>
       );
   }
@@ -50,7 +44,6 @@ export default function TextBoxGroup(props: Props) {
   return (
     <div className="flex flex-row space-x-4">
       {switchContent(props.mode, props.textList)}
-      <ShowRecipientsButton />
     </div>
   );
 }
