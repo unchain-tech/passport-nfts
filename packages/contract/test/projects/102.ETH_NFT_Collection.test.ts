@@ -27,6 +27,16 @@ describe('ETH_NFT_Collection', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ETHNFTCollection } = await loadFixture(deployProjectFixture);
+
+      expect(await ETHNFTCollection.getProjectName()).to.equal(
+        'ETH NFT Collection',
+      );
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ETHNFTCollection } = await loadFixture(deployProjectFixture);

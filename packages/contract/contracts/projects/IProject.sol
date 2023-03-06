@@ -9,6 +9,8 @@ interface IProject {
     DONE
   }
 
+  function getProjectName() external view returns (string memory);
+
   function getPassportHash() external view returns (string memory);
 
   function getUserMintStatus(

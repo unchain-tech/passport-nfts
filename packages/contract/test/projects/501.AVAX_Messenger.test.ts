@@ -23,6 +23,14 @@ describe('AVAX_Messenger', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { AVAXMessenger } = await loadFixture(deployProjectFixture);
+
+      expect(await AVAXMessenger.getProjectName()).to.equal('AVAX Messenger');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { AVAXMessenger } = await loadFixture(deployProjectFixture);

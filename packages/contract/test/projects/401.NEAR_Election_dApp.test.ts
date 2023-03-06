@@ -27,6 +27,16 @@ describe('NEAR_Election_dApp', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { NEARElectionDapp } = await loadFixture(deployProjectFixture);
+
+      expect(await NEARElectionDapp.getProjectName()).to.equal(
+        'NEAR Election dApp',
+      );
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { NEARElectionDapp } = await loadFixture(deployProjectFixture);

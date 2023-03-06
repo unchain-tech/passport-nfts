@@ -21,6 +21,14 @@ describe('Solana_dApp', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { SolanaDapp } = await loadFixture(deployProjectFixture);
+
+      expect(await SolanaDapp.getProjectName()).to.equal('Solana dApp');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { SolanaDapp } = await loadFixture(deployProjectFixture);

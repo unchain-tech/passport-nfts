@@ -21,6 +21,14 @@ describe('ETH_NFT_Maker', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ETHNFTMaker } = await loadFixture(deployProjectFixture);
+
+      expect(await ETHNFTMaker.getProjectName()).to.equal('ETH NFT Maker');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ETHNFTMaker } = await loadFixture(deployProjectFixture);

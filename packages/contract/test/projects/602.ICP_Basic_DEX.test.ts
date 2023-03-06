@@ -21,6 +21,14 @@ describe('ICP_Basic_DEX', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ICPBasicDEX } = await loadFixture(deployProjectFixture);
+
+      expect(await ICPBasicDEX.getProjectName()).to.equal('ICP Basic DEX');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ICPBasicDEX } = await loadFixture(deployProjectFixture);

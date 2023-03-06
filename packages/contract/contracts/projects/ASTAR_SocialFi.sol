@@ -47,6 +47,10 @@ contract ASTAR_SocialFi is IProject, ERC721URIStorageUpgradeable {
     __ERC721_init(_tokenName, _tokenSymbol);
   }
 
+  function getProjectName() public view returns (string memory) {
+    return _projectName;
+  }
+
   function getPassportHash() public view returns (string memory) {
     return _passportHash;
   }

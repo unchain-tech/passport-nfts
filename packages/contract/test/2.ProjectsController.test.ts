@@ -42,17 +42,21 @@ describe('ProjectsController Contract', function () {
   describe('adding a ETHDapp address', function () {
     context('when adding a new ProjectContract address', function () {
       it('should keep a list of ProjectContract addresses', async function () {
+        /** Arrange */
         const { ProjectsController, ETHDapp } = await loadFixture(
           deployProjectFixture,
         );
-
-        await ProjectsController.addProjectContractAddress(ETHDapp.address);
+        const projectName = await ETHDapp.getProjectName();
         const passportHash = await ETHDapp.getPassportHash();
 
-        const [projectAddresses, passportHashes] =
-          await ProjectsController.getAllProjectInfo();
+        /** Act */
+        await ProjectsController.addProjectContractAddress(ETHDapp.address);
 
+        /** Assert */
+        const [projectAddresses, projectNames, passportHashes] =
+          await ProjectsController.getAllProjectInfo();
         expect(projectAddresses).to.deep.equal([ETHDapp.address]);
+        expect(projectNames).to.deep.equal([projectName]);
         expect(passportHashes).to.deep.equal([passportHash]);
       });
     });

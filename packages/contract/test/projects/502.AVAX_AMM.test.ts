@@ -21,6 +21,14 @@ describe('AVAX_AMM', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { AVAXAMM } = await loadFixture(deployProjectFixture);
+
+      expect(await AVAXAMM.getProjectName()).to.equal('AVAX AMM');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { AVAXAMM } = await loadFixture(deployProjectFixture);

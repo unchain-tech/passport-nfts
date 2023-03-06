@@ -23,6 +23,14 @@ describe('Solana_Wallet', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { SolanaWallet } = await loadFixture(deployProjectFixture);
+
+      expect(await SolanaWallet.getProjectName()).to.equal('Solana Wallet');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { SolanaWallet } = await loadFixture(deployProjectFixture);

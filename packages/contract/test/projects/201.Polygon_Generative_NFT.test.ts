@@ -27,6 +27,16 @@ describe('Polygon_Generative_NFT', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { PolygonGenerativeNFT } = await loadFixture(deployProjectFixture);
+
+      expect(await PolygonGenerativeNFT.getProjectName()).to.equal(
+        'Polygon Generative NFT',
+      );
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { PolygonGenerativeNFT } = await loadFixture(deployProjectFixture);

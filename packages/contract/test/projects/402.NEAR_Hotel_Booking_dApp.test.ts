@@ -27,6 +27,16 @@ describe('NEAR_Hotel_Booking_dApp', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { NEARHotelBookingDapp } = await loadFixture(deployProjectFixture);
+
+      expect(await NEARHotelBookingDapp.getProjectName()).to.equal(
+        'NEAR Hotel Booking dApp',
+      );
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { NEARHotelBookingDapp } = await loadFixture(deployProjectFixture);

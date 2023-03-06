@@ -23,6 +23,14 @@ describe('ICP_Static_Site', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ICPStaticSite } = await loadFixture(deployProjectFixture);
+
+      expect(await ICPStaticSite.getProjectName()).to.equal('ICP Static Site');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ICPStaticSite } = await loadFixture(deployProjectFixture);

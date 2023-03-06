@@ -23,6 +23,14 @@ describe('ASTAR_SocialFi', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ASTARSocialFi } = await loadFixture(deployProjectFixture);
+
+      expect(await ASTARSocialFi.getProjectName()).to.equal('ASTAR SocialFi');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ASTARSocialFi } = await loadFixture(deployProjectFixture);

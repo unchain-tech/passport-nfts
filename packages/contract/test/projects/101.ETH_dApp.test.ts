@@ -21,6 +21,14 @@ describe('ETH_dApp', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ETHDapp } = await loadFixture(deployProjectFixture);
+
+      expect(await ETHDapp.getProjectName()).to.equal('ETH dApp');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ETHDapp } = await loadFixture(deployProjectFixture);

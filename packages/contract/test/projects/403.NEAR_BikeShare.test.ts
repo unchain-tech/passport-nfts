@@ -23,6 +23,14 @@ describe('NEAR_BikeShare', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { NEARBikeShare } = await loadFixture(deployProjectFixture);
+
+      expect(await NEARBikeShare.getProjectName()).to.equal('NEAR BikeShare');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { NEARBikeShare } = await loadFixture(deployProjectFixture);

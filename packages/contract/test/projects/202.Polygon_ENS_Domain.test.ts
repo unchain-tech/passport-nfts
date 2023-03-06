@@ -27,6 +27,16 @@ describe('Polygon_ENS_Domain', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { PolygonENSDomain } = await loadFixture(deployProjectFixture);
+
+      expect(await PolygonENSDomain.getProjectName()).to.equal(
+        'Polygon ENS Domain',
+      );
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { PolygonENSDomain } = await loadFixture(deployProjectFixture);

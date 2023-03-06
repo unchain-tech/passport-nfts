@@ -84,18 +84,24 @@ contract ProjectsController is
     public
     view
     onlyRole(CONTROLLER_ROLE)
-    returns (address[] memory projectAddresses, string[] memory passportHashes)
+    returns (
+      address[] memory projectAddresses,
+      string[] memory projectNames,
+      string[] memory passportHashes
+    )
   {
     uint256 length = _addressList.length;
+    projectNames = new string[](length);
     passportHashes = new string[](length);
 
     // Get information from each project contract
     for (uint8 i; i < length; i++) {
-      // Add UserProjectInfo
+      // Add project information
+      projectNames[i] = IProject(_addressList[i]).getProjectName();
       passportHashes[i] = IProject(_addressList[i]).getPassportHash();
     }
 
-    return (_addressList, passportHashes);
+    return (_addressList, projectNames, passportHashes);
   }
 
   function getUserProjectInfoAll(

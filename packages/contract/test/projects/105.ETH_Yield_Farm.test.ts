@@ -23,6 +23,14 @@ describe('ETH_Yield_Farm', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ETHYieldFarm } = await loadFixture(deployProjectFixture);
+
+      expect(await ETHYieldFarm.getProjectName()).to.equal('ETH Yield Farm');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ETHYieldFarm } = await loadFixture(deployProjectFixture);

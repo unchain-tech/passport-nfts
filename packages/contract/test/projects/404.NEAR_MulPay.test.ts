@@ -21,6 +21,14 @@ describe('NEAR_MulPay', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { NEARMulPay } = await loadFixture(deployProjectFixture);
+
+      expect(await NEARMulPay.getProjectName()).to.equal('NEAR MulPay');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { NEARMulPay } = await loadFixture(deployProjectFixture);

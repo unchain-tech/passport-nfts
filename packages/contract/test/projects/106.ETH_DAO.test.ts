@@ -21,6 +21,14 @@ describe('ETH_DAO', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ETHDAO } = await loadFixture(deployProjectFixture);
+
+      expect(await ETHDAO.getProjectName()).to.equal('ETH DAO');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ETHDAO } = await loadFixture(deployProjectFixture);

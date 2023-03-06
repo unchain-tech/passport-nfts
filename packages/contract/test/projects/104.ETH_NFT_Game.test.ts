@@ -21,6 +21,14 @@ describe('ETH_NFT_Game', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { ETHNFTGame } = await loadFixture(deployProjectFixture);
+
+      expect(await ETHNFTGame.getProjectName()).to.equal('ETH NFT Game');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { ETHNFTGame } = await loadFixture(deployProjectFixture);

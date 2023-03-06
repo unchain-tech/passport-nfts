@@ -23,6 +23,14 @@ describe('Solana_NFT_Drop', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { SolanaNFTDrop } = await loadFixture(deployProjectFixture);
+
+      expect(await SolanaNFTDrop.getProjectName()).to.equal('Solana NFT Drop');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { SolanaNFTDrop } = await loadFixture(deployProjectFixture);

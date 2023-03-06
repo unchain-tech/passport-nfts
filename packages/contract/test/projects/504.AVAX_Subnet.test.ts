@@ -21,6 +21,14 @@ describe('AVAX_Subnet', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { AVAXSubnet } = await loadFixture(deployProjectFixture);
+
+      expect(await AVAXSubnet.getProjectName()).to.equal('AVAX Subnet');
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { AVAXSubnet } = await loadFixture(deployProjectFixture);

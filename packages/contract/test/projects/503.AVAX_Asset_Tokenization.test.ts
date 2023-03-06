@@ -27,6 +27,16 @@ describe('AVAX_Asset_Tokenization', function () {
   }
 
   // Test case
+  describe('getProjectName', function () {
+    it('return project name', async function () {
+      const { AVAXAssetTokenization } = await loadFixture(deployProjectFixture);
+
+      expect(await AVAXAssetTokenization.getProjectName()).to.equal(
+        'AVAX Asset Tokenization',
+      );
+    });
+  });
+
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
       const { AVAXAssetTokenization } = await loadFixture(deployProjectFixture);
