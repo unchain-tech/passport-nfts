@@ -4,7 +4,7 @@ import { readCSV } from '../../hooks/uiFunction';
 
 export default function CsvReadButton() {
   return (
-    <div>
+    <div className="h-10 flex items-center justify-center px-2 rounded-sm">
       <input
         type={'file'}
         name={'file'}

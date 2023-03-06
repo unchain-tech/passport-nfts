@@ -19,30 +19,23 @@ function switchContent(mode: Mode, textList: string[]) {
     case Mode.MintNFT:
       return (
         <div className="flex flex-row space-x-4">
-          <SelectionBox textList={textList} />
-          <AddressBox />
-          <AddAddressButton />
+          <CsvReadButton />
           <ShowRecipientsButton />
         </div>
       );
     case Mode.GrantRole:
       return (
         <div className="flex flex-row space-x-4">
-          <button
-            className="bg-white rounded-sm px-2"
-            onClick={() => console.log('upload CSV File')}
-          >
-            upload CSV file
-          </button>
+          <SelectionBox textList={textList} />
+          <AddressBox />
+          <AddAddressButton />
           <ShowRecipientsButton />
         </div>
       );
     case Mode.ADDCONTRACT:
-      return (
-        <div className="flex flex-raw space-x-5">
-          <CsvReadButton />
-        </div>
-      );
+      return <AddressBox />;
+    case Mode.ADDCONTROLLER:
+      return <AddressBox />;
   }
 }
 
