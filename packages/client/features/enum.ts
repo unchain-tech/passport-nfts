@@ -8,4 +8,5 @@ export enum Mode {
   MintNFT,
   GrantRole,
   ADDCONTRACT,
+  ADDCONTROLLER,
 }
