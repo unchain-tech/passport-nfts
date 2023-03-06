@@ -42,8 +42,7 @@ contract AVAX_Subnet is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'AVAX Subnet';
-    // TODO: Set hash value.
-    _passportHash = '';
+    _passportHash = 'QmUbCiH4NDbn3z4QPKXTyESK9SVhqGDQzfvrVfjufnWwnx';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

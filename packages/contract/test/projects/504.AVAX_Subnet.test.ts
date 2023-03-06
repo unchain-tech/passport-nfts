@@ -25,8 +25,9 @@ describe('AVAX_Subnet', function () {
     it('return passportHash', async function () {
       const { AVAXSubnet } = await loadFixture(deployProjectFixture);
 
-      // TODO: Set hash value.
-      expect(await AVAXSubnet.getPassportHash()).to.equal('');
+      expect(await AVAXSubnet.getPassportHash()).to.equal(
+        'QmUbCiH4NDbn3z4QPKXTyESK9SVhqGDQzfvrVfjufnWwnx',
+      );
     });
   });
 
@@ -149,8 +150,9 @@ describe('AVAX_Subnet', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      // TODO: Set hash value.
-      expect(object.image).to.equal('https://ipfs.io/ipfs/');
+      expect(object.image).to.equal(
+        'https://ipfs.io/ipfs/QmUbCiH4NDbn3z4QPKXTyESK9SVhqGDQzfvrVfjufnWwnx',
+      );
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('AVAX Subnet');
     });

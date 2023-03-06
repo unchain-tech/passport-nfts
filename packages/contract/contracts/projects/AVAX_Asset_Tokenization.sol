@@ -42,8 +42,7 @@ contract AVAX_Asset_Tokenization is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'AVAX Asset Tokenization';
-    // TODO: Set hash value.
-    _passportHash = '';
+    _passportHash = 'QmZsLjNREsYjbYqYxhBzGdvK8oA4R241W9Y8MtymSNcuEk';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

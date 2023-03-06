@@ -31,8 +31,9 @@ describe('AVAX_Asset_Tokenization', function () {
     it('return passportHash', async function () {
       const { AVAXAssetTokenization } = await loadFixture(deployProjectFixture);
 
-      // TODO: Set hash value.
-      expect(await AVAXAssetTokenization.getPassportHash()).to.equal('');
+      expect(await AVAXAssetTokenization.getPassportHash()).to.equal(
+        'QmZsLjNREsYjbYqYxhBzGdvK8oA4R241W9Y8MtymSNcuEk',
+      );
     });
   });
 
@@ -181,8 +182,9 @@ describe('AVAX_Asset_Tokenization', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      // TODO: Set hash value.
-      expect(object.image).to.equal('https://ipfs.io/ipfs/');
+      expect(object.image).to.equal(
+        'https://ipfs.io/ipfs/QmZsLjNREsYjbYqYxhBzGdvK8oA4R241W9Y8MtymSNcuEk',
+      );
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('AVAX Asset Tokenization');
     });
