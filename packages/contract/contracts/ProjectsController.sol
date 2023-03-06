@@ -112,11 +112,7 @@ contract ProjectsController is
   function getUserProjectInfoAll(
     address[] memory projectAddressList,
     address user
-  )
-    public
-    onlyRole(CONTROLLER_ROLE)
-    returns (IProject.UserProjectInfo[] memory)
-  {
+  ) public returns (IProject.UserProjectInfo[] memory) {
     uint256 length = projectAddressList.length;
     IProject.UserProjectInfo[]
       memory UserProjectInfoList = new IProject.UserProjectInfo[](length);

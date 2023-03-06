@@ -156,23 +156,6 @@ describe('ProjectsController Contract AccessControl', function () {
       });
     });
 
-    describe('getUserProjectInfoAll', function () {
-      it('Should fail if user does not have CONTROLLER_ROLE', async function () {
-        // learner hasn't CONTROLLER_ROLE
-        const { ProjectsController, ETHDapp, learner, CONTROLLER_ROLE } =
-          await loadFixture(deployTextFixture);
-
-        await expect(
-          ProjectsController.connect(learner).getUserProjectInfoAll(
-            [ETHDapp.address],
-            learner.address,
-          ),
-        ).to.be.revertedWith(
-          `AccessControl: account ${learner.address.toLowerCase()} is missing role ${CONTROLLER_ROLE}`,
-        );
-      });
-    });
-
     describe('getUserMintStatus', function () {
       it('Should fail if user does not have CONTROLLER_ROLE', async function () {
         // learner hasn't CONTROLLER_ROLE
