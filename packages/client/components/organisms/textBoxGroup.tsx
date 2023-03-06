@@ -22,16 +22,20 @@ function switchContent(mode: Mode, textList: string[]) {
           <SelectionBox textList={textList} />
           <AddressBox />
           <AddAddressButton />
+          <ShowRecipientsButton />
         </div>
       );
     case Mode.GrantRole:
       return (
-        <button
-          className="bg-white rounded-sm px-2"
-          onClick={() => console.log('upload CSV File')}
-        >
-          upload CSV file
-        </button>
+        <div className="flex flex-row space-x-4">
+          <button
+            className="bg-white rounded-sm px-2"
+            onClick={() => console.log('upload CSV File')}
+          >
+            upload CSV file
+          </button>
+          <ShowRecipientsButton />
+        </div>
       );
     case Mode.ADDCONTRACT:
       return (
