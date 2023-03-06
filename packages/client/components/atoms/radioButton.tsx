@@ -7,25 +7,31 @@ type Props = {
 };
 
 export default function RadioButton(props: Props) {
-  const items: string[] = ['Mint NFT mode', 'Grant Mint-Role Mode'];
+  const items: string[] = [
+    'Mint NFT Mode',
+    'Grant Mint-Role Mode',
+    'Add Contract Mode',
+  ];
 
-  const [selectedValue, setSelectedValue] = useState('Mint NFT mode');
+  const [selectedValue, setSelectedValue] = useState('Mint NFT Mode');
+  const stateNameMap: { [key: string]: Mode } = {
+    '0': Mode.MintNFT,
+    '1': Mode.GrantRole,
+    '2': Mode.ADDCONTRACT,
+  };
 
   const handleChange = (e: { target: { id: string; value: string } }) => {
     setSelectedValue(e.target.id);
-    props.passValue(e.target.value === '0' ? Mode.MintNFT : Mode.GrantRole);
-    {
-      console.log(e.target.value);
-    }
+    props.passValue(stateNameMap[e.target.value]);
   };
   return (
     <div className="flex flex-col">
-      {items.map((item) => (
+      {items.map((item, index) => (
         <label key={item}>
           <input
             id={item}
             type="radio"
-            value={item === 'Mint NFT mode' ? Mode.MintNFT : Mode.GrantRole}
+            value={stateNameMap[index.toString()]}
             onChange={handleChange}
             checked={item === selectedValue}
             key={item}
