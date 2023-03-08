@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import Button from '@/components/atoms/Button';
@@ -14,12 +15,17 @@ type Props = {
 };
 
 export default function HomeTemp(props: Props) {
+  const router = useRouter();
   const { connectWallet } = useAccountContext();
 
   const handleConnectWallet = async () => {
     if (connectWallet) {
       await connectWallet().then((account) => {
-        console.log(account.address);
+        if (account?.role === 'NONE') {
+          alert('You are not authorized.');
+          return;
+        }
+        router.push('controller');
       });
     }
   };

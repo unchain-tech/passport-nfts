@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { Mode, Screen } from '@/features/enum';
@@ -12,13 +11,11 @@ type Props = {
 };
 
 export default function Button(props: Props) {
-  const router = useRouter();
   return (
     <button
       onClick={() => {
         if (props.screen === Screen.HOME) {
           props.onClick();
-          props.isAdmin ? router.push('controller') : router.push('/minter');
         } else if (props.mode === Mode.MintNFT) {
           console.log('Mint NFT');
         } else if (props.mode === Mode.GrantRole) {
