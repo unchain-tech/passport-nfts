@@ -26,13 +26,6 @@ export const useAccountProvider = () => {
 
   useEffect(() => {
     (async () => {
-      const accounts = await window.ethereum?.request({
-        method: 'eth_accounts',
-      });
-      if (accounts[0] === undefined) {
-        return;
-      }
-
       const account = await generateAccount('eth_accounts');
       console.log(account?.address);
       setAccount(account);
@@ -48,17 +41,24 @@ export const useAccountProvider = () => {
   };
 
   const generateAccount = async (
-    ethMethod: string,
+    ethMethod: 'eth_accounts' | 'eth_requestAccounts',
   ): Promise<Account | undefined> => {
     if (window.ethereum === undefined) {
       console.log('Metamask not installed.');
       return undefined;
     }
 
+    const accounts = await window.ethereum?.request({
+      method: ethMethod,
+    });
+    if (accounts[0] === undefined) {
+      console.log('Error fetching account.');
+      return undefined;
+    }
+
     // @ts-ignore: ethereum as ethers.providers.ExternalProvider
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send(ethMethod, []);
-    const signer = provider.getSigner(0);
+    const signer = provider.getSigner(accounts[0]);
 
     const connectContract = new ethers.Contract(
       process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as string,
