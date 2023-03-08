@@ -20,7 +20,7 @@ export default function Button(props: Props) {
         } else if (props.mode === Mode.GrantRole) {
           console.log('Grant Mint-Role');
         } else if (props.mode === Mode.ADDCONTRACT) {
-          console.log('Add Contract');
+          props.onClick();
         } else {
           console.log('Add Controller');
         }

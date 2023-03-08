@@ -12,10 +12,12 @@ type Props = {
   address: string;
   textList: string[];
   mode: Mode;
+  inputValue: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
-function switchContent(mode: Mode, textList: string[]) {
-  switch (mode) {
+function switchContent(props: Props) {
+  switch (props.mode) {
     case Mode.MintNFT:
       return (
         <div className="flex flex-row space-x-4">
@@ -26,23 +28,21 @@ function switchContent(mode: Mode, textList: string[]) {
     case Mode.GrantRole:
       return (
         <div className="flex flex-row space-x-4">
-          <SelectionBox textList={textList} />
+          <SelectionBox textList={props.textList} />
           <AddressBox />
           <AddAddressButton />
           <ShowRecipientsButton />
         </div>
       );
     case Mode.ADDCONTRACT:
-      return <AddressBox />;
+      return (
+        <AddressBox inputValue={props.inputValue} onChange={props.onChange} />
+      );
     case Mode.ADDCONTROLLER:
       return <AddressBox />;
   }
 }
 
 export default function TextBoxGroup(props: Props) {
-  return (
-    <div className="flex flex-row space-x-4">
-      {switchContent(props.mode, props.textList)}
-    </div>
-  );
+  return <div className="flex flex-row space-x-4">{switchContent(props)}</div>;
 }
