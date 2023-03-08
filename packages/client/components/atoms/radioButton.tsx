@@ -10,7 +10,7 @@ export default function RadioButton(props: Props) {
   const items: string[] = [
     'Mint NFT Mode',
     'Grant Mint-Role Mode',
-    'Add Contract Mode',
+    'Add Project Mode',
     'Add Controller Mode',
   ];
 
@@ -18,8 +18,8 @@ export default function RadioButton(props: Props) {
   const stateNameMap: { [key: string]: Mode } = {
     '0': Mode.MintNFT,
     '1': Mode.GrantRole,
-    '2': Mode.ADDCONTRACT,
-    '3': Mode.ADDCONTROLLER,
+    '2': Mode.AddProject,
+    '3': Mode.AddController,
   };
 
   const handleChange = (e: { target: { id: string; value: string } }) => {

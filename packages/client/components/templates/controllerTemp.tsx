@@ -28,7 +28,7 @@ export default function ControllerTemp(props: Props) {
   const stateNameMap: { [key: number]: string } = {
     0: 'Mint NFT',
     1: 'Grant Mint-Roll',
-    2: 'Add Contract',
+    2: 'Add Project',
     3: 'Add Controller',
   };
 
@@ -53,8 +53,10 @@ export default function ControllerTemp(props: Props) {
         break;
       case Mode.GrantRole:
         break;
-      case Mode.ADDCONTRACT:
+      case Mode.AddProject:
         handleAddProject();
+        break;
+      case Mode.AddController:
         break;
       default:
         console.log('Error Mode');

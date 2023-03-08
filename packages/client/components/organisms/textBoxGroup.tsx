@@ -34,11 +34,11 @@ function switchContent(props: Props) {
           <ShowRecipientsButton />
         </div>
       );
-    case Mode.ADDCONTRACT:
+    case Mode.AddProject:
       return (
         <AddressBox inputValue={props.inputValue} onChange={props.onChange} />
       );
-    case Mode.ADDCONTROLLER:
+    case Mode.AddController:
       return <AddressBox />;
   }
 }
