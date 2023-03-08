@@ -39,6 +39,9 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,
   },
+  paths: {
+    artifacts: '../client/artifacts',
+  },
 };
 
 export default config;
