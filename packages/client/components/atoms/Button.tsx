@@ -21,8 +21,10 @@ export default function Button(props: Props) {
           console.log('Mint NFT');
         } else if (props.mode === Mode.GrantRole) {
           console.log('Grant Mint-Role');
-        } else {
+        } else if (props.mode === Mode.ADDCONTRACT) {
           console.log('Add Contract');
+        } else {
+          console.log('Add Controller');
         }
       }}
       className="text-4xl text-black items-center flex justify-center h-20 w-96 bg-gradient-to-b from-[#01AD30] to-[#FF3EF3] hover:bg-blue-700 rounded-xl"
