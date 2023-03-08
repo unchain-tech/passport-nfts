@@ -16,7 +16,10 @@ module.exports = {
       'error',
       { ignores: ['modules'] },
     ],
-    'node/no-unpublished-require': ['warn'],
+    'node/no-unpublished-require': [
+      'warn',
+      { allowModules: ['tailwind-scrollbar'] },
+    ],
     'node/no-unpublished-import': ['warn'],
     'node/no-missing-import': ['warn'],
     'no-lone-blocks': ['off'],

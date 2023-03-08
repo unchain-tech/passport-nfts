@@ -20,6 +20,12 @@ export default function ControllerTemp(props: Props) {
   };
 
   const [modeValue, setModeValue] = useState(Mode.MintNFT);
+
+  const stateNameMap: { [key: number]: string } = {
+    0: 'Mint NFT',
+    1: 'Grant Mint-Roll',
+    2: 'Add Contract',
+  };
   return (
     <div className="center bg-black space-y-8 overflow-scroll ">
       <Title subtitle={props.subtitle} screen={Screen.CONTROLLER} />
@@ -37,7 +43,7 @@ export default function ControllerTemp(props: Props) {
       <div className="flex flex-row justify-between items-center w-full">
         <div className="w-1/5" />
         <Button
-          text={modeValue === Mode.MintNFT ? 'Mint NFT' : 'Grant Mint-Role'}
+          text={stateNameMap[modeValue]}
           isAdmin={null}
           screen={Screen.CONTROLLER}
           mode={modeValue}
