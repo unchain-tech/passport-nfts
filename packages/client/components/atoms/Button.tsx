@@ -4,7 +4,6 @@ import { Mode, Screen } from '@/features/enum';
 
 type Props = {
   text: string;
-  isAdmin: boolean | null;
   screen: Screen;
   mode: Mode | null;
   onClick: () => void;

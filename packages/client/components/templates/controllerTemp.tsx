@@ -45,7 +45,6 @@ export default function ControllerTemp(props: Props) {
         <div className="w-1/5" />
         <Button
           text={stateNameMap[modeValue]}
-          isAdmin={null}
           screen={Screen.CONTROLLER}
           mode={modeValue}
         />

@@ -3,7 +3,6 @@ import Head from 'next/head';
 import HomeTemp from '@/components/templates/homeTemp';
 
 export default function Home() {
-  const isAdmin = true;
   return (
     <>
       <Head>
@@ -16,7 +15,6 @@ export default function Home() {
         subtitle="Welcome to UNCHAIN passport dApp!!"
         imgUrl="/passport_3.jpeg"
         buttonName="Connect Wallet"
-        isAdmin={isAdmin}
       />
     </>
   );

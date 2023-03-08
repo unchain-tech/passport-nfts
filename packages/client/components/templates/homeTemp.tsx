@@ -11,7 +11,6 @@ type Props = {
   subtitle: string;
   imgUrl: string;
   buttonName: string;
-  isAdmin: boolean;
 };
 
 export default function HomeTemp(props: Props) {
@@ -36,7 +35,6 @@ export default function HomeTemp(props: Props) {
       <Image src={props.imgUrl} alt="home_img" width={750} height={700} />
       <Button
         text={props.buttonName}
-        isAdmin={props.isAdmin}
         screen={Screen.HOME}
         mode={null}
         onClick={handleConnectWallet}
