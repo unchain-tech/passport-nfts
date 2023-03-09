@@ -22,7 +22,7 @@ export default function Button(props: Props) {
         } else if (props.mode === Mode.AddProject) {
           props.onClick();
         } else {
-          console.log('Add Controller');
+          props.onClick();
         }
       }}
       className="text-4xl text-black items-center flex justify-center h-20 w-96 bg-gradient-to-b from-[#01AD30] to-[#FF3EF3] hover:bg-blue-700 rounded-xl"

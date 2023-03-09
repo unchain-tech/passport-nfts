@@ -39,7 +39,9 @@ function switchContent(props: Props) {
         <AddressBox inputValue={props.inputValue} onChange={props.onChange} />
       );
     case Mode.AddController:
-      return <AddressBox />;
+      return (
+        <AddressBox inputValue={props.inputValue} onChange={props.onChange} />
+      );
   }
 }
 

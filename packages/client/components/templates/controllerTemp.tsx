@@ -8,6 +8,7 @@ import Title from '@/components/organisms/title';
 import { Mode, Screen } from '@/features/enum';
 import { useAccountContext } from '@/hooks/accountContext';
 import addProject from '@/services/addProject';
+import grantControllerRole from '@/services/grantControllerRole';
 
 type Props = {
   subtitle: string;
@@ -19,7 +20,7 @@ type Props = {
 export default function ControllerTemp(props: Props) {
   const { account } = useAccountContext();
   const [modeValue, setModeValue] = useState(Mode.MintNFT);
-  const [projectAddress, setProjectAddress] = useState('');
+  const [address, setAddress] = useState('');
 
   const passValue = (mode: Mode) => {
     setModeValue(mode);
@@ -33,16 +34,29 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setProjectAddress(e.target.value);
+    setAddress(e.target.value);
 
   const handleAddProject = async () => {
     if (account) {
       try {
-        await addProject(account, projectAddress);
+        await addProject(account, address);
       } catch (error) {
         console.log(error);
       } finally {
-        setProjectAddress('');
+        setAddress('');
+      }
+    }
+  };
+
+  const handleAddController = async () => {
+    if (account) {
+      try {
+        await grantControllerRole(account, address);
+      } catch (error) {
+        console.log(error);
+        alert(error);
+      } finally {
+        setAddress('');
       }
     }
   };
@@ -57,6 +71,7 @@ export default function ControllerTemp(props: Props) {
         handleAddProject();
         break;
       case Mode.AddController:
+        handleAddController();
         break;
       default:
         console.log('Error Mode');
@@ -77,6 +92,7 @@ export default function ControllerTemp(props: Props) {
         address={props.address}
         textList={props.textList}
         mode={modeValue}
+        inputValue={address}
         onChange={handleChange}
       />
       <div className="flex flex-row justify-between items-center w-full">
