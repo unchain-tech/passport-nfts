@@ -28,6 +28,7 @@ export default function Minter() {
       buttonName="Give Mint Roles"
       imgIdList={passportHashes}
       mintStatusList={mintStatuses}
+      projectAddresses={projectAddresses}
     />
   );
 }

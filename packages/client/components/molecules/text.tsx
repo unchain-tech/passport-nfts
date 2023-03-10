@@ -1,4 +1,3 @@
-import { MediaRenderer } from '@thirdweb-dev/react';
 import React from 'react';
 
 import TextImg from '@/components/atoms/textImg';
@@ -8,6 +7,7 @@ type Props = {
   imgId: string;
   mintStatus: number;
   screen: Screen;
+  onClick?: (passportHash: string) => void;
 };
 
 export default function Text(props: Props) {
@@ -18,7 +18,12 @@ export default function Text(props: Props) {
         className="w-52 h-52 absolute top-0 left-0 flex justify-center items-center flex-col text-2xl text-red-500"
         onClick={() => {
           if (props.mintStatus === 1 && props.screen === Screen.MINTER) {
-            window.confirm("Would you like to mint this text's NFT?");
+            const result = confirm(
+              "Would you like to mint this project's NFT?",
+            );
+            if (result && props.onClick) {
+              props.onClick(props.imgId);
+            }
           }
         }}
         onKeyDown={() => {}}

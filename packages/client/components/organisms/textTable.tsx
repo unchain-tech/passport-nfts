@@ -9,6 +9,7 @@ type Props = {
   itemNum: number;
   mintStatusList: number[];
   screen: Screen;
+  onClick?: (passportHash: string) => void;
 };
 
 export default function TextTable(props: Props) {
@@ -26,6 +27,7 @@ export default function TextTable(props: Props) {
               key={4 * i + j}
               mintStatus={props.mintStatusList[4 * i + j]}
               screen={props.screen}
+              onClick={props.onClick}
             />
           ))}
         </div>
