@@ -35,6 +35,7 @@ export default function Controller() {
       imgIdList={passportHashes}
       mintStatusList={mintStatusList}
       address={address}
+      projectAddresses={projectAddresses}
       textList={projectNames}
     />
   );

@@ -2,10 +2,16 @@ import React from 'react';
 
 import TextBox from '@/components/atoms/textBox';
 
-export default function ShowRecipientsButton() {
+type Props = {
+  onClick: () => void;
+};
+
+export default function ShowRecipientsButton(props: Props) {
   return (
     <div>
-      <TextBox text="show recipients" />
+      <button onClick={() => props.onClick()}>
+        <TextBox text="show recipients" />
+      </button>
     </div>
   );
 }

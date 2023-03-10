@@ -18,7 +18,7 @@ export default function Button(props: Props) {
         } else if (props.mode === Mode.MintNFT) {
           console.log('Mint NFT');
         } else if (props.mode === Mode.GrantRole) {
-          console.log('Grant Mint-Role');
+          props.onClick();
         } else if (props.mode === Mode.AddProject) {
           props.onClick();
         } else {

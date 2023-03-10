@@ -8,6 +8,7 @@ import Title from '@/components/organisms/title';
 import { Mode, Screen } from '@/features/enum';
 import { useAccountContext } from '@/hooks/accountContext';
 import addProject from '@/services/addProject';
+import changeStatusToAvailable from '@/services/changeStatusToAvailable';
 import grantControllerRole from '@/services/grantControllerRole';
 
 type Props = {
@@ -15,13 +16,15 @@ type Props = {
   imgIdList: string[];
   mintStatusList: number[];
   address: string;
+  projectAddresses: string[];
   textList: string[];
 };
 export default function ControllerTemp(props: Props) {
   const { account } = useAccountContext();
   const [modeValue, setModeValue] = useState(Mode.MintNFT);
   const [address, setAddress] = useState('');
-
+  const [recipients, setRecipients] = useState<string[]>([]);
+  const [projectIndex, setProjectIndex] = useState(0);
   const passValue = (mode: Mode) => {
     setModeValue(mode);
   };
@@ -35,6 +38,43 @@ export default function ControllerTemp(props: Props) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setAddress(e.target.value);
+
+  const handleChangeProject = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(`select Element: ${e.target.value}`);
+    setProjectIndex(Number(e.target.value));
+  };
+
+  const handleAddAddress = () => {
+    setRecipients([...recipients, address]);
+    setAddress('');
+  };
+
+  const handleShowRecipients = () => {
+    alert(recipients);
+  };
+
+  const handleGrantRole = async () => {
+    if (recipients.length === 0) {
+      alert('Recipient is not set.');
+      return;
+    }
+    if (account) {
+      try {
+        const result = confirm(`Project: ${props.textList[projectIndex]}`);
+        if (result) {
+          const projectAddress = props.projectAddresses[projectIndex];
+          for (const recipient of recipients) {
+            await changeStatusToAvailable(account, projectAddress, recipient);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setProjectIndex(0);
+        setRecipients([]);
+      }
+    }
+  };
 
   const handleAddProject = async () => {
     if (account) {
@@ -66,6 +106,7 @@ export default function ControllerTemp(props: Props) {
       case Mode.MintNFT:
         break;
       case Mode.GrantRole:
+        handleGrantRole();
         break;
       case Mode.AddProject:
         handleAddProject();
@@ -94,6 +135,9 @@ export default function ControllerTemp(props: Props) {
         mode={modeValue}
         inputValue={address}
         onChange={handleChange}
+        onChangeProject={handleChangeProject}
+        onClickAddAddress={handleAddAddress}
+        onClickShowRecipients={handleShowRecipients}
       />
       <div className="flex flex-row justify-between items-center w-full">
         <div className="w-1/5" />

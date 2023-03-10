@@ -14,6 +14,9 @@ type Props = {
   mode: Mode;
   inputValue: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onChangeProject: React.ChangeEventHandler<HTMLSelectElement>;
+  onClickAddAddress: () => void;
+  onClickShowRecipients: () => void;
 };
 
 function switchContent(props: Props) {
@@ -28,10 +31,16 @@ function switchContent(props: Props) {
     case Mode.GrantRole:
       return (
         <div className="flex flex-row space-x-4">
-          <SelectionBox textList={props.textList} />
-          <AddressBox />
-          <AddAddressButton />
-          <ShowRecipientsButton />
+          <SelectionBox
+            textList={props.textList}
+            onChange={props.onChangeProject}
+          />
+          <AddressBox inputValue={props.inputValue} onChange={props.onChange} />
+          <AddAddressButton
+            value={props.inputValue}
+            onClick={props.onClickAddAddress}
+          />
+          <ShowRecipientsButton onClick={props.onClickShowRecipients} />
         </div>
       );
     case Mode.AddProject:
