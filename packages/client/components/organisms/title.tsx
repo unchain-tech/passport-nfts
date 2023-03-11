@@ -22,7 +22,7 @@ export default function Title(props: Props) {
         <div className="flex text-white w-64" />
       ) : (
         <div className="flex items-center flex-row text-2xl">
-          <Address address="21321" />
+          <Address />
         </div>
       )}
     </div>

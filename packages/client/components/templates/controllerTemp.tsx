@@ -18,7 +18,6 @@ type Props = {
   subtitle: string;
   imgIdList: string[];
   mintStatusList: number[];
-  address: string;
   projectAddresses: string[];
   textList: string[];
 };
@@ -176,7 +175,6 @@ export default function ControllerTemp(props: Props) {
         screen={Screen.CONTROLLER}
       />
       <TextBoxGroup
-        address={props.address}
         textList={props.textList}
         mode={modeValue}
         inputValue={address}

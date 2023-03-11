@@ -1,14 +1,16 @@
 import React from 'react';
 
-type Props = {
-  address: string;
-};
+import { useAccountContext } from '@/hooks/accountContext';
 
-export default function Address(props: Props) {
+export default function Address() {
+  const { account } = useAccountContext();
+
   return (
     <div className="flex flex-row w-64 justify-center text-[#49A9EE] underline">
       <div>wallet address:</div>
-      <div className="w-10 text-ellipsis overflow-hidden">{props.address}</div>
+      <div className="w-10 text-ellipsis overflow-hidden">
+        {account?.address}
+      </div>
     </div>
   );
 }

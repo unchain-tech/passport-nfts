@@ -9,7 +9,6 @@ import ShowRecipientsButton from '@/components/molecules/showRecipientsButton';
 import { Mode } from '@/features/enum';
 
 type Props = {
-  address: string;
   textList: string[];
   mode: Mode;
   inputValue: string;

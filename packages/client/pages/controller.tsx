@@ -14,8 +14,6 @@ export default function Controller() {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   ];
 
-  const address = '0xf293jrd892j3ihr92jjdhe9wfieh';
-
   useEffect(() => {
     (async () => {
       if (account) {
@@ -34,7 +32,6 @@ export default function Controller() {
       subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
       imgIdList={passportHashes}
       mintStatusList={mintStatusList}
-      address={address}
       projectAddresses={projectAddresses}
       textList={projectNames}
     />
