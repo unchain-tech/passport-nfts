@@ -80,6 +80,10 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleMintNFT = async () => {
+    if (recipients.length === 0) {
+      alert('Recipient is not set.');
+      return;
+    }
     try {
       const projectAddresses = convertToProjectAddresses(
         props.projectAddresses,
@@ -90,7 +94,7 @@ export default function ControllerTemp(props: Props) {
         await multiMint(account, projectAddresses, recipients);
       }
     } catch (error) {
-      alert(error);
+      console.error(error);
     } finally {
       setProjectNames([]);
       setRecipients([]);
@@ -104,15 +108,12 @@ export default function ControllerTemp(props: Props) {
     }
     if (account) {
       try {
-        const result = confirm(`Project: ${props.textList[projectIndex]}`);
-        if (result) {
-          const projectAddress = props.projectAddresses[projectIndex];
-          for (const recipient of recipients) {
-            await changeStatusToAvailable(account, projectAddress, recipient);
-          }
+        const projectAddress = props.projectAddresses[projectIndex];
+        for (const recipient of recipients) {
+          await changeStatusToAvailable(account, projectAddress, recipient);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setProjectIndex(0);
         setRecipients([]);
@@ -121,11 +122,15 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleAddProject = async () => {
+    if (address === '') {
+      alert('Project address is not set.');
+      return;
+    }
     if (account) {
       try {
         await addProject(account, address);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setAddress('');
       }
@@ -133,12 +138,15 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleAddController = async () => {
+    if (address === '') {
+      alert('Address is not set.');
+      return;
+    }
     if (account) {
       try {
         await grantControllerRole(account, address);
       } catch (error) {
-        console.log(error);
-        alert(error);
+        console.error(error);
       } finally {
         setAddress('');
       }
@@ -160,7 +168,7 @@ export default function ControllerTemp(props: Props) {
         handleAddController();
         break;
       default:
-        console.log('Error Mode');
+        console.error('Error Mode');
         break;
     }
   };

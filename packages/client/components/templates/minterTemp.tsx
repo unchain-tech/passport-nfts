@@ -23,7 +23,7 @@ export default function MinterTemp(props: Props) {
       try {
         await mint(account, projectAddress);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
