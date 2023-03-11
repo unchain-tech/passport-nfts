@@ -1,5 +1,3 @@
-import Papa from 'papaparse';
-
 export const divideList = (
   imgIdList: string[],
   itemNum: number,
@@ -21,14 +19,18 @@ export const divideList = (
   return listOfImgIdList;
 };
 
-export const readCSV = (e: any) => {
-  if (e !== null) {
-    Papa.parse(e.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      complete: function (results: any) {
-        console.log(results.data);
-      },
-    });
+export const convertToProjectAddresses = (
+  projectAddresses: string[],
+  projectNames: string[],
+  targets: string[],
+): string[] => {
+  const getAddresses = [];
+  for (const target of targets) {
+    const index = projectNames.indexOf(target);
+    if (index === -1) {
+      throw new Error(`Unknown project name "${target}"`);
+    }
+    getAddresses.push(projectAddresses[index]);
   }
+  return getAddresses;
 };

@@ -1,3 +1,4 @@
+import Papa from 'papaparse';
 import React, { useState } from 'react';
 
 import Button from '@/components/atoms/Button';
@@ -7,9 +8,11 @@ import TextTable from '@/components/organisms/textTable';
 import Title from '@/components/organisms/title';
 import { Mode, Screen } from '@/features/enum';
 import { useAccountContext } from '@/hooks/accountContext';
+import { convertToProjectAddresses } from '@/hooks/uiFunction';
 import addProject from '@/services/addProject';
 import changeStatusToAvailable from '@/services/changeStatusToAvailable';
 import grantControllerRole from '@/services/grantControllerRole';
+import multiMint from '@/services/multiMint';
 
 type Props = {
   subtitle: string;
@@ -25,6 +28,8 @@ export default function ControllerTemp(props: Props) {
   const [address, setAddress] = useState('');
   const [recipients, setRecipients] = useState<string[]>([]);
   const [projectIndex, setProjectIndex] = useState(0);
+  const [projectNames, setProjectNames] = useState<string[]>([]);
+
   const passValue = (mode: Mode) => {
     setModeValue(mode);
   };
@@ -44,6 +49,28 @@ export default function ControllerTemp(props: Props) {
     setProjectIndex(Number(e.target.value));
   };
 
+  const handleChangeCSVFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files !== null) {
+      Papa.parse(e.target.files[0], {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results: any) {
+          // Create an array of each data
+          const length = results.data.length;
+          const projectNames = new Array<string>(length);
+          const recipients = new Array<string>(length);
+          for (let i = 0; i < length; i++) {
+            projectNames[i] = results.data[i].project;
+            recipients[i] = results.data[i].address;
+          }
+          // Save as state
+          setProjectNames(projectNames);
+          setRecipients(recipients);
+        },
+      });
+    }
+  };
+
   const handleAddAddress = () => {
     setRecipients([...recipients, address]);
     setAddress('');
@@ -51,6 +78,24 @@ export default function ControllerTemp(props: Props) {
 
   const handleShowRecipients = () => {
     alert(recipients);
+  };
+
+  const handleMintNFT = async () => {
+    try {
+      const projectAddresses = convertToProjectAddresses(
+        props.projectAddresses,
+        props.textList,
+        projectNames,
+      );
+      if (account) {
+        await multiMint(account, projectAddresses, recipients);
+      }
+    } catch (error) {
+      alert(error);
+    } finally {
+      setProjectNames([]);
+      setRecipients([]);
+    }
   };
 
   const handleGrantRole = async () => {
@@ -104,6 +149,7 @@ export default function ControllerTemp(props: Props) {
   const handleClick = () => {
     switch (modeValue) {
       case Mode.MintNFT:
+        handleMintNFT();
         break;
       case Mode.GrantRole:
         handleGrantRole();
@@ -136,6 +182,7 @@ export default function ControllerTemp(props: Props) {
         inputValue={address}
         onChange={handleChange}
         onChangeProject={handleChangeProject}
+        onChangeCSVFile={handleChangeCSVFile}
         onClickAddAddress={handleAddAddress}
         onClickShowRecipients={handleShowRecipients}
       />

@@ -15,6 +15,7 @@ type Props = {
   inputValue: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onChangeProject: React.ChangeEventHandler<HTMLSelectElement>;
+  onChangeCSVFile: React.ChangeEventHandler<HTMLInputElement>;
   onClickAddAddress: () => void;
   onClickShowRecipients: () => void;
 };
@@ -24,8 +25,8 @@ function switchContent(props: Props) {
     case Mode.MintNFT:
       return (
         <div className="flex flex-row space-x-4">
-          <CsvReadButton />
-          <ShowRecipientsButton />
+          <CsvReadButton onChange={props.onChangeCSVFile} />
+          <ShowRecipientsButton onClick={props.onClickShowRecipients} />
         </div>
       );
     case Mode.GrantRole:
