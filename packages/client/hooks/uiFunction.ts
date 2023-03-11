@@ -1,19 +1,19 @@
 export const divideList = (
-  imgIdList: string[],
+  passportHashes: string[],
   itemNum: number,
 ): string[][] => {
   const listOfImgIdList: string[][] = [];
   let temImgIdList: string[] = [];
-  imgIdList.forEach((imgId, i) => {
+  passportHashes.forEach((passportHash, i) => {
     if ((i + 1) % itemNum === 0) {
-      temImgIdList.push(imgId);
+      temImgIdList.push(passportHash);
       listOfImgIdList.push(temImgIdList);
       temImgIdList = [];
     } else {
-      temImgIdList.push(imgId);
+      temImgIdList.push(passportHash);
     }
 
-    if (i === imgIdList.length - 1) listOfImgIdList.push(temImgIdList);
+    if (i === passportHashes.length - 1) listOfImgIdList.push(temImgIdList);
   });
 
   return listOfImgIdList;

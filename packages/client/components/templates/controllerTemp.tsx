@@ -16,8 +16,8 @@ import multiMint from '@/services/multiMint';
 
 type Props = {
   subtitle: string;
-  imgIdList: string[];
-  mintStatusList: number[];
+  passportHashes: string[];
+  mintStatuses: number[];
   projectAddresses: string[];
   textList: string[];
 };
@@ -169,9 +169,9 @@ export default function ControllerTemp(props: Props) {
     <div className="center bg-black space-y-8 overflow-scroll ">
       <Title subtitle={props.subtitle} screen={Screen.CONTROLLER} />
       <TextTable
-        imgIdList={props.imgIdList}
+        passportHashes={props.passportHashes}
         itemNum={4}
-        mintStatusList={props.mintStatusList}
+        mintStatuses={props.mintStatuses}
         screen={Screen.CONTROLLER}
       />
       <TextBoxGroup

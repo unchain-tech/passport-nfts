@@ -10,7 +10,7 @@ export default function Controller() {
   const [projectNames, setProjectNames] = useState<string[]>([]);
   const [passportHashes, setPassportHashes] = useState<string[]>([]);
 
-  const mintStatusList: number[] = [
+  const mintStatuses: number[] = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   ];
 
@@ -30,8 +30,8 @@ export default function Controller() {
   return (
     <ControllerTemp
       subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
-      imgIdList={passportHashes}
-      mintStatusList={mintStatusList}
+      passportHashes={passportHashes}
+      mintStatuses={mintStatuses}
       projectAddresses={projectAddresses}
       textList={projectNames}
     />

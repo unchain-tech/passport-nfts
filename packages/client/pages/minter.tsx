@@ -26,8 +26,8 @@ export default function Minter() {
     <MinterTemp
       subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
       buttonName="Give Mint Roles"
-      imgIdList={passportHashes}
-      mintStatusList={mintStatuses}
+      passportHashes={passportHashes}
+      mintStatuses={mintStatuses}
       projectAddresses={projectAddresses}
     />
   );

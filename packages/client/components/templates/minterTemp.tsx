@@ -9,8 +9,8 @@ import mint from '@/services/mint';
 type Props = {
   subtitle: string;
   buttonName: string;
-  imgIdList: string[];
-  mintStatusList: number[];
+  passportHashes: string[];
+  mintStatuses: number[];
   projectAddresses: string[];
 };
 export default function MinterTemp(props: Props) {
@@ -19,7 +19,7 @@ export default function MinterTemp(props: Props) {
   const handleMint = async (passportHash: string) => {
     if (account) {
       const projectAddress =
-        props.projectAddresses[props.imgIdList.indexOf(passportHash)];
+        props.projectAddresses[props.passportHashes.indexOf(passportHash)];
       try {
         await mint(account, projectAddress);
       } catch (error) {
@@ -32,9 +32,9 @@ export default function MinterTemp(props: Props) {
     <div className="center bg-black space-y-8 overflow-scroll ">
       <Title subtitle={props.subtitle} screen={Screen.MINTER} />
       <TextTable
-        imgIdList={props.imgIdList}
+        passportHashes={props.passportHashes}
         itemNum={5}
-        mintStatusList={props.mintStatusList}
+        mintStatuses={props.mintStatuses}
         screen={Screen.MINTER}
         onClick={handleMint}
       />
