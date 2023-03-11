@@ -24,8 +24,8 @@ export default function TextTable(props: Props) {
           {imgIdList.map((imgId, j) => (
             <Text
               imgId={imgId}
-              key={4 * i + j}
-              mintStatus={props.mintStatusList[4 * i + j]}
+              key={props.itemNum * i + j}
+              mintStatus={props.mintStatusList[props.itemNum * i + j]}
               screen={props.screen}
               onClick={props.onClick}
             />
