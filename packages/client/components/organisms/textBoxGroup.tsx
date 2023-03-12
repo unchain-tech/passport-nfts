@@ -12,24 +12,38 @@ type Props = {
   mode: Mode;
 };
 
-export default function TextBoxGroup(props: Props) {
-  return (
-    <div className="flex flex-row space-x-4">
-      {props.mode === Mode.MintNFT ? (
+function switchContent(mode: Mode, textList: string[]) {
+  switch (mode) {
+    case Mode.MintNFT:
+      return (
         <div className="flex flex-row space-x-4">
-          <SelectionBox textList={props.textList} />
+          <SelectionBox textList={textList} />
           <AddressBox />
           <AddAddressButton />
         </div>
-      ) : (
+      );
+    case Mode.GrantRole:
+      return (
         <button
           className="bg-white rounded-sm px-2"
           onClick={() => console.log('upload CSV File')}
         >
           upload CSV file
         </button>
-      )}
-      <ShowRecipientsButton />
+      );
+    case Mode.ADDCONTRACT:
+      return (
+        <div className="flex flex-raw space-x-5">
+          <AddressBox />
+        </div>
+      );
+  }
+}
+
+export default function TextBoxGroup(props: Props) {
+  return (
+    <div className="flex flex-row space-x-4">
+      {switchContent(props.mode, props.textList)}
     </div>
   );
 }
