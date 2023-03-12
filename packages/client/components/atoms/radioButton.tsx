@@ -11,6 +11,7 @@ export default function RadioButton(props: Props) {
     'Mint NFT Mode',
     'Grant Mint-Role Mode',
     'Add Contract Mode',
+    'Add Controller Mode',
   ];
 
   const [selectedValue, setSelectedValue] = useState('Mint NFT Mode');
@@ -18,6 +19,7 @@ export default function RadioButton(props: Props) {
     '0': Mode.MintNFT,
     '1': Mode.GrantRole,
     '2': Mode.ADDCONTRACT,
+    '3': Mode.ADDCONTROLLER,
   };
 
   const handleChange = (e: { target: { id: string; value: string } }) => {

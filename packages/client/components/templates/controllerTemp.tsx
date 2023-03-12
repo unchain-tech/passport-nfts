@@ -25,6 +25,7 @@ export default function ControllerTemp(props: Props) {
     0: 'Mint NFT',
     1: 'Grant Mint-Roll',
     2: 'Add Contract',
+    3: 'Add Controller',
   };
   return (
     <div className="center bg-black space-y-8 overflow-scroll ">
