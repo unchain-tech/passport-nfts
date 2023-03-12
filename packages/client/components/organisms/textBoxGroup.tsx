@@ -9,7 +9,7 @@ import ShowRecipientsButton from '@/components/molecules/showRecipientsButton';
 import { Mode } from '@/features/enum';
 
 type Props = {
-  textList: string[];
+  projectNames: string[];
   mode: Mode;
   inputValue: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -32,7 +32,7 @@ function switchContent(props: Props) {
       return (
         <div className="flex flex-row space-x-4">
           <SelectionBox
-            textList={props.textList}
+            projectNames={props.projectNames}
             onChange={props.onChangeProject}
           />
           <AddressBox inputValue={props.inputValue} onChange={props.onChange} />

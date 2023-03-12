@@ -19,7 +19,7 @@ type Props = {
   passportHashes: string[];
   mintStatuses: number[];
   projectAddresses: string[];
-  textList: string[];
+  projectNames: string[];
 };
 export default function ControllerTemp(props: Props) {
   const { account } = useAccountContext();
@@ -87,7 +87,7 @@ export default function ControllerTemp(props: Props) {
     try {
       const projectAddresses = convertToProjectAddresses(
         props.projectAddresses,
-        props.textList,
+        props.projectNames,
         projectNames,
       );
       if (account) {
@@ -183,7 +183,7 @@ export default function ControllerTemp(props: Props) {
         screen={Screen.CONTROLLER}
       />
       <TextBoxGroup
-        textList={props.textList}
+        projectNames={props.projectNames}
         mode={modeValue}
         inputValue={address}
         onChange={handleChange}

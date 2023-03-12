@@ -33,7 +33,7 @@ export default function Controller() {
       passportHashes={passportHashes}
       mintStatuses={mintStatuses}
       projectAddresses={projectAddresses}
-      textList={projectNames}
+      projectNames={projectNames}
     />
   );
 }
