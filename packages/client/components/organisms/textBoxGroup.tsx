@@ -9,12 +9,12 @@ import ShowRecipientsButton from '@/components/molecules/showRecipientsButton';
 import { Mode } from '@/features/enum';
 
 type Props = {
-  projectNames: string[];
-  mode: Mode;
   inputValue: string;
+  mode: Mode;
+  projectNames: string[];
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  onChangeProject: React.ChangeEventHandler<HTMLSelectElement>;
   onChangeCSVFile: React.ChangeEventHandler<HTMLInputElement>;
+  onChangeProject: React.ChangeEventHandler<HTMLSelectElement>;
   onClickAddAddress: () => void;
   onClickShowRecipients: () => void;
 };

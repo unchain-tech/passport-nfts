@@ -1,11 +1,7 @@
 import React from 'react';
 
-import { Mode, Screen } from '@/features/enum';
-
 type Props = {
   text: string;
-  screen: Screen;
-  mode: Mode | null;
   onClick: () => void;
 };
 

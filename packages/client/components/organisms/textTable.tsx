@@ -5,9 +5,9 @@ import { Screen } from '@/features/enum';
 import { divideList } from '@/hooks/uiFunction';
 
 type Props = {
-  passportHashes: string[];
   itemNum: number;
   mintStatuses: number[];
+  passportHashes: string[];
   screen: Screen;
   onClick?: (passportHash: string) => void;
 };

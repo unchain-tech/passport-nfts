@@ -7,11 +7,11 @@ import { useAccountContext } from '@/hooks/accountContext';
 import mint from '@/services/mint';
 
 type Props = {
-  subtitle: string;
   buttonName: string;
-  passportHashes: string[];
   mintStatuses: number[];
+  passportHashes: string[];
   projectAddresses: string[];
+  subtitle: string;
 };
 export default function MinterTemp(props: Props) {
   const { account } = useAccountContext();

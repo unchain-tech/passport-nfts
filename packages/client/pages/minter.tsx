@@ -24,11 +24,11 @@ export default function Minter() {
 
   return (
     <MinterTemp
-      subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
       buttonName="Give Mint Roles"
-      passportHashes={passportHashes}
       mintStatuses={mintStatuses}
+      passportHashes={passportHashes}
       projectAddresses={projectAddresses}
+      subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
     />
   );
 }

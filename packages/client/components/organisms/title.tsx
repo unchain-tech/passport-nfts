@@ -6,8 +6,8 @@ import Subtitle from '@/components/atoms/subtitle';
 import { Screen } from '@/features/enum';
 
 type Props = {
-  subtitle: string;
   screen: Screen;
+  subtitle: string;
 };
 
 export default function Title(props: Props) {

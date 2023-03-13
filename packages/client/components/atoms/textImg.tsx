@@ -1,10 +1,9 @@
 import { MediaRenderer } from '@thirdweb-dev/react';
-import Image from 'next/image';
 import React from 'react';
 
 type Props = {
-  passportHash: string;
   mintStatus: number;
+  passportHash: string;
 };
 
 export default function TextImg(props: Props) {

@@ -21,7 +21,6 @@ export default function Controller() {
           setProjectAddresses(res[0]);
           setProjectNames(res[1]);
           setPassportHashes(res[2]);
-          console.log(`get Project num: ${res.length}`); // TODO: Delete
         });
       }
     })();
@@ -29,11 +28,11 @@ export default function Controller() {
 
   return (
     <ControllerTemp
-      subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
-      passportHashes={passportHashes}
       mintStatuses={mintStatuses}
+      passportHashes={passportHashes}
       projectAddresses={projectAddresses}
       projectNames={projectNames}
+      subtitle="Let mint UNCHAIN Passports to those who finished the challenges"
     />
   );
 }

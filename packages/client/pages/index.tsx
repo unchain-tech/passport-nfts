@@ -12,9 +12,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomeTemp
-        subtitle="Welcome to UNCHAIN passport dApp!!"
-        imgUrl="/passport_3.jpeg"
         buttonName="Connect Wallet"
+        imgUrl="/passport_3.jpeg"
+        subtitle="Welcome to UNCHAIN passport dApp!!"
       />
     </>
   );

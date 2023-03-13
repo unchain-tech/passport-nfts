@@ -4,8 +4,8 @@ import TextImg from '@/components/atoms/textImg';
 import { Screen } from '@/features/enum';
 
 type Props = {
-  passportHash: string;
   mintStatus: number;
+  passportHash: string;
   screen: Screen;
   onClick?: (passportHash: string) => void;
 };

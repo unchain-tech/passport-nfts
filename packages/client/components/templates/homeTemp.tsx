@@ -8,9 +8,9 @@ import { Screen } from '@/features/enum';
 import { useAccountContext } from '@/hooks/accountContext';
 
 type Props = {
-  subtitle: string;
-  imgUrl: string;
   buttonName: string;
+  imgUrl: string;
+  subtitle: string;
 };
 
 export default function HomeTemp(props: Props) {
@@ -33,12 +33,7 @@ export default function HomeTemp(props: Props) {
     <div className="center bg-black space-y-8 overflow-scroll">
       <Title subtitle={props.subtitle} screen={Screen.HOME} />
       <Image src={props.imgUrl} alt="home_img" width={750} height={700} />
-      <Button
-        text={props.buttonName}
-        screen={Screen.HOME}
-        mode={null}
-        onClick={handleConnectWallet}
-      />
+      <Button text={props.buttonName} onClick={handleConnectWallet} />
     </div>
   );
 }

@@ -15,11 +15,11 @@ import grantControllerRole from '@/services/grantControllerRole';
 import multiMint from '@/services/multiMint';
 
 type Props = {
-  subtitle: string;
-  passportHashes: string[];
   mintStatuses: number[];
+  passportHashes: string[];
   projectAddresses: string[];
   projectNames: string[];
+  subtitle: string;
 };
 export default function ControllerTemp(props: Props) {
   const { account } = useAccountContext();
@@ -44,7 +44,6 @@ export default function ControllerTemp(props: Props) {
     setAddress(e.target.value);
 
   const handleChangeProject = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(`select Element: ${e.target.value}`);
     setProjectIndex(Number(e.target.value));
   };
 
@@ -177,15 +176,15 @@ export default function ControllerTemp(props: Props) {
     <div className="center bg-black space-y-8 overflow-scroll ">
       <Title subtitle={props.subtitle} screen={Screen.CONTROLLER} />
       <TextTable
-        passportHashes={props.passportHashes}
         itemNum={4}
         mintStatuses={props.mintStatuses}
+        passportHashes={props.passportHashes}
         screen={Screen.CONTROLLER}
       />
       <TextBoxGroup
-        projectNames={props.projectNames}
-        mode={modeValue}
         inputValue={address}
+        mode={modeValue}
+        projectNames={props.projectNames}
         onChange={handleChange}
         onChangeProject={handleChangeProject}
         onChangeCSVFile={handleChangeCSVFile}
@@ -194,12 +193,7 @@ export default function ControllerTemp(props: Props) {
       />
       <div className="flex flex-row justify-between items-center w-full">
         <div className="w-1/5" />
-        <Button
-          text={stateNameMap[modeValue]}
-          screen={Screen.CONTROLLER}
-          mode={modeValue}
-          onClick={handleClick}
-        />
+        <Button text={stateNameMap[modeValue]} onClick={handleClick} />
         <div className="text-white w-1/5">
           <RadioButton passValue={passValue} />
         </div>
