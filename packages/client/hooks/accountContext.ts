@@ -49,7 +49,7 @@ export const useAccountProvider = () => {
     ethMethod: 'eth_accounts' | 'eth_requestAccounts',
   ): Promise<Account | undefined> => {
     if (window.ethereum === undefined) {
-      console.log('Metamask not installed.');
+      console.error('Metamask not installed.');
       return undefined;
     }
 
@@ -57,7 +57,7 @@ export const useAccountProvider = () => {
       method: ethMethod,
     });
     if (accounts[0] === undefined) {
-      console.log('Error fetching account.');
+      console.error('Error fetching account.');
       return undefined;
     }
 

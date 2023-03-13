@@ -9,16 +9,6 @@ import { HardhatUserConfig, task } from 'hardhat/config';
 import 'solidity-coverage';
 
 dotenv.config();
-
-// Sample Hardhat task. See: https://hardhat.org/guides/create-task.html
-// task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
-//     const accounts = await hre.ethers.getSigners()
-
-//     for (const account of accounts) {
-//         console.log(account.address)
-//     }
-// })
-
 const { API_URL, PRIVATE_KEY, REPORT_GAS, ETHERSCAN_API_KEY } = process.env;
 
 const config: HardhatUserConfig = {

@@ -5,8 +5,6 @@ async function multiMint(
   projectAddresses: string[],
   recipients: string[],
 ): Promise<void> {
-  console.log(projectAddresses);
-  console.log(recipients);
   if (account.connectContract === undefined) {
     throw new Error('Undefined account');
   }
