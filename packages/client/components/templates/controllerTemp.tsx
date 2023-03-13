@@ -79,6 +79,10 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleMintNFT = async () => {
+    if (account?.role !== 'ADMIN') {
+      alert('You are not authorized.');
+      return;
+    }
     if (recipients.length === 0) {
       alert('Recipient is not set.');
       return;
@@ -101,6 +105,10 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleGrantRole = async () => {
+    if (account?.role === 'NONE') {
+      alert('You are not authorized.');
+      return;
+    }
     if (recipients.length === 0) {
       alert('Recipient is not set.');
       return;
@@ -121,6 +129,10 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleAddProject = async () => {
+    if (account?.role === 'NONE') {
+      alert('You are not authorized.');
+      return;
+    }
     if (address === '') {
       alert('Project address is not set.');
       return;
@@ -137,6 +149,10 @@ export default function ControllerTemp(props: Props) {
   };
 
   const handleAddController = async () => {
+    if (account?.role !== 'ADMIN') {
+      alert('You are not authorized.');
+      return;
+    }
     if (address === '') {
       alert('Address is not set.');
       return;

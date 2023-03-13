@@ -89,7 +89,9 @@ export const useAccountProvider = () => {
       account.role = 'CONTROLLER';
       return account;
     }
+    account.address = undefined;
     account.role = 'NONE';
+    account.connectContract = undefined;
     return account;
   };
 

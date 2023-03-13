@@ -12,7 +12,7 @@ export default function Minter() {
 
   useEffect(() => {
     (async () => {
-      if (account) {
+      if (account?.address) {
         await getUserProjectInfoAll(account).then((res) => {
           setProjectAddresses(res[0]);
           setPassportHashes(res[1]);

@@ -6,9 +6,9 @@ import getAllProjectInfo from '@/services/getAllProjectInfo';
 
 export default function Controller() {
   const { account } = useAccountContext();
+  const [passportHashes, setPassportHashes] = useState<string[]>([]);
   const [projectAddresses, setProjectAddresses] = useState<string[]>([]);
   const [projectNames, setProjectNames] = useState<string[]>([]);
-  const [passportHashes, setPassportHashes] = useState<string[]>([]);
 
   const mintStatuses: number[] = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -16,7 +16,10 @@ export default function Controller() {
 
   useEffect(() => {
     (async () => {
-      if (account) {
+      if (
+        account?.address &&
+        (account.role === 'ADMIN' || account.role === 'CONTROLLER')
+      ) {
         await getAllProjectInfo(account).then((res) => {
           setProjectAddresses(res[0]);
           setProjectNames(res[1]);
