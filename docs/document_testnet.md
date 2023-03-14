@@ -1,18 +1,22 @@
 # ドキュメント
 
 ## はじめに
+
 このドキュメントでは、アプリケーションの機能とその使用方法について説明します。
 
 ### 使用するイーサリアムネットワークについて
-Polygon Mumbaiネットワークを例として用いています。
+
+Polygon Mumbai ネットワークを例として用いています。
 
 ## 機能
+
 アプリケーションには以下の機能があります。
-- MetaMaskウォレットとの接続
+
+- MetaMask ウォレットとの接続
 - プロジェクトの追加
-- 複数のアカウントにNFTを発行
-- アカウントのNFT発行状況を`AVAILABLE`に変更
-- ADMINロールを持つアカウントは、別のアカウントに対しCONTROLLERロールを付与することができる
+- 複数のアカウントに NFT を発行
+- アカウントの NFT 発行状況を`AVAILABLE`に変更
+- ADMIN ロールを持つアカウントは、別のアカウントに対し CONTROLLER ロールを付与することができる
 
 ## 使用方法
 
@@ -27,6 +31,7 @@ Polygon Mumbaiネットワークを例として用いています。
 ### 2. コントラクトの構築
 
 #### 2-1. プロジェクトコントラクトの作成
+
 ---
 
 `packages/contract/contracts/projects/`下には、既にリリース済みの学習コンテンツのコントラクトが格納されています。
@@ -34,6 +39,7 @@ Polygon Mumbaiネットワークを例として用いています。
 新たに学習コンテンツをリリースする際には、このディレクトリに対応するコントラクトを追加する必要があります。
 
 以下のルールに従って、コントラクトを追加します。
+
 - ファイル名、コントラクト名はメタデータに合わせる(単語の区切りはアンダーバーを使用する)
 - `IProject.sol`を継承すること
 - トークンのメタデータを設定すること
@@ -58,6 +64,7 @@ function initialize() public initializer {
 ```
 
 #### 2-2. 単体テストを追加する
+
 ---
 
 `contract/test/projects/`下に、2-1.で作成したコントラクトのテストスクリプトを追加します。テスト内容は、他のプロジェクトのテストを参考にしてください。
@@ -111,7 +118,8 @@ $ npx hardhat test test/projects/101.ETH_dApp.test.ts
 
 `contract/scripts/projects`ディレクトに、作成したコントラクトのデプロイスクリプトを追加します。スクリプトの内容は、他のプロジェクトを参考にしてください。
 
-#### 2-4. .envファイルの作成
+#### 2-4. .env ファイルの作成
+
 ---
 
 ⚠️ アカウントの秘密鍵を設定するため、.env ファイルは他者と共有したり、外部へ公開したりしないでください。
@@ -126,9 +134,9 @@ API_URL=<YOUR_API_URL>
 PRIVATE_KEY=<YOUR_PRIVATE_KEY>
 ```
 
-次に、API_URLを設定します。
+次に、API_URL を設定します。
 
-Alchemy にログインし、Dashboard上の 「 ＋ CREATE APP 」 をクリックします。
+Alchemy にログインし、Dashboard 上の 「 ＋ CREATE APP 」 をクリックします。
 
 ・NAME : 任意の値
 
@@ -150,16 +158,17 @@ Alchemy にログインし、Dashboard上の 「 ＋ CREATE APP 」 をクリッ
 
 ![](images/alchemy_03.png)
 
-コピーしたURLで、.env ファイルの API_URLの値を上書きします。
+コピーした URL で、.env ファイルの API_URL の値を上書きします。
 
-最後にPRIVATE_KEYを設定します。
+最後に PRIVATE_KEY を設定します。
 
-#### 2-5. MetaMaskネットワークの設定
+#### 2-5. MetaMask ネットワークの設定
+
 ---
 
 「 **Add network** 」 > 「 **Add a network manually** 」と進み、以下の画像のようにネットワークの設定を行います。
 
-`New RPC URL`の部分には、先ほどAlchemyから取得したURL（.envファイルの`API_URL`）を設定してください。
+`New RPC URL`の部分には、先ほど Alchemy から取得した URL（.env ファイルの`API_URL`）を設定してください。
 
 ![](images/metamask_01.png)
 
@@ -167,16 +176,17 @@ Alchemy にログインし、Dashboard上の 「 ＋ CREATE APP 」 をクリッ
 
 ![](images/metamask_02.png)
 
-Mumbaiネットワーク用のトークンは、以下のURLから取得することができます（2 Mumbai MATIC/day）。
+Mumbai ネットワーク用のトークンは、以下の URL から取得することができます（2 Mumbai MATIC/day）。
 
 https://mumbaifaucet.com/
 
 #### 2-6. コントラクトのデプロイ
+
 ---
 
 コントラクトを**Mumbai**ネットワークへデプロイします。
 
-##### 1. ProjectControllerコントラクトのデプロイ
+##### 1. ProjectController コントラクトのデプロイ
 
 以下のコマンドを実行してください。
 
@@ -193,7 +203,7 @@ deployController.ts
 ProjectController upgraded to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 ```
 
-`ProjectController upgraded to:`以降に出力されたアドレスは、3-1. .env.localファイルの作成」で使用します。
+`ProjectController upgraded to:`以降に出力されたアドレスは、3-1. .env.local ファイルの作成」で使用します。
 
 ##### 2. 各プロジェクトコントラクトのデプロイ
 
@@ -215,19 +225,22 @@ ETH_dApp upgraded to: 0xebaD4Ce099cd1BFffE3C7aF59ACc4E03D4626afD
 
 ### 3. クライアントアプリケーションの起動
 
-#### 3-1. .env.localファイルの作成
+#### 3-1. .env.local ファイルの作成
+
 ---
 
 `packages/client`ディレクトリ下に存在する `.env.example` ファイルを複製して、 `.env.local` ファイルを作成します。
 
-「2-6-1. ProjectControllerコントラクトのデプロイ」で出力されたコントラクトのアドレスを、`NEXT_PUBLIC_CONTRACT_ADDRESS`の値に設定します。
+「2-6-1. ProjectController コントラクトのデプロイ」で出力されたコントラクトのアドレスを、`NEXT_PUBLIC_CONTRACT_ADDRESS`の値に設定します。
 
 （例）
+
 ```bash
 NEXT_PUBLIC_CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 ```
 
 #### 3-2. 起動
+
 ---
 
 クライアントの開発サーバーを起動します。
@@ -238,16 +251,17 @@ yarn client:dev
 
 ### 4. 操作
 
-- MetaMaskウォレットとの接続
+- MetaMask ウォレットとの接続
 - プロジェクトの追加
-- 複数のアカウントにNFTを発行
-- アカウントのNFT発行状況を`AVAILABLE`に変更
-- ADMINロールを持つアカウントは、別のアカウントに対しCONTROLLERロールを付与することができる
+- 複数のアカウントに NFT を発行
+- アカウントの NFT 発行状況を`AVAILABLE`に変更
+- ADMIN ロールを持つアカウントは、別のアカウントに対し CONTROLLER ロールを付与することができる
 
-#### MetaMaskウォレットとの接続
+#### MetaMask ウォレットとの接続
+
 ---
 
-アプリケーションにMetaMaskウォレットを接続する操作です。
+アプリケーションに MetaMask ウォレットを接続する操作です。
 
 接続できるのは、`ADMIN`ロールまたは`CONTROLLER`ロールを持つアカウントアドレスのみとなります。
 
@@ -255,13 +269,14 @@ https://localhost:3000 にアクセスをします。
 
 ![](images/page_connect_wallet.png)
 
-「 **Connect Wallet** 」ボタンを押して、接続したいアカウントを1つ選択して接続をします。
+「 **Connect Wallet** 」ボタンを押して、接続したいアカウントを 1 つ選択して接続をします。
 
 ![](images/connect_wallet_01.png)
 
 接続が完了したら、自動で https://localhost:3000/controller へリダイレクトします。
 
 #### プロジェクトの追加
+
 ---
 
 「2-6.2」でデプロイをした学習コンテンツのコントラクトアドレスを、**ProjectController**コントラクトに追加する操作です。
@@ -272,24 +287,27 @@ https://localhost:3000 にアクセスをします。
 
 表示されたフォームに、追加したいプロジェクトのコントラクトアドレスを入力します。
 
-「 **Add Project** 」ボタンを押すと、MetaMaskへリダイレクョション（または通知）が発生します。トランザクションの内容に問題がなければ「 **Confirm** 」を選択します。
+「 **Add Project** 」ボタンを押すと、MetaMask へリダイレクョション（または通知）が発生します。トランザクションの内容に問題がなければ「 **Confirm** 」を選択します。
 
 ![](images/add_project_02.png)
 
-処理が完了したことを確認できたら、ページをリロードしてください。NFT画像一覧に、追加したプロジェクトのNFT画像が追加されていたら完了です。
+処理が完了したことを確認できたら、ページをリロードしてください。NFT 画像一覧に、追加したプロジェクトの NFT 画像が追加されていたら完了です。
 
 ![](images/add_project_03.png)
 
-#### 複数のアカウントにNFTを発行
----
-CSVファイルをアップロードし、複数のアドレスにNFTを発行する操作です。
+#### 複数のアカウントに NFT を発行
 
-##### CSVファイルの準備
 ---
 
-- 項目は、 `project`と`address`の2項目にしてください
+CSV ファイルをアップロードし、複数のアドレスに NFT を発行する操作です。
+
+##### CSV ファイルの準備
+
+---
+
+- 項目は、 `project`と`address`の 2 項目にしてください
 - `project`には、プロジェクト名（メタデータ一覧は[こちら](https://github.com/unchain-tech/UNCHAIN-projects/tree/main/public/metadata)を参照）を指定してください
-- `address`には、NFTを受け取るアドレスを指定してください
+- `address`には、NFT を受け取るアドレスを指定してください
 
 （例）
 ![](images/csv_01.png)
@@ -298,65 +316,69 @@ CSVファイルをアップロードし、複数のアドレスにNFTを発行�
 
 ![](images/multiple_mint_01.png)
 
-「 **Choose File** 」ボタンを押し、CSVファイルをアップロードします。
+「 **Choose File** 」ボタンを押し、CSV ファイルをアップロードします。
 
 ![](images/multiple_mint_02.png)
 
 「 **Mint NFT** 」ボタンを押して、トランザクションの承認をします。
 
-#### CONTROLLERロールを付与
+#### CONTROLLER ロールを付与
+
 ---
 
-アカウントアドレスに対し、`CONTROLLER`ロールを付与する操作です。これは、**`ADMIN`ロールを所有する（ProjectControllerをデプロイした）アカウントのみが実行できる機能**になります。
+アカウントアドレスに対し、`CONTROLLER`ロールを付与する操作です。これは、**`ADMIN`ロールを所有する（ProjectController をデプロイした）アカウントのみが実行できる機能**になります。
 
 右下のラジオボタン「 **Add Controller Mode** 」を選択します。
 
 ![](images/add_controller_01.png)
 
-
 表示されたフォームに、`CONTROLLER`ロールを付与したいアカウントアドレスを入力します。
 
 「 **Add Controller** 」ボタンを押して、トランザクションの承認をします。
 
-#### NFT発行状況を`AVAILABLE`に変更
+#### NFT 発行状況を`AVAILABLE`に変更
+
 ---
 
-指定したアカウントアドレスのMintステータスを`AVAILABLE`にする操作です。
+指定したアカウントアドレスの Mint ステータスを`AVAILABLE`にする操作です。
 
 右下のラジオボタン「 **Grant Mint-Role Mode** 」を選択します。
 
 ![](images/grant_mint_01.png)
 
 表示されたフォームに対し、左から順に操作を行います。
+
 - プロジェクト名の選択
 - アカウントアドレスの入力
 - 「 **Add Address** 」ボタンを押して入力した内容を追加
 
 プロジェクト名とアカウントアドレスのペアを追加し終えたら「 **Grant Mint-Role** 」ボタンを押して、トランザクションの承認をします。
 
-#### NFTの取得状況を確認
+#### NFT の取得状況を確認
+
 ---
 
-各プロジェクトのNFT取得状況を確認する操作です。MetaMaskウォレットを接続しているアカウントアドレスのNFT取得状況が確認できます。
+各プロジェクトの NFT 取得状況を確認する操作です。MetaMask ウォレットを接続しているアカウントアドレスの NFT 取得状況が確認できます。
 
 http://localhost:3000/minter にアクセスをします。
 
-ProjectControllerコントラクトに追加しているプロジェクトの、NFT画像一覧が表示されます。
+ProjectController コントラクトに追加しているプロジェクトの、NFT 画像一覧が表示されます。
 
 ![](images/page_minter.png)
 
-取得状況は3種類で表現されます。
+取得状況は 3 種類で表現されます。
 
 1. まだプロジェクトをクリアしていない：「赤で`not cleared`」
-2. クリアしてNFTの発行ができる
-3. 既にNFTが発行されている：「緑で`already minted`」
+2. クリアして NFT の発行ができる
+3. 既に NFT が発行されている：「緑で`already minted`」
 
-#### `AVAILABLE`のNFTを自身で発行
+#### `AVAILABLE`の NFT を自身で発行
+
 ---
 
 http://localhost:3000/minter にアクセスをします。
 
-NFT画像をクリックし、トランザクションの承認をします。
+NFT 画像をクリックし、トランザクションの承認をします。
 
 ![](images/mint_01.png)
 
@@ -364,6 +386,6 @@ NFT画像をクリックし、トランザクションの承認をします。
 
 ![](images/mint_02.png)
 
-NFTが発行されると、ステータスは「 already minted 」に変わります。
+NFT が発行されると、ステータスは「 already minted 」に変わります。
 
 ![](images/mint_03.png)
