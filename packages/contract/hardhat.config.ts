@@ -15,7 +15,7 @@ const config: HardhatUserConfig = {
   solidity: '0.8.17',
   defaultNetwork: 'hardhat',
   networks: {
-    polygon_mumbai: {
+    mumbai: {
       url:
         API_URL ||
         'https://polygon-mumbai.g.alchemy.com/v2/123abc123abc123abc123abc123abcde',
