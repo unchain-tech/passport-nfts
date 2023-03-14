@@ -52,4 +52,4 @@ CSS の設定が定義されています。
 
 ---
 
-`docs/document.md`を参照してください。
+`docs/document_testnet.md`を参照してください。
