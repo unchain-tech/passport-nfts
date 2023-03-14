@@ -20,7 +20,7 @@ export default function HomeTemp(props: Props) {
   const handleConnectWallet = async () => {
     if (connectWallet) {
       await connectWallet().then((account) => {
-        if (account?.role === 'NONE') {
+        if (account?.role !== 'CHECKING' && account?.role === 'NONE') {
           alert('You are not authorized.');
           return;
         }
