@@ -35,7 +35,7 @@ export default function ControllerTemp(props: Props) {
 
   const stateNameMap: { [key: number]: string } = {
     0: 'Mint NFT',
-    1: 'Grant Mint-Roll',
+    1: 'Grant Mint-Role',
     2: 'Add Project',
     3: 'Add Controller',
   };
