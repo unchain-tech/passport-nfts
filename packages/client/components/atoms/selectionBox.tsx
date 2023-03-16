@@ -1,15 +1,21 @@
 import React from 'react';
 
 type Props = {
-  textList: string[];
+  projectNames: string[];
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
 };
 
 export default function SelectionBox(props: Props) {
   return (
     <div className="">
-      <select className="h-10 W-10 rounded-sm flex items-center justify-center text-ellipsis overflow-hidden">
-        {props.textList.map((text, i) => (
-          <option key={i + 1}>{text}</option>
+      <select
+        className="h-10 W-10 rounded-sm flex items-center justify-center text-ellipsis overflow-hidden"
+        onChange={props.onChange}
+      >
+        {props.projectNames.map((projectName, index) => (
+          <option key={index + 1} value={index}>
+            {projectName}
+          </option>
         ))}
       </select>
     </div>

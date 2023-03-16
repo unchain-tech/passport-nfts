@@ -7,6 +7,6 @@ export enum Screen {
 export enum Mode {
   MintNFT,
   GrantRole,
-  ADDCONTRACT,
-  ADDCONTROLLER,
+  AddProject,
+  AddController,
 }

@@ -6,8 +6,8 @@ import Subtitle from '@/components/atoms/subtitle';
 import { Screen } from '@/features/enum';
 
 type Props = {
-  subtitle: string;
   screen: Screen;
+  subtitle: string;
 };
 
 export default function Title(props: Props) {
@@ -22,7 +22,7 @@ export default function Title(props: Props) {
         <div className="flex text-white w-64" />
       ) : (
         <div className="flex items-center flex-row text-2xl">
-          <Address address="21321" />
+          <Address />
         </div>
       )}
     </div>
