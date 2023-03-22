@@ -75,24 +75,40 @@ function initialize() public initializer {
 }
 ```
 
-#### 2-2. 単体テストを追加する
+#### 2-2. テストスクリプトの追加
 
 ---
+
+##### 1. 作成したコントラクトのテストスクリプトを追加
 
 `contract/test/projects/`下に、2-1.で作成したコントラクトのテストスクリプトを追加します。テスト内容は、他のプロジェクトのテストを参考にしてください。
 
 ファイル名は、通し番号として先頭にメタデータの`project_id`をつけます。
 
+##### 2. ProjectsControllerコントラクトのテストスクリプトを編集
+
+`contract/test/2.ProjectsController.test.ts`ファイル内に定義されている、全てのコントラクト名を格納する配列`projectContractNames`に、作成したコントラクト名を追加します。
+
+```javascript
+const projectContractNames: string[] = [
+  'ETH_dApp',
+  'ETH_NFT_Collection',
+  'ETH_NFT_Maker',
+  // ...
+  // 作成したコントラクト名を追加する
+];
+```
+
 テストスクリプトを作成したら、テストを実行します。
 
 ```bash
-npx hardhat test test/projects/<テストスクリプト名>
+npx hardhat test test/projects/<テストスクリプト名> test/2.ProjectsController.test.ts
 ```
 
 (実行例)
 
 ```bash
-$ npx hardhat test test/projects/101.ETH_dApp.test.ts
+$ npx hardhat test test/projects/101.ETH_dApp.test.ts test/2.ProjectsController.test.ts
 
 
   ETH_dApp
@@ -120,8 +136,14 @@ $ npx hardhat test test/projects/101.ETH_dApp.test.ts
     tokenURI
       ✔ should get a token URI (41ms)
 
+  ProjectsController Contract
+    with ETH_dApp
+      addProjectContractAddress & getAllProjectInfo
+        when adding a new ProjectContract address
 
-  11 passing (2s)
+# === 省略 ===
+
+  251 passing (9s)
 ```
 
 全てのテストを通過したことが確認できたら、`test/0.integrated.test.ts`ファイルに`require`文を追加してください。
