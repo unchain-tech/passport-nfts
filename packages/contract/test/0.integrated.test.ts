@@ -1,5 +1,4 @@
-require('./1.AccessControl.test.ts');
-require('./2.ProjectsController.test.ts');
+// Test each project's Contract.
 require('./projects/101.ETH_dApp.test.ts');
 require('./projects/102.ETH_NFT_Collection.test.ts');
 require('./projects/103.ETH_NFT_Maker.test.ts');
@@ -24,3 +23,6 @@ require('./projects/504.AVAX_Subnet.test.ts');
 require('./projects/601.ICP_Static_Site.test.ts');
 require('./projects/602.ICP_Basic_DEX.test.ts');
 require('./projects/701.ASTAR_SocialFi.test.ts');
+// Test ProjectsController Contract.
+require('./1.AccessControl.test.ts');
+require('./2.ProjectsController.test.ts');
