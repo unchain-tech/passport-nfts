@@ -85,7 +85,7 @@ function initialize() public initializer {
 
 ファイル名は、通し番号として先頭にメタデータの`project_id`をつけます。
 
-##### 2. ProjectsControllerコントラクトのテストスクリプトを編集
+##### 2. ProjectsController コントラクトのテストスクリプトを編集
 
 `contract/test/2.ProjectsController.test.ts`ファイル内に定義されている、全てのコントラクト名を格納する配列`projectContractNames`に、作成したコントラクト名を追加します。
 
