@@ -2,10 +2,17 @@ import React from 'react';
 
 import TextBox from '@/components/atoms/textBox';
 
-export default function AddAddressButton() {
+type Props = {
+  value: string;
+  onClick: () => void;
+};
+
+export default function AddAddressButton(props: Props) {
   return (
     <div>
-      <TextBox text="Add Address" />
+      <button disabled={props.value === ''} onClick={() => props.onClick()}>
+        <TextBox text="Add Address" />
+      </button>
     </div>
   );
 }

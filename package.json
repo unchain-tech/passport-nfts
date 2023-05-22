@@ -45,7 +45,7 @@
   "scripts": {
     "contract": "yarn workspace contract",
     "client": "yarn workspace client",
-    "client:dev": "yarn workspace client dev",
+    "client:dev": "cp -r ./packages/contract/typechain-types ./packages/client/types/typechain-types && yarn workspace client dev",
     "prettier": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --write .",
     "prettier:check": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --check .",
     "lint": "eslint .",
