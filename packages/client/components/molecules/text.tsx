@@ -18,7 +18,7 @@ export default function Text(props: Props) {
         mintStatus={props.mintStatus}
       />
       <div
-        className="w-52 h-52 absolute top-0 left-0 flex justify-center items-center flex-col text-2xl text-red-500"
+        className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center flex-col text-2xl text-red-500"
         onClick={() => {
           if (props.mintStatus === 1 && props.screen === Screen.MINTER) {
             const result = confirm(
