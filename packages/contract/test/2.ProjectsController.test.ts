@@ -28,6 +28,7 @@ const projectContractNames: string[] = [
   'ICP_Static_Site',
   'ICP_Basic_DEX',
   'ASTAR_SocialFi',
+  'XRPL_NFT_Maker',
 ];
 
 describe('ProjectsController Contract', function () {
