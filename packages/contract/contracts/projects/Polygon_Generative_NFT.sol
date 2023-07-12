@@ -42,7 +42,7 @@ contract Polygon_Generative_NFT is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'Polygon Generative NFT';
-    _passportHash = 'QmQW79bjqFwfeVY3TxrhFJh9WRen9mBTkL4vnntimPXqBw';
+    _passportHash = 'QmNkyZxV1N3ZaK9Edd4Wvs6xsBF11kgNitipCTEampQy2X';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

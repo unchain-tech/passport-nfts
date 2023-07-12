@@ -42,7 +42,7 @@ contract Solana_dApp is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'Solana dApp';
-    _passportHash = 'QmUCZwUTTpZdSoZ9Lqe8bsqJ8EnpEsphYwSBEFc7kXfzt6';
+    _passportHash = 'QmQYV9eKiioDkHsF4egKpFgVAqa2V8FApacb2nNCZyFvER';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

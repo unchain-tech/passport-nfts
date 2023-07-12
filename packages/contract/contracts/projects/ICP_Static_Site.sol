@@ -42,7 +42,7 @@ contract ICP_Static_Site is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'ICP Static Site';
-    _passportHash = 'QmeCP9NaqBKPJroZMCGaMnd73zXPcEKrUPDFHSWfuaYkYv';
+    _passportHash = 'QmSsMizUnWeLgshSqNyHgWfhjWbNZFE1Msz3waUv3RzG19';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

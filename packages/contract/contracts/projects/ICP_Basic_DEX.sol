@@ -42,7 +42,7 @@ contract ICP_Basic_DEX is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'ICP Basic DEX';
-    _passportHash = 'QmXYADTkQEoEk88Gx4KkqZBVkKyiZq8nkMoAzN1gAxNKqi';
+    _passportHash = 'QmPFuFan6FrB6VVCHopz3juxjpeaQPpz5XUwds8hTt1TaP';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

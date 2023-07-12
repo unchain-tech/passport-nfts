@@ -42,7 +42,7 @@ contract Polygon_ENS_Domain is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'Polygon ENS Domain';
-    _passportHash = 'QmQtv57r5BJDCr9LmjVayvzoyDNvxyPgGBebDq3ZACVA33';
+    _passportHash = 'Qmd4sHJHNEnMTdU9rcGCA65YjnGDyHkKdcaHZCxqCpKevs';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

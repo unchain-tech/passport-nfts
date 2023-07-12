@@ -42,7 +42,7 @@ contract Solana_Online_Store is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'Solana Online Store';
-    _passportHash = 'QmWBW84E55XWATezgNjDBdnzaC815NRAfCx8FzsJqMjsRd';
+    _passportHash = 'QmQb3MxagMvtJoYw4qjmnpAwztkcAMXh2ohSRKtk1CSRP5';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }
