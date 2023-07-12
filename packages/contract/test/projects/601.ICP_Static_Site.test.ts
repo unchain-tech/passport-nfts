@@ -12,6 +12,8 @@ describe('ICP_Static_Site', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmSsMizUnWeLgshSqNyHgWfhjWbNZFE1Msz3waUv3RzG19';
 
     const ICPStaticSite = await upgrades.deployProxy(ICPStaticSiteFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('ICP_Static_Site', function () {
 
     await ICPStaticSite.deployed();
 
-    return { ICPStaticSite, owner, learner };
+    return { ICPStaticSite, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('ICP_Static_Site', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ICPStaticSite } = await loadFixture(deployProjectFixture);
-
-      expect(await ICPStaticSite.getPassportHash()).to.equal(
-        'QmeCP9NaqBKPJroZMCGaMnd73zXPcEKrUPDFHSWfuaYkYv',
+      const { ICPStaticSite, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await ICPStaticSite.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -153,7 +155,7 @@ describe('ICP_Static_Site', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ICPStaticSite, learner } = await loadFixture(
+      const { ICPStaticSite, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -176,9 +178,7 @@ describe('ICP_Static_Site', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmeCP9NaqBKPJroZMCGaMnd73zXPcEKrUPDFHSWfuaYkYv',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ICP Static Site');
     });

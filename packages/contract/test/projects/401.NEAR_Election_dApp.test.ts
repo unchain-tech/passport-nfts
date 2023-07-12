@@ -12,6 +12,8 @@ describe('NEAR_Election_dApp', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmUZm5MWWqaTbsfpJ1GZhoT1AfkZFLxUCyfyTtRhnUuWZc';
 
     const NEARElectionDapp = await upgrades.deployProxy(
       NEARElectionDappFactory,
@@ -23,7 +25,7 @@ describe('NEAR_Election_dApp', function () {
 
     await NEARElectionDapp.deployed();
 
-    return { NEARElectionDapp, owner, learner };
+    return { NEARElectionDapp, owner, learner, passportHash };
   }
 
   // Test case
@@ -39,11 +41,11 @@ describe('NEAR_Election_dApp', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { NEARElectionDapp } = await loadFixture(deployProjectFixture);
-
-      expect(await NEARElectionDapp.getPassportHash()).to.equal(
-        'QmYK1uqMzqtgpEi5MqWqdAMemoopSKf2rswKjhR2w3wBNH',
+      const { NEARElectionDapp, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await NEARElectionDapp.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -167,7 +169,7 @@ describe('NEAR_Election_dApp', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { NEARElectionDapp, learner } = await loadFixture(
+      const { NEARElectionDapp, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -190,9 +192,7 @@ describe('NEAR_Election_dApp', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmYK1uqMzqtgpEi5MqWqdAMemoopSKf2rswKjhR2w3wBNH',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('NEAR Election dApp');
     });

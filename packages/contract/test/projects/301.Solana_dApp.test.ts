@@ -10,6 +10,8 @@ describe('Solana_dApp', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmQYV9eKiioDkHsF4egKpFgVAqa2V8FApacb2nNCZyFvER';
 
     const SolanaDapp = await upgrades.deployProxy(SolanaDappFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('Solana_dApp', function () {
 
     await SolanaDapp.deployed();
 
-    return { SolanaDapp, owner, learner };
+    return { SolanaDapp, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,11 @@ describe('Solana_dApp', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { SolanaDapp } = await loadFixture(deployProjectFixture);
-
-      expect(await SolanaDapp.getPassportHash()).to.equal(
-        'QmUCZwUTTpZdSoZ9Lqe8bsqJ8EnpEsphYwSBEFc7kXfzt6',
+      const { SolanaDapp, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await SolanaDapp.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -137,7 +139,9 @@ describe('Solana_dApp', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { SolanaDapp, learner } = await loadFixture(deployProjectFixture);
+      const { SolanaDapp, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -158,9 +162,7 @@ describe('Solana_dApp', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmUCZwUTTpZdSoZ9Lqe8bsqJ8EnpEsphYwSBEFc7kXfzt6',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('Solana dApp');
     });

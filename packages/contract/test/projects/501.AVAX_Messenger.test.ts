@@ -12,6 +12,8 @@ describe('AVAX_Messenger', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmdqiBAa1nQaCovvyjdHMnvHL2oZL4mk1uPPFie5LNC71k';
 
     const AVAXMessenger = await upgrades.deployProxy(AVAXMessengerFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('AVAX_Messenger', function () {
 
     await AVAXMessenger.deployed();
 
-    return { AVAXMessenger, owner, learner };
+    return { AVAXMessenger, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('AVAX_Messenger', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { AVAXMessenger } = await loadFixture(deployProjectFixture);
-
-      expect(await AVAXMessenger.getPassportHash()).to.equal(
-        'QmY4DbEFVo13wytcyXZk9Zxr5Lnzc9fn3W9CuAn1VqRZKx',
+      const { AVAXMessenger, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await AVAXMessenger.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -153,7 +155,7 @@ describe('AVAX_Messenger', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { AVAXMessenger, learner } = await loadFixture(
+      const { AVAXMessenger, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -176,9 +178,7 @@ describe('AVAX_Messenger', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmY4DbEFVo13wytcyXZk9Zxr5Lnzc9fn3W9CuAn1VqRZKx',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('AVAX Messenger');
     });

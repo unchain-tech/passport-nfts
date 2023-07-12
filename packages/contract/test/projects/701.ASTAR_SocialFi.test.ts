@@ -12,6 +12,8 @@ describe('ASTAR_SocialFi', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmPNEXc1yuPKyzmin3rqp3jFBN9RgMe75AMuNd7PaR4eLr';
 
     const ASTARSocialFi = await upgrades.deployProxy(ASTARSocialFiFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('ASTAR_SocialFi', function () {
 
     await ASTARSocialFi.deployed();
 
-    return { ASTARSocialFi, owner, learner };
+    return { ASTARSocialFi, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('ASTAR_SocialFi', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ASTARSocialFi } = await loadFixture(deployProjectFixture);
-
-      expect(await ASTARSocialFi.getPassportHash()).to.equal(
-        'QmYkdzfNrVnN3qsDXY3UGbemg7x1ezE2kdtdsZznPv6cjb',
+      const { ASTARSocialFi, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await ASTARSocialFi.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -153,7 +155,7 @@ describe('ASTAR_SocialFi', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ASTARSocialFi, learner } = await loadFixture(
+      const { ASTARSocialFi, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -176,9 +178,7 @@ describe('ASTAR_SocialFi', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmYkdzfNrVnN3qsDXY3UGbemg7x1ezE2kdtdsZznPv6cjb',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ASTAR SocialFi');
     });

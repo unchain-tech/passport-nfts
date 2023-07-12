@@ -12,6 +12,8 @@ describe('Solana_Wallet', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmUJUy1WDARkvtCx35ES31KsNowuY7J1bdMCtmrMhFaWz3';
 
     const SolanaWallet = await upgrades.deployProxy(SolanaWalletFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('Solana_Wallet', function () {
 
     await SolanaWallet.deployed();
 
-    return { SolanaWallet, owner, learner };
+    return { SolanaWallet, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('Solana_Wallet', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { SolanaWallet } = await loadFixture(deployProjectFixture);
-
-      expect(await SolanaWallet.getPassportHash()).to.equal(
-        'QmXjWn9oRRzE4XkxCWM3XokWKJqkghkZmg8ox2w87pB2n9',
+      const { SolanaWallet, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await SolanaWallet.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -145,7 +147,9 @@ describe('Solana_Wallet', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { SolanaWallet, learner } = await loadFixture(deployProjectFixture);
+      const { SolanaWallet, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -166,9 +170,7 @@ describe('Solana_Wallet', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmXjWn9oRRzE4XkxCWM3XokWKJqkghkZmg8ox2w87pB2n9',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('Solana Wallet');
     });

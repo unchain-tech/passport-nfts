@@ -10,6 +10,8 @@ describe('AVAX_Subnet', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmUbCiH4NDbn3z4QPKXTyESK9SVhqGDQzfvrVfjufnWwnx';
 
     const AVAXSubnet = await upgrades.deployProxy(AVAXSubnetFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('AVAX_Subnet', function () {
 
     await AVAXSubnet.deployed();
 
-    return { AVAXSubnet, owner, learner };
+    return { AVAXSubnet, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,11 @@ describe('AVAX_Subnet', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { AVAXSubnet } = await loadFixture(deployProjectFixture);
-
-      expect(await AVAXSubnet.getPassportHash()).to.equal(
-        'QmUbCiH4NDbn3z4QPKXTyESK9SVhqGDQzfvrVfjufnWwnx',
+      const { AVAXSubnet, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await AVAXSubnet.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -137,7 +139,9 @@ describe('AVAX_Subnet', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { AVAXSubnet, learner } = await loadFixture(deployProjectFixture);
+      const { AVAXSubnet, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -158,9 +162,7 @@ describe('AVAX_Subnet', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmUbCiH4NDbn3z4QPKXTyESK9SVhqGDQzfvrVfjufnWwnx',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('AVAX Subnet');
     });

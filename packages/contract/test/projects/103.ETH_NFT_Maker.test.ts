@@ -10,6 +10,8 @@ describe('ETH_NFT_Maker', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmVfqZWBf4Z78JgJw4VCKNM4iGMCHptCtmcwEikQLRtLC4';
 
     const ETHNFTMaker = await upgrades.deployProxy(ETHNFTMakerFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('ETH_NFT_Maker', function () {
 
     await ETHNFTMaker.deployed();
 
-    return { ETHNFTMaker, owner, learner };
+    return { ETHNFTMaker, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,11 @@ describe('ETH_NFT_Maker', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ETHNFTMaker } = await loadFixture(deployProjectFixture);
-
-      expect(await ETHNFTMaker.getPassportHash()).to.equal(
-        'Qmcs93RjJCsBmrW5iiaaQzwPv8pq2F5TdquPJ2frstStMP',
+      const { ETHNFTMaker, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await ETHNFTMaker.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -143,7 +145,9 @@ describe('ETH_NFT_Maker', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ETHNFTMaker, learner } = await loadFixture(deployProjectFixture);
+      const { ETHNFTMaker, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -164,9 +168,7 @@ describe('ETH_NFT_Maker', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/Qmcs93RjJCsBmrW5iiaaQzwPv8pq2F5TdquPJ2frstStMP',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ETH NFT Maker');
     });

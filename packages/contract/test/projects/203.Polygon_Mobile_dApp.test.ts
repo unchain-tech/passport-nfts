@@ -12,6 +12,8 @@ describe('Polygon_Mobile_dApp', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmXCY8H6XaHcd6cftYV9fKE7xpQXwpH2eWBv2pjnL9TBbs';
 
     const PolygonMobiledApp = await upgrades.deployProxy(
       PolygonMobiledAppFactory,
@@ -23,7 +25,7 @@ describe('Polygon_Mobile_dApp', function () {
 
     await PolygonMobiledApp.deployed();
 
-    return { PolygonMobiledApp, owner, learner };
+    return { PolygonMobiledApp, owner, learner, passportHash };
   }
 
   // Test case
@@ -39,11 +41,11 @@ describe('Polygon_Mobile_dApp', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { PolygonMobiledApp } = await loadFixture(deployProjectFixture);
-
-      expect(await PolygonMobiledApp.getPassportHash()).to.equal(
-        'QmcHjSFh3cZRktgokeKn5QiGSrgG66nELruY5VXLUFyBUm',
+      const { PolygonMobiledApp, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await PolygonMobiledApp.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -169,7 +171,7 @@ describe('Polygon_Mobile_dApp', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { PolygonMobiledApp, learner } = await loadFixture(
+      const { PolygonMobiledApp, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -192,9 +194,7 @@ describe('Polygon_Mobile_dApp', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmcHjSFh3cZRktgokeKn5QiGSrgG66nELruY5VXLUFyBUm',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('Polygon Mobile dApp');
     });
