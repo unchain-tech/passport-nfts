@@ -9,10 +9,7 @@ export default function Controller() {
   const [passportHashes, setPassportHashes] = useState<string[]>([]);
   const [projectAddresses, setProjectAddresses] = useState<string[]>([]);
   const [projectNames, setProjectNames] = useState<string[]>([]);
-
-  const mintStatuses: number[] = [
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  ];
+  const [mintStatuses, setMintStatuses] = useState<number[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -24,6 +21,7 @@ export default function Controller() {
           setProjectAddresses(res[0]);
           setProjectNames(res[1]);
           setPassportHashes(res[2]);
+          setMintStatuses(new Array(res[0].length).fill(1));
         });
       }
     })();
