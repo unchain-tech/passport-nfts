@@ -6,9 +6,9 @@ import getAllProjectInfo from '@/services/getAllProjectInfo';
 
 export default function Controller() {
   const { account } = useAccountContext();
-  const [passportHashes, setPassportHashes] = useState<string[]>([]);
   const [projectAddresses, setProjectAddresses] = useState<string[]>([]);
   const [projectNames, setProjectNames] = useState<string[]>([]);
+  const [passportHashes, setPassportHashes] = useState<string[]>([]);
   const [mintStatuses, setMintStatuses] = useState<number[]>([]);
 
   useEffect(() => {
