@@ -12,6 +12,8 @@ describe('NEAR_Hotel_Booking_dApp', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'Qmf27E4FcG9BV557HmBRDjHaNhZovqM1bc9ndeEYPbF3rr';
 
     const NEARHotelBookingDapp = await upgrades.deployProxy(
       NEARHotelBookingDappFactory,
@@ -23,7 +25,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
 
     await NEARHotelBookingDapp.deployed();
 
-    return { NEARHotelBookingDapp, owner, learner };
+    return { NEARHotelBookingDapp, owner, learner, passportHash };
   }
 
   // Test case
@@ -39,10 +41,12 @@ describe('NEAR_Hotel_Booking_dApp', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { NEARHotelBookingDapp } = await loadFixture(deployProjectFixture);
+      const { NEARHotelBookingDapp, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
 
       expect(await NEARHotelBookingDapp.getPassportHash()).to.equal(
-        'QmZKpqK3Vn4GViQoCFqE7NfobWvprFch4qrFaK21zf5RWp',
+        passportHash,
       );
     });
   });
@@ -169,7 +173,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { NEARHotelBookingDapp, learner } = await loadFixture(
+      const { NEARHotelBookingDapp, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -192,9 +196,7 @@ describe('NEAR_Hotel_Booking_dApp', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmZKpqK3Vn4GViQoCFqE7NfobWvprFch4qrFaK21zf5RWp',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('NEAR Hotel Booking dApp');
     });

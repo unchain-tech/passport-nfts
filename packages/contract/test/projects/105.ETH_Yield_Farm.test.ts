@@ -12,6 +12,8 @@ describe('ETH_Yield_Farm', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmcKaf9bLvMAzjAwYXwAQTaQVvtkffFKfpBRpGgBP71c1p';
 
     const ETHYieldFarm = await upgrades.deployProxy(ETHYieldFarmFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('ETH_Yield_Farm', function () {
 
     await ETHYieldFarm.deployed();
 
-    return { ETHYieldFarm, owner, learner };
+    return { ETHYieldFarm, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('ETH_Yield_Farm', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ETHYieldFarm } = await loadFixture(deployProjectFixture);
-
-      expect(await ETHYieldFarm.getPassportHash()).to.equal(
-        'QmcKaf9bLvMAzjAwYXwAQTaQVvtkffFKfpBRpGgBP71c1p',
+      const { ETHYieldFarm, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await ETHYieldFarm.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -145,7 +147,9 @@ describe('ETH_Yield_Farm', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ETHYieldFarm, learner } = await loadFixture(deployProjectFixture);
+      const { ETHYieldFarm, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -166,9 +170,7 @@ describe('ETH_Yield_Farm', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmcKaf9bLvMAzjAwYXwAQTaQVvtkffFKfpBRpGgBP71c1p',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ETH Yield Farm');
     });

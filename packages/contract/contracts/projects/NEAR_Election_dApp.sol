@@ -42,7 +42,7 @@ contract NEAR_Election_dApp is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'NEAR Election dApp';
-    _passportHash = 'QmYK1uqMzqtgpEi5MqWqdAMemoopSKf2rswKjhR2w3wBNH';
+    _passportHash = 'QmUZm5MWWqaTbsfpJ1GZhoT1AfkZFLxUCyfyTtRhnUuWZc';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

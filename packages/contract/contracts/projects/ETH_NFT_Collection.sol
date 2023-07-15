@@ -42,7 +42,7 @@ contract ETH_NFT_Collection is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'ETH NFT Collection';
-    _passportHash = 'QmbboPHPWPn7Fm9ULTKppC4AkeLGG8SimEPXgCM3Hr5eWN';
+    _passportHash = 'QmWPZi8roKrZPn32XA5YBRGNq18Dy7XPhVM4Z76vnwFCMb';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

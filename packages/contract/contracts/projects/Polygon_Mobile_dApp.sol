@@ -42,7 +42,7 @@ contract Polygon_Mobile_dApp is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'Polygon Mobile dApp';
-    _passportHash = 'QmcHjSFh3cZRktgokeKn5QiGSrgG66nELruY5VXLUFyBUm';
+    _passportHash = 'QmXCY8H6XaHcd6cftYV9fKE7xpQXwpH2eWBv2pjnL9TBbs';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

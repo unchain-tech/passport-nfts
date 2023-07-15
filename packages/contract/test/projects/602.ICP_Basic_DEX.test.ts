@@ -10,6 +10,8 @@ describe('ICP_Basic_DEX', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmPFuFan6FrB6VVCHopz3juxjpeaQPpz5XUwds8hTt1TaP';
 
     const ICPBasicDEX = await upgrades.deployProxy(ICPBasicDEXFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('ICP_Basic_DEX', function () {
 
     await ICPBasicDEX.deployed();
 
-    return { ICPBasicDEX, owner, learner };
+    return { ICPBasicDEX, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,11 @@ describe('ICP_Basic_DEX', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ICPBasicDEX } = await loadFixture(deployProjectFixture);
-
-      expect(await ICPBasicDEX.getPassportHash()).to.equal(
-        'QmXYADTkQEoEk88Gx4KkqZBVkKyiZq8nkMoAzN1gAxNKqi',
+      const { ICPBasicDEX, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await ICPBasicDEX.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -143,7 +145,9 @@ describe('ICP_Basic_DEX', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ICPBasicDEX, learner } = await loadFixture(deployProjectFixture);
+      const { ICPBasicDEX, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -164,9 +168,7 @@ describe('ICP_Basic_DEX', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmXYADTkQEoEk88Gx4KkqZBVkKyiZq8nkMoAzN1gAxNKqi',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ICP Basic DEX');
     });

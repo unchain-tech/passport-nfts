@@ -42,7 +42,7 @@ contract ETH_dApp is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'ETH dApp';
-    _passportHash = 'QmXk3kdRvV6TV9yZvtZPgKHoYmywnURy3Qhs8Bjo5szg1J';
+    _passportHash = 'QmYgnqnvLRKJxucYW5pVmXgvV6Nf9mtqc4KJDv2pGEuruh';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

@@ -42,7 +42,7 @@ contract AVAX_Messenger is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'AVAX Messenger';
-    _passportHash = 'QmY4DbEFVo13wytcyXZk9Zxr5Lnzc9fn3W9CuAn1VqRZKx';
+    _passportHash = 'QmdqiBAa1nQaCovvyjdHMnvHL2oZL4mk1uPPFie5LNC71k';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

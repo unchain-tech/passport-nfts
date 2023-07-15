@@ -42,7 +42,7 @@ contract ETH_NFT_Maker is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'ETH NFT Maker';
-    _passportHash = 'Qmcs93RjJCsBmrW5iiaaQzwPv8pq2F5TdquPJ2frstStMP';
+    _passportHash = 'QmVfqZWBf4Z78JgJw4VCKNM4iGMCHptCtmcwEikQLRtLC4';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

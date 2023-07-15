@@ -10,6 +10,8 @@ describe('AVAX_AMM', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmUNw9iwJusv3yQKqPGrjYtdNMeXxSCzmf3zFK6KvSTbDs';
 
     const AVAXAMM = await upgrades.deployProxy(AVAXAMMFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('AVAX_AMM', function () {
 
     await AVAXAMM.deployed();
 
-    return { AVAXAMM, owner, learner };
+    return { AVAXAMM, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,9 @@ describe('AVAX_AMM', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { AVAXAMM } = await loadFixture(deployProjectFixture);
+      const { AVAXAMM, passportHash } = await loadFixture(deployProjectFixture);
 
-      expect(await AVAXAMM.getPassportHash()).to.equal(
-        'QmRbFSiZUCAdKSB3dsZzVWUThpTJURFhMHhm2hr6rw8GfH',
-      );
+      expect(await AVAXAMM.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -137,7 +137,9 @@ describe('AVAX_AMM', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { AVAXAMM, learner } = await loadFixture(deployProjectFixture);
+      const { AVAXAMM, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -158,9 +160,7 @@ describe('AVAX_AMM', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmRbFSiZUCAdKSB3dsZzVWUThpTJURFhMHhm2hr6rw8GfH',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('AVAX AMM');
     });

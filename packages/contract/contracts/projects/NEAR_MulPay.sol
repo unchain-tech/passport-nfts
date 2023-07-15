@@ -42,7 +42,7 @@ contract NEAR_MulPay is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'NEAR MulPay';
-    _passportHash = 'QmPGi1a3KgSyop4rj2oaYdd9x7cbMXj9VMunQNSykzd5ds';
+    _passportHash = 'QmadqNV22BDw9ikLP4FFRz4B6S2VSZhFTJstfvx7voTndS';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

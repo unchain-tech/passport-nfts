@@ -12,6 +12,8 @@ describe('Solana_NFT_Drop', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmYLUcnkS2URjxrdvutdyKk5FvQgmG6WXbq8H9pJdSqL27';
 
     const SolanaNFTDrop = await upgrades.deployProxy(SolanaNFTDropFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('Solana_NFT_Drop', function () {
 
     await SolanaNFTDrop.deployed();
 
-    return { SolanaNFTDrop, owner, learner };
+    return { SolanaNFTDrop, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('Solana_NFT_Drop', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { SolanaNFTDrop } = await loadFixture(deployProjectFixture);
-
-      expect(await SolanaNFTDrop.getPassportHash()).to.equal(
-        'QmYLUcnkS2URjxrdvutdyKk5FvQgmG6WXbq8H9pJdSqL27',
+      const { SolanaNFTDrop, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await SolanaNFTDrop.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -153,7 +155,7 @@ describe('Solana_NFT_Drop', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { SolanaNFTDrop, learner } = await loadFixture(
+      const { SolanaNFTDrop, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -176,9 +178,7 @@ describe('Solana_NFT_Drop', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmYLUcnkS2URjxrdvutdyKk5FvQgmG6WXbq8H9pJdSqL27',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('Solana NFT Drop');
     });

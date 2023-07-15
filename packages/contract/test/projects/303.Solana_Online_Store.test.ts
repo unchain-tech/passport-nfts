@@ -12,6 +12,8 @@ describe('Solana_Online_Store', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmQb3MxagMvtJoYw4qjmnpAwztkcAMXh2ohSRKtk1CSRP5';
 
     const SolanaOnlineStore = await upgrades.deployProxy(
       SolanaOnlineStoreFactory,
@@ -23,7 +25,7 @@ describe('Solana_Online_Store', function () {
 
     await SolanaOnlineStore.deployed();
 
-    return { SolanaOnlineStore, owner, learner };
+    return { SolanaOnlineStore, owner, learner, passportHash };
   }
 
   // Test case
@@ -39,11 +41,11 @@ describe('Solana_Online_Store', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { SolanaOnlineStore } = await loadFixture(deployProjectFixture);
-
-      expect(await SolanaOnlineStore.getPassportHash()).to.equal(
-        'QmWBW84E55XWATezgNjDBdnzaC815NRAfCx8FzsJqMjsRd',
+      const { SolanaOnlineStore, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await SolanaOnlineStore.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -169,7 +171,7 @@ describe('Solana_Online_Store', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { SolanaOnlineStore, learner } = await loadFixture(
+      const { SolanaOnlineStore, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -192,9 +194,7 @@ describe('Solana_Online_Store', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmWBW84E55XWATezgNjDBdnzaC815NRAfCx8FzsJqMjsRd',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('Solana Online Store');
     });
