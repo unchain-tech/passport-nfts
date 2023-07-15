@@ -12,6 +12,8 @@ describe('XRPL_NFT_Maker', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmbGjuRd6Ga7iviJ11B1ynt64AAcirAzAAToYzyH4XNFmf';
 
     const XRPLNFTMaker = await upgrades.deployProxy(XRPLNFTMakerFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('XRPL_NFT_Maker', function () {
 
     await XRPLNFTMaker.deployed();
 
-    return { XRPLNFTMaker, owner, learner };
+    return { XRPLNFTMaker, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('XRPL_NFT_Maker', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { XRPLNFTMaker } = await loadFixture(deployProjectFixture);
-
-      expect(await XRPLNFTMaker.getPassportHash()).to.equal(
-        'QmbGjuRd6Ga7iviJ11B1ynt64AAcirAzAAToYzyH4XNFmf', // TODO: Update ipfs hash
+      const { XRPLNFTMaker, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await XRPLNFTMaker.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -145,7 +147,9 @@ describe('XRPL_NFT_Maker', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { XRPLNFTMaker, learner } = await loadFixture(deployProjectFixture);
+      const { XRPLNFTMaker, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -166,9 +170,7 @@ describe('XRPL_NFT_Maker', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmbGjuRd6Ga7iviJ11B1ynt64AAcirAzAAToYzyH4XNFmf', // TODO: Update ipfs hash
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('XRPL NFT Maker');
     });
