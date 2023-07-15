@@ -42,7 +42,7 @@ contract XRPL_NFT_Maker is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'XRPL NFT Maker';
-    _passportHash = ''; // TODO: Add IPFS hash
+    _passportHash = 'QmbGjuRd6Ga7iviJ11B1ynt64AAcirAzAAToYzyH4XNFmf';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

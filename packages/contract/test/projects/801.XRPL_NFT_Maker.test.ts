@@ -36,7 +36,7 @@ describe('XRPL_NFT_Maker', function () {
       const { XRPLNFTMaker } = await loadFixture(deployProjectFixture);
 
       expect(await XRPLNFTMaker.getPassportHash()).to.equal(
-        'QmYkdzfNrVnN3qsDXY3UGbemg7x1ezE2kdtdsZznPv6cjb', // TODO: Update ipfs hash
+        'QmbGjuRd6Ga7iviJ11B1ynt64AAcirAzAAToYzyH4XNFmf', // TODO: Update ipfs hash
       );
     });
   });
@@ -167,7 +167,7 @@ describe('XRPL_NFT_Maker', function () {
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
       expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmYkdzfNrVnN3qsDXY3UGbemg7x1ezE2kdtdsZznPv6cjb', // TODO: Update ipfs hash
+        'https://ipfs.io/ipfs/QmbGjuRd6Ga7iviJ11B1ynt64AAcirAzAAToYzyH4XNFmf', // TODO: Update ipfs hash
       );
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('XRPL NFT Maker');
