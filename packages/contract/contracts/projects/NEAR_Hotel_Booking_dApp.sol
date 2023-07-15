@@ -42,7 +42,7 @@ contract NEAR_Hotel_Booking_dApp is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'NEAR Hotel Booking dApp';
-    _passportHash = 'QmZKpqK3Vn4GViQoCFqE7NfobWvprFch4qrFaK21zf5RWp';
+    _passportHash = 'Qmf27E4FcG9BV557HmBRDjHaNhZovqM1bc9ndeEYPbF3rr';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

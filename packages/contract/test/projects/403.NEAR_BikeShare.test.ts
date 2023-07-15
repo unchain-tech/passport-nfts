@@ -12,6 +12,8 @@ describe('NEAR_BikeShare', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmTMBFX6deyz2sqa92RDPTKrkxo7B3ZDw8YrSBuxbbxo7f';
 
     const NEARBikeShare = await upgrades.deployProxy(NEARBikeShareFactory, [], {
       initializer: 'initialize',
@@ -19,7 +21,7 @@ describe('NEAR_BikeShare', function () {
 
     await NEARBikeShare.deployed();
 
-    return { NEARBikeShare, owner, learner };
+    return { NEARBikeShare, owner, learner, passportHash };
   }
 
   // Test case
@@ -33,11 +35,11 @@ describe('NEAR_BikeShare', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { NEARBikeShare } = await loadFixture(deployProjectFixture);
-
-      expect(await NEARBikeShare.getPassportHash()).to.equal(
-        'QmTMBFX6deyz2sqa92RDPTKrkxo7B3ZDw8YrSBuxbbxo7f',
+      const { NEARBikeShare, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await NEARBikeShare.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -153,7 +155,7 @@ describe('NEAR_BikeShare', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { NEARBikeShare, learner } = await loadFixture(
+      const { NEARBikeShare, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -176,9 +178,7 @@ describe('NEAR_BikeShare', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmTMBFX6deyz2sqa92RDPTKrkxo7B3ZDw8YrSBuxbbxo7f',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('NEAR BikeShare');
     });

@@ -10,6 +10,8 @@ describe('ETH_DAO', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'Qma3C4TyC7Msb8XfLbaB26PMmqyPL3UqwZ9dJL19nEy3AD';
 
     const ETHDAO = await upgrades.deployProxy(ETHDAOFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('ETH_DAO', function () {
 
     await ETHDAO.deployed();
 
-    return { ETHDAO, owner, learner };
+    return { ETHDAO, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,9 @@ describe('ETH_DAO', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ETHDAO } = await loadFixture(deployProjectFixture);
+      const { ETHDAO, passportHash } = await loadFixture(deployProjectFixture);
 
-      expect(await ETHDAO.getPassportHash()).to.equal(
-        'Qma3C4TyC7Msb8XfLbaB26PMmqyPL3UqwZ9dJL19nEy3AD',
-      );
+      expect(await ETHDAO.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -137,7 +137,9 @@ describe('ETH_DAO', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ETHDAO, learner } = await loadFixture(deployProjectFixture);
+      const { ETHDAO, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -158,9 +160,7 @@ describe('ETH_DAO', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/Qma3C4TyC7Msb8XfLbaB26PMmqyPL3UqwZ9dJL19nEy3AD',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ETH DAO');
     });

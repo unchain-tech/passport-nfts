@@ -12,6 +12,8 @@ describe('ETH_NFT_Collection', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmWPZi8roKrZPn32XA5YBRGNq18Dy7XPhVM4Z76vnwFCMb';
 
     const ETHNFTCollection = await upgrades.deployProxy(
       ETHNFTCollectionFactory,
@@ -23,7 +25,7 @@ describe('ETH_NFT_Collection', function () {
 
     await ETHNFTCollection.deployed();
 
-    return { ETHNFTCollection, owner, learner };
+    return { ETHNFTCollection, owner, learner, passportHash };
   }
 
   // Test case
@@ -39,11 +41,11 @@ describe('ETH_NFT_Collection', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ETHNFTCollection } = await loadFixture(deployProjectFixture);
-
-      expect(await ETHNFTCollection.getPassportHash()).to.equal(
-        'QmbboPHPWPn7Fm9ULTKppC4AkeLGG8SimEPXgCM3Hr5eWN',
+      const { ETHNFTCollection, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await ETHNFTCollection.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -167,7 +169,7 @@ describe('ETH_NFT_Collection', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ETHNFTCollection, learner } = await loadFixture(
+      const { ETHNFTCollection, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -190,9 +192,7 @@ describe('ETH_NFT_Collection', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmbboPHPWPn7Fm9ULTKppC4AkeLGG8SimEPXgCM3Hr5eWN',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ETH NFT Collection');
     });

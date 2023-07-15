@@ -42,7 +42,7 @@ contract ASTAR_SocialFi is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'ASTAR SocialFi';
-    _passportHash = 'QmYkdzfNrVnN3qsDXY3UGbemg7x1ezE2kdtdsZznPv6cjb';
+    _passportHash = 'QmPNEXc1yuPKyzmin3rqp3jFBN9RgMe75AMuNd7PaR4eLr';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

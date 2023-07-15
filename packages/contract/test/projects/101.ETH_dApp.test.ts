@@ -10,6 +10,8 @@ describe('ETH_dApp', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmYgnqnvLRKJxucYW5pVmXgvV6Nf9mtqc4KJDv2pGEuruh';
 
     const ETHDapp = await upgrades.deployProxy(ETHDappFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('ETH_dApp', function () {
 
     await ETHDapp.deployed();
 
-    return { ETHDapp, owner, learner };
+    return { ETHDapp, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,9 @@ describe('ETH_dApp', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ETHDapp } = await loadFixture(deployProjectFixture);
+      const { ETHDapp, passportHash } = await loadFixture(deployProjectFixture);
 
-      expect(await ETHDapp.getPassportHash()).to.equal(
-        'QmXk3kdRvV6TV9yZvtZPgKHoYmywnURy3Qhs8Bjo5szg1J',
-      );
+      expect(await ETHDapp.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -137,7 +137,9 @@ describe('ETH_dApp', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ETHDapp, learner } = await loadFixture(deployProjectFixture);
+      const { ETHDapp, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -158,9 +160,7 @@ describe('ETH_dApp', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmXk3kdRvV6TV9yZvtZPgKHoYmywnURy3Qhs8Bjo5szg1J',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ETH dApp');
     });

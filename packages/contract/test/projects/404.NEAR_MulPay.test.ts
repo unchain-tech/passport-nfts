@@ -10,6 +10,8 @@ describe('NEAR_MulPay', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmadqNV22BDw9ikLP4FFRz4B6S2VSZhFTJstfvx7voTndS';
 
     const NEARMulPay = await upgrades.deployProxy(NEARMulPayFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('NEAR_MulPay', function () {
 
     await NEARMulPay.deployed();
 
-    return { NEARMulPay, owner, learner };
+    return { NEARMulPay, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,11 @@ describe('NEAR_MulPay', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { NEARMulPay } = await loadFixture(deployProjectFixture);
-
-      expect(await NEARMulPay.getPassportHash()).to.equal(
-        'QmPGi1a3KgSyop4rj2oaYdd9x7cbMXj9VMunQNSykzd5ds',
+      const { NEARMulPay, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await NEARMulPay.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -137,7 +139,9 @@ describe('NEAR_MulPay', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { NEARMulPay, learner } = await loadFixture(deployProjectFixture);
+      const { NEARMulPay, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -158,9 +162,7 @@ describe('NEAR_MulPay', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmPGi1a3KgSyop4rj2oaYdd9x7cbMXj9VMunQNSykzd5ds',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('NEAR MulPay');
     });

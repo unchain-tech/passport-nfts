@@ -12,6 +12,8 @@ describe('Polygon_Generative_NFT', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmNkyZxV1N3ZaK9Edd4Wvs6xsBF11kgNitipCTEampQy2X';
 
     const PolygonGenerativeNFT = await upgrades.deployProxy(
       PolygonGenerativeNFTFactory,
@@ -23,7 +25,7 @@ describe('Polygon_Generative_NFT', function () {
 
     await PolygonGenerativeNFT.deployed();
 
-    return { PolygonGenerativeNFT, owner, learner };
+    return { PolygonGenerativeNFT, owner, learner, passportHash };
   }
 
   // Test case
@@ -39,10 +41,12 @@ describe('Polygon_Generative_NFT', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { PolygonGenerativeNFT } = await loadFixture(deployProjectFixture);
+      const { PolygonGenerativeNFT, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
 
       expect(await PolygonGenerativeNFT.getPassportHash()).to.equal(
-        'QmQW79bjqFwfeVY3TxrhFJh9WRen9mBTkL4vnntimPXqBw',
+        passportHash,
       );
     });
   });
@@ -169,7 +173,7 @@ describe('Polygon_Generative_NFT', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { PolygonGenerativeNFT, learner } = await loadFixture(
+      const { PolygonGenerativeNFT, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -192,9 +196,7 @@ describe('Polygon_Generative_NFT', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmQW79bjqFwfeVY3TxrhFJh9WRen9mBTkL4vnntimPXqBw',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('Polygon Generative NFT');
     });

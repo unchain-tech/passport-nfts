@@ -42,7 +42,7 @@ contract Solana_Wallet is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'Solana Wallet';
-    _passportHash = 'QmXjWn9oRRzE4XkxCWM3XokWKJqkghkZmg8ox2w87pB2n9';
+    _passportHash = 'QmUJUy1WDARkvtCx35ES31KsNowuY7J1bdMCtmrMhFaWz3';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

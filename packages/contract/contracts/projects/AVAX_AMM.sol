@@ -42,7 +42,7 @@ contract AVAX_AMM is IProject, ERC721URIStorageUpgradeable {
     _tokenSymbol = 'CHAIPASS';
     _tokenDescription = 'Immutable and permanent proof of your UNCHAIN project completion.';
     _projectName = 'AVAX AMM';
-    _passportHash = 'QmRbFSiZUCAdKSB3dsZzVWUThpTJURFhMHhm2hr6rw8GfH';
+    _passportHash = 'QmUNw9iwJusv3yQKqPGrjYtdNMeXxSCzmf3zFK6KvSTbDs';
 
     __ERC721_init(_tokenName, _tokenSymbol);
   }

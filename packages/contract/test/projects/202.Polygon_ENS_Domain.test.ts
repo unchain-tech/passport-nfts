@@ -12,6 +12,8 @@ describe('Polygon_ENS_Domain', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'Qmd4sHJHNEnMTdU9rcGCA65YjnGDyHkKdcaHZCxqCpKevs';
 
     const PolygonENSDomain = await upgrades.deployProxy(
       PolygonENSDomainFactory,
@@ -23,7 +25,7 @@ describe('Polygon_ENS_Domain', function () {
 
     await PolygonENSDomain.deployed();
 
-    return { PolygonENSDomain, owner, learner };
+    return { PolygonENSDomain, owner, learner, passportHash };
   }
 
   // Test case
@@ -39,11 +41,11 @@ describe('Polygon_ENS_Domain', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { PolygonENSDomain } = await loadFixture(deployProjectFixture);
-
-      expect(await PolygonENSDomain.getPassportHash()).to.equal(
-        'QmQtv57r5BJDCr9LmjVayvzoyDNvxyPgGBebDq3ZACVA33',
+      const { PolygonENSDomain, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await PolygonENSDomain.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -167,7 +169,7 @@ describe('Polygon_ENS_Domain', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { PolygonENSDomain, learner } = await loadFixture(
+      const { PolygonENSDomain, learner, passportHash } = await loadFixture(
         deployProjectFixture,
       );
       const tokenId = 1;
@@ -190,9 +192,7 @@ describe('Polygon_ENS_Domain', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmQtv57r5BJDCr9LmjVayvzoyDNvxyPgGBebDq3ZACVA33',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('Polygon ENS Domain');
     });

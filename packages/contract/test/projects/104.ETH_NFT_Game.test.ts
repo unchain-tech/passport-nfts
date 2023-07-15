@@ -10,6 +10,8 @@ describe('ETH_NFT_Game', function () {
 
     // Contracts are deployed using the first signer/account by default
     const [owner, learner] = await ethers.getSigners();
+    // Define a private variable from the contract for testing
+    const passportHash = 'QmXrwaPtpgLmmJUq9Bgk9qgqHvbnz6mQQspBHPYzDxZ85c';
 
     const ETHNFTGame = await upgrades.deployProxy(ETHNFTGameFactory, [], {
       initializer: 'initialize',
@@ -17,7 +19,7 @@ describe('ETH_NFT_Game', function () {
 
     await ETHNFTGame.deployed();
 
-    return { ETHNFTGame, owner, learner };
+    return { ETHNFTGame, owner, learner, passportHash };
   }
 
   // Test case
@@ -31,11 +33,11 @@ describe('ETH_NFT_Game', function () {
 
   describe('getPassportHash', function () {
     it('return passportHash', async function () {
-      const { ETHNFTGame } = await loadFixture(deployProjectFixture);
-
-      expect(await ETHNFTGame.getPassportHash()).to.equal(
-        'QmXrwaPtpgLmmJUq9Bgk9qgqHvbnz6mQQspBHPYzDxZ85c',
+      const { ETHNFTGame, passportHash } = await loadFixture(
+        deployProjectFixture,
       );
+
+      expect(await ETHNFTGame.getPassportHash()).to.equal(passportHash);
     });
   });
 
@@ -137,7 +139,9 @@ describe('ETH_NFT_Game', function () {
   describe('tokenURI', function () {
     it('should get a token URI', async function () {
       /** Arrange */
-      const { ETHNFTGame, learner } = await loadFixture(deployProjectFixture);
+      const { ETHNFTGame, learner, passportHash } = await loadFixture(
+        deployProjectFixture,
+      );
       const tokenId = 1;
 
       // NOTE: In practice, the mint status is changed by a user
@@ -158,9 +162,7 @@ describe('ETH_NFT_Game', function () {
       expect(object.description).to.equal(
         'Immutable and permanent proof of your UNCHAIN project completion.',
       );
-      expect(object.image).to.equal(
-        'https://ipfs.io/ipfs/QmXrwaPtpgLmmJUq9Bgk9qgqHvbnz6mQQspBHPYzDxZ85c',
-      );
+      expect(object.image).to.equal(`https://ipfs.io/ipfs/${passportHash}`);
       expect(object.attributes[0].trait_type).to.equal('UNCHAIN Project');
       expect(object.attributes[0].value).to.equal('ETH NFT Game');
     });
