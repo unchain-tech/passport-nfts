@@ -10,19 +10,13 @@ import '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
 
 import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol';
 
-contract UNCHAIN_PASSPORT_v01 is
+contract UNCHAIN_PASSPORT_v02 is
   Initializable,
   AccessControlUpgradeable,
   ERC721URIStorageUpgradeable
 {
-  // Valuable for testing upgradeable
+  // test valuable
   uint256 private _value;
-
-  // userInfoList
-  struct UserInfo {
-    address recipient;
-    uint256 newItemId;
-  }
 
   // token info
   string public tokenName;
@@ -39,10 +33,7 @@ contract UNCHAIN_PASSPORT_v01 is
   mapping(bytes32 => uint8) private _hashes;
 
   //NFTs token name and it's symbol.
-  function initialize(uint256 newValue) public initializer {
-    //test upgrading
-    _value = newValue;
-
+  function initialize() public initializer {
     ////////// TOKEN SETUP /////////
 
     tokenName = 'UNCHAIN Passport';
@@ -95,7 +86,7 @@ contract UNCHAIN_PASSPORT_v01 is
     public
     view
     virtual
-    override(ERC721Upgradeable, AccessControlUpgradeable)
+    override(ERC721URIStorageUpgradeable, AccessControlUpgradeable)
     returns (bool)
   {
     return super.supportsInterface(interfaceId);
@@ -138,6 +129,9 @@ contract UNCHAIN_PASSPORT_v01 is
   ) public onlyRole(MINTER_ROLE) returns (uint256) {
     //create hash from recipient and projectname
     bytes32 _hash = keccak256(abi.encodePacked(_recipient, _projectName));
+
+    //check if the hash is already used
+    require(_hashes[_hash] != 1, 'NFT already minted to wallet');
 
     //mark the hash as used
     _hashes[_hash] = 1;
@@ -200,62 +194,23 @@ contract UNCHAIN_PASSPORT_v01 is
     return newItemId;
   }
 
-  event NewMultiNFTMinted(UserInfo[] userInfoList);
-
-  // suggestion1: minter can choose project name and address for each
-  function mintMultipleNFTs_1(
-    address[] memory _recipients,
-    string[] memory _projectNames,
-    string[] memory _passportHashes
-  ) public onlyRole(MINTER_ROLE) {
-    // storage newItemId and recipient address
-    UserInfo[] memory userInfoList = new UserInfo[](_recipients.length);
-
-    // check if parameters length is the same
-    require(
-      _recipients.length == _projectNames.length,
-      'Length of data array must be the same.'
-    );
-    require(
-      _recipients.length == _passportHashes.length,
-      'Length of data array must be the same.'
-    );
-
-    for (uint256 i = 0; i < _recipients.length; i++) {
-      // create hash from recipient and projectname
-      bytes32 _hash = keccak256(
-        abi.encodePacked(_recipients[i], _projectNames[i])
-      );
-
-      // check if the hash is already used
-      if (_hashes[_hash] == 1) {
-        console.log('NFT has been already minted to %s', _recipients[i]);
-        userInfoList[i].newItemId = 0;
-        userInfoList[i].recipient = _recipients[i];
-      } else {
-        userInfoList[i].newItemId = mintNFT(
-          _recipients[i],
-          _projectNames[i],
-          _passportHashes[i]
-        );
-        userInfoList[i].recipient = _recipients[i];
-      }
-    }
-
-    emit NewMultiNFTMinted(userInfoList);
-  }
-
-  ////////Test Upgradeable////
   // Emitted when the stored value changes
   event ValueChanged(uint256 newValue);
 
   // Stores a new value in the contract
-  function store() public {
-    emit ValueChanged(_value);
+  function store(uint256 newValue) public {
+    _value = newValue;
+    emit ValueChanged(newValue);
   }
 
   // Reads the last stored value
   function retrieve() public view returns (uint256) {
     return _value;
+  }
+
+  // Increments the stored value by 1
+  function increment() public {
+    _value = _value + 1;
+    emit ValueChanged(_value);
   }
 }
