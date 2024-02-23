@@ -1,15 +1,15 @@
 {
     "name": "contract",
     "version": "1.0.0",
-    "description": "UNCHAIN passport NFT contract",
+    "description": "NFT contracts issued for provenance of completing UNCHAIN projects",
     "private": true,
     "scripts": {
         "lint": "eslint --fix test/** scripts/**",
         "lint:fix": "eslint test/** scripts/**",
         "prettier": "prettier --check \"contracts/**/*.sol\"",
         "prettier:fix": "prettier --write \"contracts/**/*.sol\"",
-        "solhint": "solhint --max-warnings 0 -c ./.solhint.json \"contracts/**/*.sol\"",
-        "solhint:fix": "solhint --fix --max-warnings 0 -c ./.solhint.json \"contracts/**/*.sol\"",
+        "solhint": "solhint -c ./.solhint.json \"contracts/**/*.sol\"",
+        "solhint:fix": "solhint --fix -c ./.solhint.json \"contracts/**/*.sol\"",
         "test": "npx hardhat test test/0.integrated.test.ts"
     },
     "devDependencies": {
