@@ -1,21 +1,20 @@
 {
-  "name": "UNCHAIN-passports-V2",
+  "name": "unchain-nfts",
   "version": "1.0.0",
-  "description": "UNCHAIN passport NFT contract",
-  "license": "UNLICENSED",
+  "description": "NFT contracts issued for provenance of completing UNCHAIN projects",
+  "license": "MIT",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shiftbase-inc/UNCHAIN-passports-V2.git"
+    "url": "git+https://github.com/unchain-tech/passport-nfts.git"
   },
   "bugs": {
-    "url": "https://github.com/shiftbase-inc/UNCHAIN-passports-V2/issues"
+    "url": "https://github.com/unchain-tech/passport-nfts/issues"
   },
-  "author": "SHØ <neila@users.noreply.github.com> (http://akxra.art/)",
+  "author": "neila <neila@users.noreply.github.com> (https://github.com/neila/)",
   "contributors": [
-    "SHØ <neila@users.noreply.github.com> (http://akxra.art/)",
-    "yk-saito <60546319+yk-saito@users.noreply.github.com> (https://github.com/yk-saito)",
-    "honganji <yujicavs@icloud.com> (https://github.com/honganji)"
+    "neila <neila@users.noreply.github.com> (https://github.com/neila/)",
+    "yk-saito <60546319+yk-saito@users.noreply.github.com> (https://github.com/yk-saito)"
   ],
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
@@ -48,8 +47,8 @@
     "client:dev": "cp -r ./packages/contract/typechain-types ./packages/client/types/typechain-types && yarn workspace client dev",
     "prettier": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --write .",
     "prettier:check": "prettier --ignore-unknown --no-error-on-unmatched-pattern --ignore-path .prettierignore --check .",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "eslint . && yarn contract solhint",
+    "lint:fix": "eslint --fix . && yarn contract solhint:fix",
     "test": "yarn workspace contract test"
   }
 }
