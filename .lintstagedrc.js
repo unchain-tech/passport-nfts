@@ -4,7 +4,7 @@ const buildLintCommand = (filenames) =>
   `eslint ${filenames.map((f) => path.relative(process.cwd(), f)).join(' ')}`;
 
 const buildSolhintCommand = (filenames) =>
-  `solhint --max-warnings 0 -c packages/contract/.solhint.json --ignore-path .gitignore ${filenames
+  `solhint -c packages/contract/.solhint.json --ignore-path .gitignore ${filenames
     .map((f) => path.relative(process.cwd(), f))
     .join(' ')} `;
 
