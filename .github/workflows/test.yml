@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   ci:
-    uses: ./.github/workflows/_setup.yml
+    uses: ./.github/workflows/_ci.yml
 
   contract-test:
     runs-on: ubuntu-latest
